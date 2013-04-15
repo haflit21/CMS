@@ -1,0 +1,109 @@
+{% extends '::admin.html.twig' %}
+{% block title "Gestion des médias" %}
+
+{% block body %}
+{% if isRoot %}
+	{% set nb_elements = 0 %}
+{% else %}
+	{% set nb_elements = 1 %}
+{% endif %}
+<div class="span12">
+	<div class="list-head">
+		<h3 class="breadcrumb_media">
+			{% set current = '' %}
+			{% for chemin in path %}
+				{% if not loop.first %}
+					{% set current = current ~ '_' ~ chemin %}
+				{% else %}
+					{% set current = chemin %}
+				{% endif %}
+				{% if not loop.last %}
+					<a href="{{ path('medias', {'directory': current }) }}">{{ chemin }}</a>
+				{% else %}
+					{{ chemin }}
+				{% endif %}	
+				{% if not loop.last %}
+					<span class="separator"> > </span>	
+				{% endif %}
+			{% endfor %}
+		</h3>
+	</div>
+	<form action="{{ path('new_directory') }}" method="post" class="form-horizontal">
+			<input type="text" name="directory_new" id="directory_new" placeholder="Créer un répertoire..." />
+			<input type="hidden" name="current" value="{{ current }}">
+			<input type="submit" class="btn" value="Valider" />
+		</form>
+	<div class="clearfix sep3"></div>
+	<ul class="span12 thumbnails" id="media">
+		{% for dir in directories %}
+			<li class="span3">
+				<a href="{{ path('medias', {'directory': url ~ dir }) }}"><img src="{{ asset('bundles/cmsmedia/images/folder.png') }}" alt="" /></a>
+				<div class="caption">
+					<h6>{{ dir }}</h6>
+					<div class="pull-right">
+						<a class="remove" rel="tooltip" data-placement="bottom" data-original-title="Supprimer" href="{{ path('delete_media', {'current': current, 'elem': dir}) }}" data-current="{{ current}}" data-elem="{{ dir }}">
+							<i class="icon icon-trash"></i>
+						</a>
+					</div>
+				</div>
+			</li>
+		{% endfor %}
+		{% for file in fichiers %}
+			<li class="span3 file">
+				<a href="{{ asset(url_asset ~ '/' ~ file) }}" class="fancybox"><img src="{{ (url_asset ~ '/' ~ file) | imagine_filter('thumb_media_pin')  }}" alt=""></a>
+				<div class="caption">
+					<div class="pull-left legend_image">{{ file|slice(0,15)|lower ~'...' }}</div>
+					<div class="pull-right">
+						<a class="remove" rel="tooltip" data-placement="bottom" data-original-title="Supprimer" href="{{ path('delete_media', {'current':current, 'elem': file}) }}" data-current="{{ current }}" data-elem="{{ file }}">
+							<i class="icon icon-trash"></i>
+						</a>
+					</div>
+				</div>
+			</li>
+
+			{% set nb_elements = nb_elements + 1 %}
+			
+		{% endfor %}
+	</ul>
+	<div class="clearfix"></div>
+</div>
+	<div class="clearfix sep2"></div>
+		<div class="row-fluid">
+<div class="span12" id="upload">
+
+	<form action="{{ path('upload_media', { 'directory': current}) }}" method="post" id="my-awesome-dropzone" class="dropzone" enctype="multipart/form-data">
+		</form>
+		</div>
+</div>
+
+{% endblock body %}
+{% block javascripts %}
+<script type="text/javascript" src="{{ asset('/bundles/cmsadmin/js/dropzone.js') }}"></script>
+<script type="text/javascript" src="{{ asset('/bundles/cmsmedia/js/jquery.masonry.min.js') }}"></script>
+<script type="text/javascript">
+	$(document).ready(function() {
+		$('a').hover(function() {
+			$(this).tooltip('show');
+		})
+		$('a.fancybox').fancybox();
+		var $container = $('#media');
+
+		$container.imagesLoaded(function() {
+			$container.masonry({
+				itemSelector:'.file', 
+				columnWidth: 270,
+				gutterWidth: 30, 
+				containerStyle: { position: 'relative' }
+			});
+		});
+	});
+
+	Dropzone.options.myAwesomeDropzone = {
+	  paramName: "doc", // The name that will be used to transfer the file
+	  maxFilesize: 5, // MB
+	};
+
+	
+
+</script>
+{% endblock %}

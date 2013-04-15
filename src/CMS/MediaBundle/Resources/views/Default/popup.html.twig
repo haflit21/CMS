@@ -1,0 +1,61 @@
+{% block title "Gestion des médias" %}
+
+{% block body %}
+{% if isRoot %}
+	{% set nb_elements = 0 %}
+{% else %}
+	{% set nb_elements = 1 %}
+{% endif %}
+<div class="span12 list-widget">
+	<div class="list-head">
+		<h3>
+			{% for chemin in path %}
+				{{ chemin }}
+				{% if not loop.last %}
+					/
+				{% endif %}
+			{% endfor %}
+		</h3>
+
+	</div>
+	<form action="{{ path('new_directory') }}" method="post" class="form-horizontal">
+			<input type="text" name="directory_new" id="directory_new" placeholder="Créer un répertoire..." />
+			<input type="hidden" name="current" value="{{ current }}">
+			<input type="submit" class="btn" value="Valider" />
+		</form>
+	<div class="thumbnails">
+			{% for dir in directories %}
+				<div class="span4 thumbnail">
+					<a href="{{ path('medias', {'directory': url ~ dir }) }}"><img src="{{ asset('bundles/cmsmedia/images/folder.png') }}" alt="" /></a>
+					<div class="caption">
+						<h6>{{ dir }}</h6>
+					</div>
+				</div>
+				{% set nb_elements = nb_elements + 1 %}
+				{% if nb_elements == 4 %}
+					</div><div class="thumbnails">
+					{% set nb_elements = 0 %}
+				{% endif %}
+			{% endfor %}
+			{% for file in fichiers %}
+				<a href="javascript:" class="files" onclick="addFile(this)">
+					<div class="span4 thumbnail file">
+						<img src="{{ asset(url_asset ~ '/' ~ file) }}" alt="">
+						<div class="caption">
+							<h6>{{ file|slice(0,11)|lower ~'...' }}</h6>
+						</div>
+					</div>
+				</a>
+
+				{% set nb_elements = nb_elements + 1 %}
+				{% if loop.index % 3 == 0 %}
+					</div><div class="thumbnails">
+					{% set nb_elements = 0 %}
+				{% endif %}
+			{% endfor %}
+		</div>
+		<div class="clearfix sep2"></div>
+	</div>
+</div>
+
+{% endblock body %}

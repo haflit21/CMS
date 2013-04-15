@@ -1,0 +1,150 @@
+imports:
+    - { resource: parameters.yml }
+    - { resource: security.yml }
+    - { resource: doctrine_extensions.yml }
+
+framework:
+    #esi:             ~
+    translator:      { fallback: %locale% }
+    secret:          %secret%
+    router:
+        resource: "%kernel.root_dir%/config/routing.yml"
+        strict_requirements: %kernel.debug%
+    form:            true
+    csrf_protection: true
+    validation:      { enable_annotations: true }
+    templating:      { engines: ['twig'] } #assets_version: SomeVersionScheme
+    default_locale:  %locale%
+    trust_proxy_headers: false # Whether or not the Request object should trust proxy headers (X_FORWARDED_FOR/HTTP_CLIENT_IP)
+    session: ~
+
+
+parameters:
+    directory_separator: '/'
+    options_publish:
+        0: Non publié
+        1: Publié
+    options_image:
+        images: ~
+
+
+# Twig Configuration
+twig:
+    debug:            %kernel.debug%
+    strict_variables: %kernel.debug%
+    globals:
+        options_pagination: [5, 10, 20, 50, 'all']
+    form:
+        resources:
+            - 'MopaBootstrapBundle:Form:fields.html.twig'
+
+services:
+    twig.extension.text:
+        class: Twig_Extensions_Extension_Text
+        tags:
+            - { name: twig.extension }
+
+# Assetic Configuration
+assetic:
+    debug:          %kernel.debug%
+    use_controller: false
+    bundles:        ['CMSDashboardBundle', 'CMSMediaBundle', 'CMSAdminBundle', 'CMSFrontBundle', 'CMSContentBundle' ]
+    #java: /usr/bin/java
+    filters:
+        cssrewrite: ~
+        less:
+            node:       /usr/local/bin/node
+            node_paths: [/usr/local/lib/node, /usr/local/lib/node_modules]
+        yui_css:
+            jar: %kernel.root_dir%/Resources/java/yuicompressor-2.4.7.jar
+        yui_js:
+            jar: %kernel.root_dir%/Resources/java/yuicompressor-2.4.7.jar
+
+
+        #closure:
+        #    jar: %kernel.root_dir%/Resources/java/compiler.jar
+        #yui_css:
+        #    jar: %kernel.root_dir%/Resources/java/yuicompressor-2.4.7.jar
+
+# Doctrine Configuration
+doctrine:
+    dbal:
+        driver:   %database_driver%
+        host:     %database_host%
+        port:     %database_port%
+        dbname:   %database_name%
+        user:     %database_user%
+        password: %database_password%
+        charset:  UTF8
+
+    orm:
+        auto_generate_proxy_classes: %kernel.debug%
+        auto_mapping: true
+        mappings:
+            translatable:
+                type: annotation
+                alias: Gedmo
+                prefix: Gedmo\Translatable\Entity
+                # make sure vendor library location is correct
+                dir: "%kernel.root_dir%/../vendor/gedmo/doctrine-extensions/lib/Gedmo/Translatable/Entity"
+            tree:
+                type: annotation
+                alias: Gedmo
+                prefix: Gedmo\Tree\Entity
+                dir: "%kernel.root_dir%/../vendor/gedmo/doctrine-extensions/lib/Gedmo/Tree/Entity"
+
+# Swiftmailer Configuration
+swiftmailer:
+    transport: %mailer_transport%
+    host:      %mailer_host%
+    username:  %mailer_user%
+    password:  %mailer_password%
+    spool:     { type: memory }
+
+liip_imagine:
+    filter_sets:
+        thumb_media:
+            quality: 100
+            filters:
+                crop: { start: [10, 10], size: [270, 170] }
+        thumb_media_pin:
+            quality: 100
+            filters:
+                thumbnail: { size: [260, 500], mode: inset }
+
+trsteel_ckeditor:
+    transformers: ['strip_js', 'strip_css', 'strip_comments']
+    toolbar: ['document', 'clipboard', 'editing', '/', 'basicstyles', 'paragraph', 'links', '/', 'insert', 'styles', 'tools']
+    toolbar_groups:
+        document: ['Source','-','Save','-','Templates']
+        clipboard: ['Cut','Copy','Paste','PasteText','PasteFromWord','-','Undo','Redo']
+        editing: ['Find','Replace','-','SelectAll']
+        basicstyles: ['Bold','Italic','Underline','Strike','Subscript','Superscript','-','RemoveFormat']
+        paragraph: ['NumberedList','BulletedList','-','Outdent','Indent','-','JustifyLeft', 'JustifyCenter','JustifyRight','JustifyBlock']
+        links: ['Link','Unlink','Anchor']
+        insert: ['Image','Flash','Table','HorizontalRule']
+        styles: ['Styles','Format']
+        tools: ['Maximize', 'ShowBlocks']
+    startup_outline_blocks: true
+    width: 450 #Integer or %
+    height: 250 #Integer or %
+
+mopa_bootstrap:
+    form:
+        templating: false # default is true
+        render_fieldset: true # default is true
+        show_legend: true # default is true
+        show_child_legend: false # default is false
+        render_required_asterisk: true # default is true
+        error_type: 'block' # default is null
+        collection:
+            widget_remove_btn:
+                attr:
+                    class: btn
+                icon: null
+                icon_color: null
+            widget_add_btn:
+                attr:
+                    class: btn
+                icon: null
+                icon_color: null

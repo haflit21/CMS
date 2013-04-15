@@ -1,0 +1,13 @@
+{% extends "CMSDashboardBundle::layout.html.twig" %}
+{% block title "Groupe" %}
+{% block titlesection "Role" %}
+{% block body %}
+{% if id is not defined %}
+	<form action="{{ path('new_role') }}" method="post" {{ form_enctype(form) }}>
+{% else %}
+	<form action="{{ path('edit_role', {'id' : id }) }}" method="post" {{ form_enctype(form) }}>
+{% endif %}
+    {{ form_widget(form) }}
+    <button type="submit" class="btn">Create Role</button>
+</form>
+{% endblock body %}

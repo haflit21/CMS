@@ -1,0 +1,112 @@
+{% extends('::admin.html.twig') %}
+
+{% block body %}
+
+	<div class="row-fluid">
+		<div class="span12">
+			{% for flashMessage in app.session.flashbag.get('info') %}
+			    <div class="alert alert-info">
+			    	<button class="close" data-dismiss="alert" type="button">×</button>
+			        <strong>Notice</strong>
+			        {{ flashMessage }}
+			    </div>
+			{% endfor %}
+			<table class="table table-striped table-bordered table-hover">
+	            <thead>
+	                <tr>
+	                  	<th>
+	                  		<h1 class="well no-margin">
+	                  			Field Manager
+	                  		</h1>
+	                  	</th>
+	                </tr>
+	            </thead>
+		    </table>
+
+		    <a href="{{ path('fields') }}" class="btn btn-small pull-right"><i class="icon icon-chevron-left"></i> Retour</a>
+		    <div class="clear h20"></div>
+
+			{% if field.id != 0 %}
+				<form class="form-horizontal" action="{{path('fields_edit', {'id':field.id})}}" method="post" {{ form_enctype(form) }}>
+			{% else %}
+				<form class="form-horizontal" action="{{path('fields_new')}}" method="post" {{ form_enctype(form) }}>
+			{% endif %}
+				<div class="well span8">
+					{{ form_errors(form) }}
+
+					<div class="control-group">
+						<div class="control-label">
+							{{ form_label(form.title) }}
+						</div>
+						<div class="controls">
+							{{ form_widget(form.title) }}
+							{{ form_errors(form.title) }}
+						</div>
+					</div>
+					<div class="control-group">
+						<div class="control-label">
+							{{ form_label(form.name) }}
+						</div>
+						<div class="controls">
+							{{ form_widget(form.name) }}
+							{{ form_errors(form.name) }}
+						</div>
+					</div>
+					<div class="control-group">
+						<div class="control-label">
+							{{ form_label(form.published) }}
+						</div>
+						<div class="controls inline_elements">
+							{{ form_widget(form.published) }}
+							{{ form_errors(form.published) }}
+						</div>
+					</div>
+					{#
+					<div class="control-group">
+						<div class="control-label">
+							{{ form_label(form.created) }}
+						</div>
+						<div class="controls inline_elements">
+							{{ form_widget(form.created, {'attr' : {'class' : 'datepicker'}}) }}
+							{{ form_errors(form.created) }}
+						</div>
+					</div>
+					#}
+					<div class="control-group">
+						<div class="control-label">
+							{{ form_label(form.contentType) }}
+						</div>
+						<div class="controls inline_elements">
+							{{ form_widget(form.contentType, {'attr' : {'class' : 'datepicker'}}) }}
+							{{ form_errors(form.contentType) }}
+						</div>
+					</div>
+
+					<div class="form-actions">
+					    <a href="{{ path('fields') }}" class="btn btn-small">{% trans %}Cancel{% endtrans %}</a>
+                        <button type="submit" class="btn btn-primary btn-small">{% trans %}Validate{% endtrans %}</button>
+				    </div>
+				</div>
+				<div class="well span4">
+					{{ fieldsOptions|raw }}
+					{% if fieldtype is defined %}
+						<input type="hidden" name="fieldtype" value="{{fieldtype}}" />
+					{% endif %}
+				</div>
+
+
+
+				{{ form_rest(form) }}
+			</form>
+		</div>
+	</div>
+
+{% endblock body %}
+
+{% block javascripts %}
+
+	$(function(){
+		$('.datepicker').datepicker();
+	})
+
+{% endblock javascripts %}

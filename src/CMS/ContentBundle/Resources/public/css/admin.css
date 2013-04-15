@@ -1,0 +1,25 @@
+.clear{ clear:both; }
+.h15{ display: block; height: 15px; }
+.h20{ display: block; height: 20px; }
+.h60{ display: block; height: 60px; }
+.no-margin{ margin:0 !important; }
+.center-text{ text-align: center !important; }
+.bold{ font-weight: bold !important; }
+a.always-white, a.always-white:hover, a.always-white:visited, a.always-white.active{ color : #FFFFFF !important; }
+
+.flag-element{position: relative;}
+.flag{margin-left: 10px;height:23px;}
+.flag-ok{position: absolute;right: -2px;bottom: -6px;height: 12px;}
+.inline_elements input, .inline_elements label{	float:left; padding:0 2px; }
+
+.space-top{ margin-top: 20px;}
+
+.space-left{ margin-left: 10px;}
+
+.jcrop-holder{ margin-bottom: 10px; margin-top: 10px;}
+
+.cropbox{ margin-bottom: 10px; margin-top: 10px;}
+
+a:hover{
+	text-decoration: none;
+}

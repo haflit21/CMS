@@ -1,0 +1,13 @@
+{% extends "CMSDashboardBundle::layout.html.twig" %}
+{% block title "Utilisateurs" %}
+{% block titlesection "Utilisateurs" %}
+{% block body %}
+{% if id is not defined %}
+	<form action="{{ path('new_user') }}" method="post" {{ form_enctype(form) }}>
+{% else %}
+	<form action="{{ path('edit_user', {'id' : id }) }}" method="post" {{ form_enctype(form) }}>
+{% endif %}
+    {{ form_widget(form) }}
+    <button type="submit" class="btn">Valider</button>
+</form>
+{% endblock body %}

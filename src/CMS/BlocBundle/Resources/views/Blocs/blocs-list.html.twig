@@ -1,0 +1,122 @@
+{% extends('::admin.html.twig') %}
+{% block title %}Blocs{% endblock %}
+{% block body %}
+
+	<div class="row-fluid">
+		<div class="span12">
+			<h1 class="pull-left">{% trans %}Bloc Manager{% endtrans %}</h1>
+			{% for flashMessage in app.session.flashbag.get('info') %}
+			    <div class="alert alert-info">
+			    	<button class="close" data-dismiss="alert" type="button">×</button>
+			        <strong>Notice</strong>
+			        {{ flashMessage }}
+			    </div>
+			{% endfor %}
+			<a href="#myModal" role="button" class="btn btn-new btn-small pull-right" data-toggle="modal"><i class="icon icon-plus-sign"></i> {% trans %}New{% endtrans %}</a>
+			<div class="modal hide fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+					<form action="{{ path('blocs_new', {'lang' : defaultLanguage.id }) }}" method="get">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+							<h3 id="myModalLabel">{% trans %}Choose bloc type{% endtrans %}</h3>
+						</div>
+						<div class="modal-body">
+							{{ blocType|raw }}
+						</div>
+						<div class="modal-footer">
+							<button class="btn" data-dismiss="modal" aria-hidden="true">{% trans %}Close{% endtrans %}</button>
+							<input class="btn btn-primary" type="submit" value="{% trans %}New{% endtrans %}" />
+						</div>
+					</form>
+				</div>
+
+		    <div class="clear h20"></div>
+			<form action="{{ path('blocs_list', {'page': 1 }) }}" method="post">
+				<table class="table table-striped table-hover">
+		   			<thead>
+				        <tr>
+			                <th>#</th>
+				            <th>{% trans %}Title{% endtrans %}</th>
+				            <th>{% trans %}Position{% endtrans %}</th>
+				            <th>{% trans %}Type{% endtrans %}</th>
+				            <th class="center-text">{% trans %}Language{% endtrans %}</th>
+				            <th class="center-text">{% trans %}Translations{% endtrans %}</th>
+				            <th class="center-text">{% trans %}Published{% endtrans %}</th>
+				            <th>{% trans %}Actions{% endtrans %}</th>
+				        </tr>
+				    </thead>
+				    <tbody>
+				    	{% for bloc in pagination %}
+				    	{% set found = false %}
+				    	<tr>
+				    		<td>{{ bloc.id }}</td>
+				    		<td><a href="{{ path('blocs_edit', {'id' : bloc.id }) }}">{{ bloc.title }}</a></td>
+				    		<td>{{ bloc.position }}</td>
+				    		<td>{{ bloc.type }}</td>
+				    		<td class="center-text"><img src="{{ asset('bundles/cmscontent/img/flags/'~bloc.language.iso~'.png') }}" height="23px" style="height:23px;" alt="{{ bloc.language.iso }}"></td>
+				    		<td class="center-text">
+		                  		{% for language in languages %}
+		                  			{% for translation in bloc.translations %}
+		                  				{% if language.id == translation.language.id %}
+		                  					{% set found = translation.id %}
+		                  				{% endif %}
+		                  			{% endfor %}
+			                  		{% if found > 0 %}
+			                  			<a href="{{ path('blocs_edit', {'id' : bloc.id }) }}" class="flag-element">
+			                  				<img src="{{ asset('bundles/cmscontent/img/flags/'~language.iso~'.png') }}" class="flag" alt="{{ language.iso }}">
+			                  				<img src="{{ asset('bundles/cmscontent/img/flags/flag-ok.png') }}" class="flag-ok" alt="{{ language.iso }}">
+			                  			</a>
+			                  		{% else %}
+			                  			<a href="{{ path('categories_translation', {'lang' : language.id, 'reference': bloc.id }) }}">
+			                  				<img src="{{ asset('bundles/cmscontent/img/flags/'~language.iso~'.png') }}" class="flag" alt="{{ language.iso }}">
+			                  			</a>
+			                  		{% endif %}
+			                  	{% endfor %}	
+			                </td>
+			                <td class="center-text">
+			                	<a href="#">
+				                  	{% if bloc.published %}
+				                  		<i class="icon-ok"></i>
+				                  	{% else %}
+				                  		<i class="icon-ban-circle"></i>
+				                  	{% endif %}
+			                  	</a>
+			                </td> 
+                			<td>
+		                  		<a href="{{ path('blocs_edit', {'id' : bloc.id }) }}"><i class="icon-edit"></i></a>
+		                  		<a href="{{ path('blocs_delete', {'id' : bloc.id }) }}"><i class="icon-trash"></i></a>
+		                  	</td>
+		                </tr>
+				    	{% endfor %}
+				    </tbody>
+				    <tfoot>
+		            	<tr>
+		            		<td>{% trans %}Total{% endtrans %} : {{ total }} {% trans %}bloc(s){% endtrans %}</td>
+		            		<td colspan="6">
+		            			{% trans %}Afficher{% endtrans %} :
+				    			<select name="filter[display]" onchange="this.form.submit()">
+				    				{% for i in options_pagination %}
+				    					{% if i == nb %}
+				    					<option value="{{ i }}" selected="selected">{{ i }} {% trans %}elements{% endtrans %}</option>
+				    					{% else %}
+				    					<option value="{{ i }}">{{ i }} {% trans %}elements{% endtrans %}</option>
+				    					{% endif %}
+				    				{% endfor %}
+				    			</select>
+				    		</td>
+		            	</tr>
+		            </tfoot>
+				</table>
+			</form>
+			<div class="navigation">
+			    {{ knp_pagination_render(pagination) }}
+			</div>
+		</div>
+	</div>
+{% endblock %}
+{% block javascripts %}
+<script type="text/javascript">
+	$(function() {
+		$('table select').selectBoxIt();
+	});
+</script>
+{% endblock %}

@@ -1,0 +1,120 @@
+{% extends('::admin.html.twig') %}
+{% block title %}{% trans %}Fields{% endtrans %}{% endblock %}
+{% block body %}
+
+	<div class="row-fluid">
+
+		<div class="span12">
+			<h1 class="pull-left">{% trans %}Fields{% endtrans %}</h1>
+			<a href="#myModal" role="button" class="btn btn-new btn-small pull-right" data-toggle="modal"><i class="icon icon-plus-sign"></i> {%trans%}New{%endtrans%}</a>
+			{% for flashMessage in app.session.flashbag.get('info') %}
+				<div class="clear h20"></div>
+			    <div class="alert alert-info">
+			    	<button class="close" data-dismiss="alert" type="button">×</button>
+			        <strong>Notice</strong>
+			        {{ flashMessage }}
+			    </div>
+			{% endfor %}
+
+
+			<div class="clear h20"></div>
+			<div class="modal hide fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				<form action="{{ path('fields_new') }}" mathod="post">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+						<h3 id="myModalLabel">{%trans%}CHOOSE_FIELD_TYPE{%endtrans%}</h3>
+					</div>
+					<div class="modal-body">
+						{{ fieldstype|raw }}
+					</div>
+					<div class="modal-footer">
+						<button class="btn" data-dismiss="modal" aria-hidden="true">{%trans%}Close{%endtrans%}</button>
+						<input class="btn btn-primary" type="submit" value="{%trans%}New{%endtrans%}" />
+					</div>
+				</form>
+			</div>
+
+		    <div class="clear h20"></div>
+
+		    <table class="table table-striped table-hover">
+	            <thead>
+	                <tr>
+	                  	<th class="center-text">#</th>
+	                  	<th>{%trans%}Title{%endtrans%}</th>
+	                  	<th class="center-text">{%trans%}Name{%endtrans%}</th>
+	                  	<th class="center-text">{%trans%}Type{%endtrans%}</th>
+	                  	<th class="center-text">{%trans%}Content Type{%endtrans%}</th>
+	                  	<th class="center-text">{%trans%}Published{%endtrans%}</th>
+	                  	<th class="center-text">{%trans%}Action{%endtrans%}</th>
+	                </tr>
+	            </thead>
+	            <tbody>
+	            	{% for field in fields %}
+		              	<tr>
+			                <td class="center-text">
+			                  	{{ loop.index }}
+			                </td>
+		                  	<td>
+		                  		<a href="{{ path('fields_edit', {'id' : field.id }) }}">
+		                  			{{ field.title }}
+		                  		</a>
+		                  	</td>
+		                  	<td class="center-text">
+		                  		{{ field.name }}
+		                  	</td>
+		                  	<td class="center-text">
+		                  		{% if field.field.typefield is defined %}
+		                  			{{ field.field.typefield }}
+		                  		{% endif %}
+		                  	</td>
+		                  	<td class="center-text">
+		                  		{% for type in field.contentType %}
+		                  			{{ type.title }}
+		                  		{% endfor %}
+		                  	</td>
+		                  	<td class="center-text">
+		                  		<a href="{{ path('fields_published', {'id' : field.id }) }}">
+				                  	{% if field.published %}
+				                  		<i class="icon-ok"></i>
+				                  	{% else %}
+				                  		<i class="icon-ban-circle"></i>
+				                  	{% endif %}
+			                  	</a>
+			                </td>
+		                  	<td class="center-text">
+		                  		<a href="{{ path('fields_edit', {'id' : field.id }) }}"><i class="icon-edit"></i></a>
+		                  		<a href="{{ path('fields_delete', {'id' : field.id }) }}"><i class="icon-trash"></i></a>
+		                  	</td>
+		                </tr>
+					{% endfor %}
+	            </tbody>
+	            <tfoot>
+	            	<tr>
+	            		<td>{% trans %}Total{% endtrans %} : {{ total }} {% trans %}champ(s){% endtrans %}</td>
+	            		<td colspan="6">
+	            			{% trans %}Afficher{% endtrans %} :
+			    			<select name="filter[display]" onchange="this.form.submit()">
+			    				{% for i in options_pagination %}
+			    					{% if i == nb %}
+			    					<option value="{{ i }}" selected="selected">{{ i }} {% trans %}elements{% endtrans %}</option>
+			    					{% else %}
+			    					<option value="{{ i }}">{{ i }} {% trans %}elements{% endtrans %}</option>
+			    					{% endif %}
+			    				{% endfor %}
+			    			</select>
+			    		</td>
+	            	</tr>
+	            </tfoot>
+	        </table>
+
+	    </div>
+	</div>
+
+{% endblock body %}
+{% block javascripts %}
+<script type="text/javascript">
+	$(function() {
+		$('select').selectBoxIt();
+	});
+</script>
+{% endblock %}

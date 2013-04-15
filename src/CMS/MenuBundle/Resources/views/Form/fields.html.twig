@@ -1,0 +1,64 @@
+{% extends 'form_div_layout.html.twig' %}
+{% block publish_widget %}
+    {% spaceless %}
+        {% if expanded %}
+            <div class="publish_field">
+            {% for child in form %}
+                {{ form_widget(child) }}
+                {{ form_label(child) }}
+            {% endfor %}
+            </div>
+        {% else %}
+            {# just let the choice widget render the select tag #}
+            {{ block('choice_widget') }}
+        {% endif %}
+        <div class="clearfix"></div>
+    {% endspaceless %}
+{% endblock %}
+
+{% block link_widget %}
+    {% spaceless %}
+        {% if expanded %}
+            <div class="link_field">
+            {% for child in form %}
+                {{ form_widget(child) }}
+                {{ form_label(child) }}
+            {% endfor %}
+            </div>
+        {% else %}
+            {# just let the choice widget render the select tag #}
+            {{ block('choice_widget') }}
+        {% endif %}
+        <div class="clearfix"></div>
+    {% endspaceless %}
+{% endblock %}
+
+{% block image_widget %}
+	{% spaceless %}
+		<div class="image_field">
+			<ul class="unstyled">
+					<div class="default_image">
+						{% if value is not defined or value is empty %}
+							<img src="{{ asset("bundles/cafadmin/images/image-par-defaut.jpg") }}" alt="">
+                        {% elseif value is defined and value.image == '' %}
+                            <img src="{{ asset("bundles/cafadmin/images/image-par-defaut.jpg") }}" alt="">
+						{% else %}
+							<img src="{{ asset(value.image) }}" alt="{{ value.alt }}" title="{{ value.title }}" />
+						{% endif %}
+					</div>
+					<li>
+						{{ form_label(form.image) }} {{form_widget(form.image) }}
+					</li>
+					<li>
+						{{ form_label(form.alt) }}
+						{{ form_widget(form.alt) }}
+					</li>
+					<li>
+						{{ form_label(form.title) }}
+						{{ form_widget(form.title) }}
+					</li>
+			</ul>
+		</div>
+		<div class="clearfix"></div>
+	{% endspaceless %}
+{% endblock %}

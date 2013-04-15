@@ -1,0 +1,99 @@
+{% extends('::admin.html.twig') %}
+{% block title %}{% trans %}Category{% endtrans %}{% endblock %}
+{% block body %}
+
+	<div class="row-fluid">
+		<div class="span12">
+			<h1 class="pull-left">{% trans %}Category{% endtrans %}</h1>
+
+			<a href="{{ path('categories_new', {'lang' : defaultLanguage.id }) }}" class="btn btn-new btn-small pull-right"><i class="icon icon-plus-sign"></i> {%trans%}New{%endtrans%}</a>
+		    <div class="clear h20"></div>
+			{% for flashMessage in app.session.flashbag.get('info') %}
+		    <div class="alert alert-info">
+		    	<button class="close" data-dismiss="alert" type="button">×</button>
+		        <strong>Notice</strong>
+		        {{ flashMessage }}
+		    </div>
+			{% endfor %}
+			<form action="{{ path('categories') }}" method="post" id="form-main">
+				<table class="table table-striped table-hover">
+		   			<thead>
+				        <tr>
+				            <th>{% trans %}Title{% endtrans %}</th>
+				            <th>{% trans %}Description{% endtrans %}</th>
+				            <th class="center-text">{% trans %}Language{% endtrans %}</th>
+				            <th class="center-text">{% trans %}Translations{% endtrans %}</th>
+				            <th class="center-text">{% trans %}Actions{% endtrans %}</th>
+				        </tr>
+				    </thead>
+				    <tbody>
+				    {% for category in pagination %}
+				    	{% set found = false %}
+				        <tr>
+				            <td><a href="{{ path('categories_edit', { 'id': category.id }) }}">{{ category }}</a></td>
+				            <td>{{ category.description|truncate(50)|raw }}</td>
+				            <td class="center-text"><img src="{{ asset('bundles/cmscontent/img/flags/'~category.language.iso~'.png') }}" height="16px" style="height:16px;" alt="{{ category.language.iso }}"></td>
+				            <td class="center-text">
+		                  		{% for language in languages %}
+		                  			{% for translation in category.translations %}
+		                  				{% if language.id == translation.language.id %}
+
+		                  					{% set found = translation.id %}
+		                  				{% endif %}
+		                  			{% endfor %}
+			                  		{% if found > 0 %}
+			                  			<a href="{{ path('categories_edit', { 'id' : category.id }) }}" class="flag-element">
+			                  				<img src="{{ asset('bundles/cmscontent/img/flags/'~language.iso~'.png') }}" class="flag" alt="{{ language.iso }}" height="16px" style="height:16px;">
+			                  				<img src="{{ asset('bundles/cmscontent/img/flags/flag-ok.png') }}" class="flag-ok" alt="{{ language.iso }}">
+			                  			</a>
+			                  		{% else %}
+			                  			<a href="{{ path('categories_translation', {'lang' : language.id, 'reference': category.id }) }}">
+			                  				<img src="{{ asset('bundles/cmscontent/img/flags/'~language.iso~'.png') }}" class="flag" alt="{{ language.iso }}" height="16px" style="height:16px;">
+			                  			</a>
+			                  		{% endif %}
+		                			{% set found = false %}
+		                  		{% endfor %}
+		                  	</td>
+				            <td class="center-text">
+				                <a href="{{ path('categories_edit', { 'id': category.id }) }}"><i class="icon-edit"></i></a>
+
+				                <a class="space-left" href="{{ path('categories_delete', { 'id': category.id }) }}"><i class="icon-trash"></i></a>
+				            </td>
+				        </tr>
+				    {% endfor %}
+				    </tbody>
+				    <tfoot>
+				    	<tr>
+				    		<td>{% trans %}Total{% endtrans %}: {{ total }} {% trans %}categorie(s){% endtrans %}</td>
+				    		<td class="filters" colspan="3">
+				    			{% trans %}Afficher{% endtrans %} :
+				    			<select name="filter[display]" onchange="this.form.submit()">
+				    				{% for i in options_pagination %}
+				    					{% if i == nb %}
+				    					<option value="{{ i }}" selected="selected">{{ i }} {% trans %}elements{% endtrans %}</option>
+				    					{% else %}
+				    					<option value="{{ i }}">{{ i }} {% trans %}elements{% endtrans %}</option>
+				    					{% endif %}
+				    				{% endfor %}
+				    			</select>
+
+				    		</td>
+				    		<td></td>
+				    	</tr>
+				    </tfoot>
+				</table>
+			</form>
+			<div class="navigation">
+			    {{ knp_pagination_render(pagination) }}
+			</div>
+	    </div>
+	</div>
+
+{% endblock body %}
+{% block javascripts %}
+<script type="text/javascript">
+	$(function() {
+		$('select').selectBoxIt();
+	});
+</script>
+{% endblock %}

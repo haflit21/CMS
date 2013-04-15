@@ -1,0 +1,113 @@
+{% extends('::admin.html.twig') %}
+{% block title %}{% trans %}Categories{% endtrans %}{% endblock %}
+{% block body %}
+
+    <div class="row-fluid">
+        <div class="span12">
+            {% for flashMessage in app.session.flashbag.get('info') %}
+                <div class="alert alert-info">
+                    <button class="close" data-dismiss="alert" type="button">×</button>
+                    <strong>Notice</strong>
+                    {{ flashMessage }}
+                </div>
+            {% endfor %}
+
+            <h1 class="pull-left">{% trans %}Category{% endtrans %}</h1>
+
+             <a href="{{ path('categories') }}" class="btn btn-new btn-small pull-right"><i class="icon icon-chevron-left"></i> Retour</a>
+             <div class="clearfix sep3"></div>
+            {% if referenceCategory is defined %}
+                <form class="form-horizontal" action="{{path('categories_translation', {'lang' : lang, 'reference' : referenceCategory}) }}" method="post" {{ form_enctype(form) }}>
+            {% elseif category.id != 0 %}
+                <form class="form-horizontal" action="{{path('categories_edit', {'id' : category.id })}}" method="post" {{ form_enctype(form) }}>
+            {% else %}
+                <form class="form-horizontal" action="{{path('categories_new', {'lang' : lang }) }}" method="post" {{ form_enctype(form) }}>
+            {% endif %}
+                <div class="span8">
+                    {{ form_errors(form) }}
+
+                    <div class="control-group">
+                        <div class="control-label">
+                            {{ form_label(form.title) }}
+                        </div>
+                        <div class="controls">
+                            {{ form_widget(form.title) }}
+                            {{ form_errors(form.title) }}
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <div class="control-label">
+                            {{ form_label(form.description) }}
+                        </div>
+                        <div class="controls">
+                            {{ form_widget(form.description) }}
+                            {{ form_errors(form.description) }}
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <div class="control-label">
+                            {{ form_label(form.parent) }}
+                        </div>
+                        <div class="controls">
+                            {{ form_widget(form.parent) }}
+                            {{ form_errors(form.parent) }}
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <div class="control-label">
+                            {{ form_label(form.ordre) }}
+                        </div>
+                        <div class="controls">
+                            {{ form_widget(form.ordre) }}
+                            {{ form_errors(form.ordre) }}
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <a href="{{ path('categories') }}" class="btn btn-small">{% trans %}Cancel{% endtrans %}</a>
+                        <button type="submit" class="btn btn-primary btn-small">{% trans %}Validate{% endtrans %}</button>
+                    </div>
+                </div>
+                <div class="span4">
+                    <div class="control-group">
+                        <div class="control-label">
+                            {{ form_label(form.metatitle) }}
+                        </div>
+                        <div class="controls">
+                            {{ form_widget(form.metatitle) }}
+                            {{ form_errors(form.metatitle) }}
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <div class="control-label">
+                        {{ form_label(form.metadescription) }}
+                        </div>
+                        <div class="controls">
+                        {{ form_widget(form.metadescription) }}
+                        {{ form_errors(form.metadescription) }}
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <div class="control-label">
+                            {{ form_label(form.canonical) }}
+                        </div>
+                        <div class="controls">
+                            {{ form_widget(form.canonical) }}
+                            {{ form_errors(form.canonical) }}
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <div class="control-label">
+                            {{ form_label(form.url) }}
+                        </div>
+                        <div class="controls">
+                            {{ form_widget(form.url) }}
+                            {{ form_errors(form.url) }}
+                        </div>
+                    </div>
+                </div>
+                {{ form_rest(form) }}
+            </form>
+        </div>
+    </div>
+
+{% endblock body %}

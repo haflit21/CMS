@@ -1,0 +1,121 @@
+{% extends '::admin.html.twig' %}
+{% block title "Dashboard" %}
+
+{% block body %}
+<div class="span3 list-widget">
+            <div class="list-head">
+                <h3>Dashboard</h3>
+                <ul class="unstyled">
+                    <li class="active"><a href="/admin/contents/list">Ajouter du contenu</a></li>
+                    <li><a href="{{ path('users') }}">Utilisateurs</a></li>
+                    <li><a href="#">Préférences</a></li>
+                    <li><a href="#">Notifications</a></li>
+                </ul>
+            </div>
+        </div>
+		<div class="span9 list-widget">
+			<div class="list-head">
+				<h3>Statistiques</h3>
+			</div>
+			<div id="stats" class="stats">
+				<button id="authorize-button" style="visibility:hidden">
+        Authorize Analytics</button>
+			</div>
+		</div>
+		<div class="clearfix sep3"></div>
+		{#<div class="span9 list-widget pull-right">
+			{% render 'CMSDashboardBundle:Agenda:index' with{'month':month,'year':year} %}
+		</div>#}
+		<div class="modal hide fade" id="myModal">
+		  <form method="post" action="{{ path('new_event') }}" class="form-horizontal">
+			  <div class="modal-header">
+			    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			    <h3>Nouvel évènement</h3>
+			  </div>
+			  <div class="modal-body">
+			    <div class="control-group">
+			    	{{ form_label(form.name) }}
+				    <div class="controls">
+				      {{ form_widget(form.name) }}
+				    </div>
+				  </div>
+			  </div>
+			  <div class="modal-footer">
+			    <button type="button" class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+			    <button type="submit" class="btn btn-primary">Save changes</button>
+			  </div>
+			  {{ form_widget(form.date_debut) }}
+			  {{ form_widget(form.date_fin) }}
+			  {{ form_rest(form) }}
+			</form>
+		</div>
+{% endblock body %}
+{% block javascripts %}
+<script type="text/javascript">
+	/*var data = [ { label: "Foo", data: [ [10, 1], [17, -14], [30, 5] ] },
+  				 { label: "Bar", data: [ [11, 13], [19, 11], [30, -7] ] }
+			   ];*/
+
+	/*var data = [ { label: "À comités de lecture indexées", data: [ [1, 2], [2, 3], [3, 0], [4, 0], [5, 4], [6, 2], [7, 0], [8, 1], [9, 5], [10, 2], [11, 1], [12, 0] ] },
+				{ label: "À comités de lecture non indexées", data: [ [1, 1], [2, 0], [3, 2], [4, 3], [5, 1], [6, 3], [7, 0], [8, 1], [9, 4], [10, 6], [11, 2], [12, 1] ] } ];		   
+			   
+	var options = {
+		    series: {
+		        lines: { show: true },
+		        points: { show: true }
+		    },
+		    grid: {
+			    show: true,
+			    borderWidth: 1,
+			    borderColor: '#ccc'
+			},
+			colors: ['#777','#00adee']
+
+		};
+
+	$(function() {
+		$.plot('#stats', data, options);
+	});*/
+
+</script>
+
+<script src="https://www.google.com/jsapi"></script>
+<script type="text/javascript" src="/bundles/cmsdashboard/js/gadash.js"></script>
+<script src="https://apis.google.com/js/client.js?onload=gadashInit"></script>
+ <script>
+    // Configure these parameters before you start.
+    var API_KEY = 'AIzaSyAjpBan6E_y5Ki3Emwsjj4CDcNkMlcsXiM';
+    var CLIENT_ID = '413828165097-0olai6l0kcmrm02q71hoabmrqaesoaqr.apps.googleusercontent.com';
+    var TABLE_ID = 'ga:71306255';
+    // Format of table ID is ga:xxx where xxx is the profile ID.
+
+    gadash.configKeys({
+      'apiKey': API_KEY,
+      'clientId': CLIENT_ID
+    });
+
+    // Create a new Chart that queries visitors for the last 30 days and plots
+    // visualizes in a line chart.
+    var chart1 = new gadash.Chart({
+      'type': 'LineChart',
+      'divContainer': 'stats',
+      'last-n-days':30,
+      'query': {
+        'ids': TABLE_ID,
+        'metrics': 'ga:visitors',
+        'dimensions': 'ga:date'
+      },
+      'chartOptions': {
+        height:300,
+        title: 'Visites ce mois-ci',
+        hAxis: {title:'Date'},
+        vAxis: {title:'Visites'},
+        curveType: 'none',
+        pointSize:5,
+        backgroundColor: {stroke: '#999', fill: '#fff'},
+        colors: ['#ccc']
+      }
+    }).render();
+  </script>
+
+{% endblock %}

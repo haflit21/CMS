@@ -1,0 +1,6 @@
+{% extends "CMSFrontBundle::layout2.html.twig" %}
+{% block body %}
+
+{% include "CMSContentBundle:_templates:" ~ template ~ ".html.twig" with {'content':content, 'category':category, 'contents': contents} %}
+
+{% endblock body %}

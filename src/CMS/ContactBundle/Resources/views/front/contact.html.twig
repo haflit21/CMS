@@ -1,0 +1,7 @@
+<div class="col8">
+<form class="form-horizontal" action="{{ path('contacts_new') }}" method="post">
+	{{ form_widget(form) }}
+	<input type="reset" class="btn" value="Annuler" />
+	<input type="submit" class="btn btn-primary" value="Confirmer" onClick="_gaq.push(['_trackEvent', 'Formulaires', 'Valider', 'Contact']);" />
+</form>
+</div>

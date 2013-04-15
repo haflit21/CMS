@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>{% block title %}{% endblock %}</title>
+        {% block stylesheets %}
+            <link href="{{ asset('bundles/contentmanager/css/bootstrap.min.css') }}" rel="stylesheet" media="screen" />
+            <link href="{{ asset('bundles/contentmanager/css/admin.css') }}" rel="stylesheet" media="screen" />
+            <link href="{{ asset('bundles/contentmanager/css/dark-hive/jquery-ui.custom.min.css') }}" rel="stylesheet" media="screen" />
+            <script type="text/javascript" src="{{ asset('bundles/contentmanager/js/jquery-1.8.2.js') }}"></script>
+            <script type="text/javascript" src="{{ asset('bundles/contentmanager/js/jquery-ui.custom.min.js') }}"></script>
+            <script type="text/javascript" src="{{ asset('bundles/contentmanager/js/bootstrap.min.js') }}"></script>
+        {% endblock %}
+
+        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+    </head>
+    <body>
+        
+        <div class="container">
+            {% include('::admin-menu.html.twig') %}
+            {% block body %}
+            {% endblock %}
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer">
+        </footer>
+        <!-- End Footer -->
+           
+        <script type="text/javascript">
+            {% block javascripts %}
+            {% endblock %}
+        </script>
+    </body>
+</html>

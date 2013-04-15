@@ -1,0 +1,50 @@
+{% extends "::base.html.twig" %}
+{% block stylesheets %}
+{% stylesheets filter='cssrewrite' output='css/*.css'
+    'bundles/cmsadmin/css/bootstrap.min.css'
+    'bundles/cmsadmin/css/bootstrap-responsive.min.css'
+    'bundles/cmsadmin/css/style.css'
+    'bundles/cmsadmin/css/jquery.maximage.min.css'
+%}
+   <link href="{{ asset_url }}" type="text/css" rel="stylesheet" />
+{% endstylesheets %}
+{% endblock stylesheets %}
+{% block title "Login" %}
+{% block body %}
+<body class="login">
+	<div id="filter">
+		<div id="maximage">
+			<img src="{{ asset('/bundles/cmsadmin/images/back_login.jpg') }}" />
+		</div>
+	</div>
+	<div id="login">
+		<img src="{{ asset('/bundles/cmsadmin/images/avatar.png') }}" class="center" />
+		<div class="sep3"></div>
+		{% if error %}
+    		<div class="alert alert-error">
+				<button class="close" data-dismiss="alert" type="button">×</button>
+				{{ error.message }}
+			</div>
+		{% endif %}
+		<form action="{{ path('login_check') }}" method="post" class="form-inline">
+    		<div id="fond_input">
+			<input type="text" id="username" name="_username" value="{{ last_username }}" placeholder="Username" />
+			<input type="password" id="password" name="_password" placeholder="Password" />
+			</div>
+			<input type="submit" name="login" class="btn-login" value="OK" />
+		</form>
+	</div>
+{% javascripts
+    'bundles/cmsadmin/js/jquery-1.9.1.min.js'
+    'bundles/cmsadmin/js/bootstrap.min.js'
+    'bundles/cmsadmin/js/jquery.maximage.min.js'
+%}
+<script type="text/javascript" src="{{ asset_url }}"></script>
+{% endjavascripts %}
+<script type="text/javascript" charset="utf-8">
+	$(function(){
+		// Trigger maximage
+		jQuery('#maximage').maximage();
+	});
+</script>
+{% endblock body %}

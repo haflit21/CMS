@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="fr">
+<head>
+	<meta charset="UTF-8">
+	<meta charset="UTF-8" />
+    {{ metas|raw }}
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="HandheldFriendly" content="true">
+
+    {% block stylesheets %}{% endblock %}
+    {% stylesheets filter='less,?yui_css' output='css/front-main.css' debug=false
+    	'@CMSAdminBundle/Resources/public/less/bootstrap.less'
+    	'@CMSAdminBundle/Resources/public/less/responsive.less'
+		'bundles/cmsfront/css/social.css'
+    	'bundles/cmsfront/V2/less/style.less'
+        %}
+    <link rel="stylesheet" href="{{ asset_url }}" />
+    {% endstylesheets %}
+    <link href='http://fonts.googleapis.com/css?family=Lato:100,300,400,700,900,100italic,300italic,400italic,700italic,900italic' rel='stylesheet' type='text/css'>
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+    <script type="text/javascript">
+
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-40124421-1']);
+	  _gaq.push(['_trackPageview']);
+
+	  (function() {
+	    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+
+	</script>
+</head>
+<body>
+	<div id="wrapper">
+		<div id="header" class="row-fluid">
+			<div class="container">
+				<div class="pull-left">
+					<a href="{{ default_url }}"><img src="{{ asset('/bundles/cmsfront/V2/images/logo.png') }} " /></a>
+				</div>
+				<div class="pull-left slogan">
+					<a href="javascript:">Christophe<br />Corona</a>
+				</div>
+				<div id="languages">
+                    <ul class="horizontal">
+                        {% for language in languages %}
+                        	<li><a href="#">{{ language }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+				<div id="menu">
+	               {% if category.id is defined %}
+	                {% render "CMSFrontBundle:Common:header" with{'cat_id': category.id, 'item_id': ''} %}
+	               {% elseif content.id is defined %}
+	                {% render "CMSFrontBundle:Common:header" with{'cat_id': '', 'item_id': content.id} %}
+	               {% else %}
+	                {% render "CMSFrontBundle:Common:header" with{'cat_id': '', 'item_id': ''} %}
+	               {% endif %}
+				</div>
+			</div>
+		</div>
+		{% if category.id is defined %}
+	    {% render "CMSFrontBundle:Common:banner" with{'cat_id': category.id, 'item_id': ''} %}
+	   {% elseif content.id is defined %}
+	    {% render "CMSFrontBundle:Common:banner" with{'cat_id': '', 'item_id': content.id} %}
+	   {% else %}
+	    {% render "CMSFrontBundle:Common:banner" with{'cat_id': '', 'item_id': ''} %}
+	   {% endif %}
+		<div class="row-fluid" id="main">
+			<div class="container">
+				{% block body %}
+				{% endblock body %}
+				<div class="span3 offset1" id="sidebar">
+					{% if category.id is defined %}
+	                    {% render "CMSFrontBundle:Common:right" with{'cat_id': category.id, 'item_id': ''} %}
+	                   {% elseif content.id is defined %}
+	                    {% render "CMSFrontBundle:Common:right" with{'cat_id': '', 'item_id': content.id} %}
+	                   {% else %}
+	                    {% render "CMSFrontBundle:Common:right" with{'cat_id': '', 'item_id': ''} %}
+	                {% endif %}
+				</div>
+			</div>
+		</div>
+		<div class="clearfix"></div>
+		<div id="footer" class="row-fluid">
+			<div class="container">
+				<div class="row">
+					<div class="span6 pull-left">Copyright &copy; Christophe Corona {{ "2009 - " ~ "now"|date("Y") }}</div>
+					<div class="span6 pull-right visible-tablet visible-desktop">
+						{% if category.id is defined %}
+	                    {% render "CMSFrontBundle:Common:bottom" with{'cat_id': category.id, 'item_id': ''} %}
+	                   {% elseif content.id is defined %}
+	                    {% render "CMSFrontBundle:Common:bottom" with{'cat_id': '', 'item_id': content.id} %}
+	                   {% else %}
+	                    {% render "CMSFrontBundle:Common:bottom" with{'cat_id': '', 'item_id': ''} %}
+	                	{% endif %}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+{% javascripts filter='yui_js' output='js/main.js' debug=false
+    'bundles/cmsadmin/js/jquery-1.9.1.min.js'
+    'bundles/cmsadmin/js/bootstrap.min.js'
+    'bundles/cmsadmin/js/jquery.cycle.all.min.js'
+    'bundles/cmsadmin/js/jquery.maximage.min.js'
+    'bundles/cmsfront/V2/js/jquery-easing-1.3.js'
+	'bundles/cmsfront/V2/js/layerslider.kreaturamedia.jquery.js'
+
+%}
+<script type="text/javascript" src="{{ asset_url }}"></script>
+{% endjavascripts %}
+<script type="text/javascript">
+$(document).ready(function() {
+	$('#slider').layerSlider({
+	    skin                : 'default',
+	 	skinsPath           : '/bundles/cmsfront/V2/css/',
+		durationIn : 3000,
+		durationOut : 3000,
+		firstLayer : 3,
+		autoStart : true,
+		navStartStop : false,
+		slideDirection: 'top'
+	});
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file source-language="en" datatype="plaintext" original="file.ext">
+        <body>
+            <trans-unit id="1">
+                <source>Content Manager</source>
+                <target>Contenus</target>
+            </trans-unit>
+            <trans-unit id="2">
+                <source>Category</source>
+                <target>Catégorie</target>
+            </trans-unit>
+            <trans-unit id="3">
+                <source>Title</source>
+                <target>Titre</target>
+            </trans-unit>
+            <trans-unit id="4">
+                <source>Categories</source>
+                <target>Catégories</target>
+            </trans-unit>
+            <trans-unit id="5">
+                <source>Language</source>
+                <target>Langue</target>
+            </trans-unit>
+            <trans-unit id="6">
+                <source>Translations</source>
+                <target>Traductions</target>
+            </trans-unit>
+            <trans-unit id="7">
+                <source>Published</source>
+                <target>Publié</target>
+            </trans-unit>
+            <trans-unit id="8">
+                <source>Created</source>
+                <target>Créé le</target>
+            </trans-unit>
+            <trans-unit id="9">
+                <source>Contents Taxonomies</source>
+                <target>Types de contenus</target>
+            </trans-unit>
+            <trans-unit id="10">
+                <source>Fields</source>
+                <target>Champs</target>
+            </trans-unit>
+            <trans-unit id="11">
+                <source>Contents</source>
+                <target>Articles</target>
+            </trans-unit>
+            <trans-unit id="12">
+                <source>New</source>
+                <target>Nouveau</target>
+            </trans-unit>
+            <trans-unit id="13">
+                <source>Close</source>
+                <target>Fermer</target>
+            </trans-unit>
+            <trans-unit id="14">
+                <source>CHOOSE_FIELD_TYPE</source>
+                <target>Choisissez le type de champ</target>
+            </trans-unit>
+            <trans-unit id="15">
+                <source>Validate</source>
+                <target>Valider</target>
+            </trans-unit>
+            <trans-unit id="16">
+                <source>Cancel</source>
+                <target>Annuler</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

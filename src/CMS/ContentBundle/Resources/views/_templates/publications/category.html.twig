@@ -1,0 +1,9 @@
+<div class="span12">
+<h1 class="pull-left">{{ category.title }}</h1>
+<div class="pull-right social-icons-div">{{ category.description|socialButtons()|raw }}</div>
+<div class="clearfix"></div>
+{% for content in contents %}
+	<h2>{{ content.title }}</h2>
+	{{ content.description|raw }}
+{% endfor %}
+</div>

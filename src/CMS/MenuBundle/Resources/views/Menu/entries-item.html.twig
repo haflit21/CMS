@@ -1,0 +1,56 @@
+{% extends('::admin.html.twig') %}
+
+{% block body %}
+
+    <div class="row-fluid">
+        <div class="span12">
+            {% for flashMessage in app.session.flashbag.get('info') %}
+                <div class="alert alert-info">
+                    <button class="close" data-dismiss="alert" type="button">×</button>
+                    <strong>Notice</strong>
+                    {{ flashMessage }}
+                </div>
+            {% endfor %}
+
+            <h1 class="pull-left">Menu</h1>
+
+
+             <a href="{{ path('entries_list', {'id' : menu_taxonomy}) }}" class="btn btn-small pull-right"><i class="icon icon-chevron-left"></i> Retour</a>
+              <div class="clearfix sep3"></div>
+            {% if id is defined %}
+                <form class="form-horizontal" action="{{path('entries_edit', {'id' : id, 'menu_taxonomy' :  menu_taxonomy} )}}" method="post" {{ form_enctype(form) }}>
+            {% else %}
+                <form class="form-horizontal" action="{{path('entries_new', {'lang' : lang, 'menu_taxonomy' : menu_taxonomy} )}}" method="post" {{ form_enctype(form) }}>
+            {% endif %}
+                <div class="span8">
+                    {{ form_errors(form) }}
+                    {{ form_widget(form) }}
+                    <div class="form-actions">
+                        <a href="{{ path('entries_list', {'id': menu_taxonomy}) }}" class="btn btn-small">{% trans %}Cancel{% endtrans %}</a>
+                        <button type="submit" class="btn btn-primary btn-small">{% trans %}Validate{% endtrans %}</button>
+                    </div>
+                </div>
+                {{ form_rest(form) }}
+            </form>
+        </div>
+    </div>
+
+{% endblock body %}
+{% block javascripts %}
+<script type="text/javascript">
+$(document).ready(function() {
+    $('#menu_intern_0').click(function() {
+        $('#menu_category_control_group').fadeOut();
+        $('#menu_content_control_group').fadeOut();
+        $('#menu_name_route_control_group').show();
+    });
+    $('#menu_intern_1').click(function() {
+        $('#menu_category_control_group').show();
+        $('#menu_content_control_group').show();
+        $('#menu_name_route_control_group').fadeOut();
+    });
+    
+});
+    
+</script>
+{% endblock %}

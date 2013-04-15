@@ -1,0 +1,6 @@
+<div class="span8">
+{% for content in contents %}
+	<h2>{{ content.title }}</h2>
+	{{ content.description|raw }}
+{% endfor %}
+</div>

@@ -1,0 +1,38 @@
+{% block images_widget %}
+	{% spaceless %}
+		<div class="image_field">
+			<div class="default_image">
+				{% if value is not defined or value is empty %}
+					<img src="{{ asset("bundles/cafadmin/images/image-par-defaut.jpg") }}" alt="">
+                {% elseif value is defined and value.image == '' %}
+                    <img src="{{ asset("bundles/cafadmin/images/image-par-defaut.jpg") }}" alt="">
+				{% else %}
+					<img src="{{ asset(value.image) }}" alt="{{ value.alt }}" title="{{ value.title }}" />
+				{% endif %}
+			</div>
+			<a href="#modal-image" role="button" class="btn" data-toggle="modal">{% trans %}CHOOSE_IMAGE{% endtrans %}</a>
+			<div class="modal hide fade" id="modal-image">
+			  <div class="modal-header">
+			    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			    <h3>Gestion des médias</h3>
+			  </div>
+			  <div class="modal-body">
+
+			  </div>
+			  <div class="modal-footer">
+			    <a href="#" class="btn">Close</a>
+			    <a href="#" class="btn btn-primary">Save changes</a>
+			  </div>
+			</div>
+		</div>
+		<div class="clearfix"></div>
+		<script type="text/javascript">
+			$.ajax({
+				url: '{{ path("medias"); }}',
+				success: function(msg) {
+					$('#modal-image modal-body').html(msg);
+				}
+			})
+		</script>
+	{% endspaceless %}
+{% endblock %}

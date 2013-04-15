@@ -1,0 +1,71 @@
+{% extends "CMSDashboardBundle::layout.html.twig" %}
+{% block title "Roles" %}
+
+{% block menu %}
+
+{% endblock menu %}
+
+{% block titlesection "Roles" %}
+{% block action %}
+	<a href="{{ path("new_group") }}" class="btn"><i class="icon-plus-sign"></i> Nouveau</a>
+{% endblock action %}
+{% block body %}
+
+{% if app.session.hasFlash('error') %}
+    <div class="alert alert-error">
+  		<a class="close" data-dismiss="alert" href="#">×</a>
+        {{ app.session.flash('error') }}
+    </div>
+{% elseif app.session.hasFlash('success') %}
+    <div class="alert alert-success">
+  		<a class="close" data-dismiss="alert" href="#">×</a>
+        {{ app.session.flash('success') }}
+    </div>
+{% endif %}
+<div class="span3 list-widget">
+	<div class="list-head">
+		<h3>Utilisateurs</h3>
+	</div>
+	<ul class="unstyled">
+		<li><a href="{{ path('roles') }}">Groupes</a></li>
+		<li><a href="{{ path('new_user') }}">Ajouter un utilisateur</a></li>
+		<li><a href="{{ path('new_role') }}">Ajouter un groupe</a></li>
+	</ul>
+</div>
+
+<div class="span9 list-widget">
+<table class="table table-striped">
+<thead>
+	<tr>
+		<th>#</th>
+		<th>Name</th>
+		<th colspan="2">Actions</th>
+		<th>Id</th>
+	</tr>
+</thead>
+<tbody>
+{% for role in roles %}
+<tr>
+	<td>{{ loop.index }}</td>
+	<td>{{ role.name }}</td>
+	<td><a href="{{ path('edit_role', { 'id' : role.id }) }}" class="icon-edit">&nbsp;</a>
+	<td><a href="#myModal-{{ role.id }}" data-toggle="modal" class="icon-trash">&nbsp;</a>
+	<div class="modal hide" id="myModal-{{ role.id }}">
+		<div class="modal-header">
+	    	<button type="button" class="close" data-dismiss="modal">×</button>
+	    	<h3>Modal header</h3>
+	    </div>
+	    <div class="modal-body">
+	    	<p>Voulez-vous supprimer ce groupe ?</p>
+	    </div>
+	    <div class="modal-footer">
+	    	<a href="#" class="btn" data-dismiss="modal">Non</a>
+	    	<a href="#" class="btn btn-primary">Oui</a>
+	    </div>
+	</div></td>
+	<td>{{ role.id }}</td>
+</tr>
+{% endfor %}
+</table>
+</div>
+{% endblock body %}

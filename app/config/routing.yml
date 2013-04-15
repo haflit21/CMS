@@ -1,0 +1,48 @@
+cms_contact:
+    resource: "@CMSContactBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+cms_bloc:
+    resource: "@CMSBlocBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+cms_menu:
+    resource: "@CMSMenuBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+cms_front:
+    resource: "@CMSFrontBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+cms_admin:
+    resource: "@CMSAdminBundle/Controller/"
+    type:     annotation
+    prefix:   /admin
+
+cms_media:
+    resource: "@CMSMediaBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+cms_dashboard:
+    resource: "@CMSDashboardBundle/Controller/"
+    type:     annotation
+    prefix:   /admin
+
+cms_content:
+    resource: "@CMSContentBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+
+_imagine:
+    resource: .
+    type:     imagine
+# Internal routing configuration to handle ESI
+#_internal:
+#    resource: "@FrameworkBundle/Resources/config/routing/internal.xml"
+#    prefix:   /_internal

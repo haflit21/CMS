@@ -1,0 +1,94 @@
+<div class="list-head">
+	<h3>Agenda</h3>
+</div>
+
+{% if month == 0 %}
+	{% set month = 1 %}
+{% endif %}
+{% set first_day = month ~ "/01/" ~ year %}
+{% set nb_jour = first_day|date('t') %}
+{% set last_day = month ~ "/" ~ nb_jour ~ "/" ~ year %}
+{% set decalage_lundi = first_day|date('w') %}
+{% set last_day_week = 7 - (last_day|strftime('%w')) %}
+{% if last_day_week == 1 %}
+	{% set last_day_week = 2 %}
+{% endif %}
+
+{% set decalage = decalage_lundi -1 %}
+{% set radius = 7 - decalage %}
+
+{% set cur_day = "now"|date('d') %}
+{% set cur_month = "now"|date('m') %}
+{% set cur_year = "now"|date('Y') %}
+
+{% set month_prec = month-1 %}
+{% set month_suiv = month+1 %}
+{% set year_suiv = year %}
+{% set year_prec = year %}
+{% if month == 1 %}
+	{% set month_prec = 12 %}
+	{% set year_prec = year - 1 %}
+{% endif %}
+{% if month == 12 %}
+	{% set month_suiv = 1 %}
+	{% set year_suiv = year + 1 %}
+{% endif %}
+<table class="table agenda-title">
+	<tr>
+		<td class="pull-left"><a href="{{ path('dashboard', {'month': month_prec, 'year': year_prec })}}"><i class="icon-circle-arrow-left"></i></a></td>
+		<td><h4 class="month-agenda" data-month="{{ first_day|strftime('%m') }}" data-year="{{ first_day|strftime('%Y') }}">{{ first_day|strftime('%B %Y')|capitalize }}</h4></td>
+		<td class="pull-right"><a href="{{ path('dashboard', {'month': month_suiv, 'year': year_suiv })}}"><i class="icon-circle-arrow-right"></i></a></td>
+	</tr>
+</table>
+
+
+<table class="table table-bordered calendar ui-selectable">
+	<tr>
+		{% set jour_semaine = ['Lun','Mar','Mer', 'Jeu', 'Ven', 'Sam', 'Dim'] %}
+		{% for i in jour_semaine %}
+			<th>{{ i }}</th>
+		{% endfor %}
+		</tr><tr class="selectable">
+		{% if decalage != 0 %}
+			{% for i in 1..decalage %}
+				<td></td>
+			{% endfor %}
+		{% endif %}
+		{% set class = '' %}
+		{% set i = 1 %}
+		{% for jour in 1..7-decalage %}
+			{% set class = '' %}
+			{% set title = '' %}
+			{% if jour == cur_day and month == cur_month and year == cur_year %}
+				{% set class = ' today'|e %}
+			{% endif%}
+			{% if jour in busyDays.jour %}
+				{% set class = class ~ ' busy'|e %}
+				{% set title = busyDays.title[jour] %}
+			{% endif %}
+			<td class="ui-widget-content{{ class }}">{{ jour }}<div class="event">{{ title }}</div></td>
+
+		{% endfor %}
+			</tr><tr class="selectable">
+		{% for jour in 7-decalage+1..nb_jour %}
+			{% set class = '' %}
+			{% set title = '' %}
+			{% if jour == cur_day and month == cur_month and year == cur_year %}
+				{% set class = ' today'|e %}
+			{% endif%}
+			{% if jour in busyDays.jour %}
+				{% set class = class ~ ' busy'|e %}
+				{% set title = busyDays.title[jour] %}
+			{% endif %}
+			<td class="ui-widget-content{{ class }}">{{ jour }}<div class="event">{{ title }}</div></td>
+			{% if (jour - radius) % 7 == 0 %}
+				</tr><tr class="selectable">
+			{% endif %}
+		{% endfor %}
+		{% if last_day_week > 0 and last_day_week < 7 %}
+			{% for jour in 1..last_day_week %}
+				<td></td>
+			{% endfor %}
+		{% endif %}
+	</tr>
+</table>

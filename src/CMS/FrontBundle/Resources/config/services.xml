@@ -1,0 +1,29 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <service id="cms_contact.repository.contact" class="Doctrine\ORM\EntityRepository" factory-service="Doctrine" factory-method="getRepository">
+            <argument>CMSContactBundle:Contact</argument>
+        </service>
+
+        <service id="contact.form.factory" class="CMS\ContactBundle\Type\FormFactory">
+            <argument type="service" id="form.factory" />
+        </service>
+
+        <service id="contact.form.type" class="CMS\ContactBundle\Type\ContactType">
+            <tag name="form.type" alias="contact_form" />
+        </service>
+
+        <service id="cms.twig.contact_extension" class="CMS\FrontBundle\Twig\FormContactExtension">
+            <argument type="service" id="cms_contact.repository.contact" />
+            <argument type="service" id="contact.form.factory" />
+            <tag name="twig.extension" />
+        </service>
+        <service id="cms.twig.socialButtons_exension" class="CMS\FrontBundle\Twig\SocialButtonsExtension">
+            <tag name="twig.extension" />
+        </service>
+    </services>
+</container>

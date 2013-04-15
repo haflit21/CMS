@@ -1,0 +1,78 @@
+{% extends('::admin.html.twig') %}
+{% block title %}{% trans %}Type{% endtrans %}{% endblock %}
+{% block body %}
+	<div class="row-fluid">
+
+		<div class="span12">
+			<h3 class="pull-left">{% trans %}Type{% endtrans %}</h3>
+
+			<a href="{{ path('types_new') }}" class="btn btn-new btn-small pull-right"><i class="icon icon-plus-sign"></i> {%trans%}New{%endtrans%}</a>
+
+			{% for flashMessage in app.session.flashbag.get('info') %}
+				<div class="clear h20"></div>
+			    <div class="alert alert-info">
+			    	<button class="close" data-dismiss="alert" type="button">×</button>
+			        <strong>Notice</strong>
+			        {{ flashMessage }}
+			    </div>
+			{% endfor %}
+
+
+
+		    <div class="clear h20"></div>
+
+			<table class="table table-striped table-hover">
+	            <thead>
+	                <tr>
+	                  	<th>#</th>
+	                  	<th>{% trans %}Title{% endtrans %}</th>
+	                  	<th>Action</th>
+	                </tr>
+	            </thead>
+	            <tbody>
+	              	{% for type in types %}
+		              	<tr>
+			                <td>
+			                  	{{ loop.index }}
+			                </td>
+		                  	<td>
+		                  		<a href="{{ path('types_edit', {'id' : type.id }) }}">
+		                  			{{ type.title }}
+		                  		</a>
+		                  	</td>
+		                  	<td class="center-text">
+		                  		<a href="{{ path('types_edit', {'id' : type.id }) }}"><i class="icon-edit"></i></a>
+		                  		<a href="{{ path('types_delete', {'id' : type.id }) }}"><i class="icon-trash"></i></a>
+		                  	</td>
+		                </tr>
+					{% endfor %}
+	            </tbody>
+	            <tfoot>
+	            	<tr>
+	            		<td>{% trans %}Total{% endtrans %} : {{ total }} {% trans %}champ(s){% endtrans %}</td>
+	            		<td colspan="6">
+	            			{% trans %}Afficher{% endtrans %} :
+			    			<select name="filter[display]" onchange="this.form.submit()">
+			    				{% for i in options_pagination %}
+			    					{% if i == nb %}
+			    					<option value="{{ i }}" selected="selected">{{ i }} {% trans %}elements{% endtrans %}</option>
+			    					{% else %}
+			    					<option value="{{ i }}">{{ i }} {% trans %}elements{% endtrans %}</option>
+			    					{% endif %}
+			    				{% endfor %}
+			    			</select>
+			    		</td>
+	            	</tr>
+	            </tfoot>
+	        </table>
+	    </div>
+	</div>
+
+{% endblock body %}
+{% block javascripts %}
+<script type="text/javascript">
+	$(function() {
+		$('select').selectBoxIt();
+	});
+</script>
+{% endblock %}

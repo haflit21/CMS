@@ -49,7 +49,7 @@ class ModuleController extends Controller
                 case 'BlocBreadcrumb':
                     //$url_courante = $this->generateUrl($url_courante);
                     $bloc_spec->setRepositoryMenu($this->getDoctrine()->getRepository('CMSMenuBundle:Menu'));
-                    //$bloc_spec->setUrlIntern($url_courante);
+                    $bloc_spec->setUrlIntern($request->getPathInfo());
                     $bloc_spec->getOptionsBreadcrumb();
                     break;    
             }

@@ -71,22 +71,23 @@ class BlocDisplay
 	public function getOptionsBreadcrumb() {
 		$entry = $this->repositoryMenu->getEntryMenuByUrlIntern($this->url_intern);
 		$parent = null;
-		if($entry != null)
+		if($entry != null && !$entry->getParent()->getIsRoot())
 			$parent = $entry->getParent();
 		$path = array();
 
-        while ($parent != null and $parent->getLevel() > 2) {
+        while ($parent != null && $parent->getLevel() > 2 && !$parent->getIsRoot()) {
             $parent = $parent->getParent();
 
         }
+
+
         if($parent != null) {
 	        $path  = $this->repositoryMenu->getChildren($parent, true, null, 'desc');
 	        $path_real = array();
 	        foreach ($path as $leaf) {
-	            if($leaf->getId() == $entry->getId())
+	            if($leaf->getId() == $entry->getId() && !$parent->getIsRoot())
 	                $path_real[] = $leaf;
 	        }
-
 	        $path_real[] = $parent;
 	        $path = array_reverse($path_real);
         } else if($entry != null) {

@@ -29,6 +29,9 @@ class UserController extends Controller
                 ->getRepository('CMSAdminBundle:User')
                 ->findAll();
 
+        $session = $this->get('session');
+        $session->set('active', 'Utilisateurs');        
+
         if (!$users) {
             return array('users' => null, 'active' => 'Utilisateurs');
         }

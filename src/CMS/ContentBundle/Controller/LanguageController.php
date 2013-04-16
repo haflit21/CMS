@@ -22,6 +22,8 @@ class LanguageController extends Controller
     public function listAction()
     {
         $languages = $this->getDoctrine()->getRepository('CMSContentBundle:CMLanguage')->findall();
+        $session = $this->get('session');
+        $session->set('active', 'Paramètres');
 
         return array('languages' => $languages, 'active' => 'Parametres');
     }

@@ -1,11 +1,6 @@
 {% extends "::admin.html.twig" %}
 {% block title "Users" %}
 
-{% block views %}
-	<li><a href="#"><i class="icon-th"></i></a></li>
-	<li><a href="#"><i class="icon-th-list"></i></a></li>
-{% endblock views %}
-
 {% block body %}
 {% if app.session.hasFlash('error') %}
     <div class="alert alert-error">
@@ -19,6 +14,8 @@
     </div>
 {% endif %}
 <div class="span12">
+	<h1 class="pull-left">{% trans %}Users{% endtrans %}</h1>
+	<a href="{{ path('new_user') }}" class="pull-right btn btn-new"><i class="icon icon-plus-sign"></i> {% trans %}New{% endtrans %}</a>
 <table class="table table-striped">
 <thead>
 	<tr>

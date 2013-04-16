@@ -146,6 +146,11 @@ class Menu
      */
     private $name_route;
 
+    /**
+     * @ORM\Column(name="isRoot", type="boolean")
+     */
+    private $isRoot;
+
 
     /**
      * Constructor
@@ -578,7 +583,7 @@ class Menu
      */
     public function getMenutaxonomy()
     {
-        return $this->menutaxonomy;
+        return $this->id_menu_taxonomy;
     }
 
     /**
@@ -760,5 +765,28 @@ class Menu
     public function getNameRoute()
     {
         return $this->name_route;
+    }
+
+    /**
+     * Set isRoot
+     *
+     * @param boolean $isRoot
+     * @return Menu
+     */
+    public function setIsRoot($isRoot)
+    {
+        $this->isRoot = $isRoot;
+    
+        return $this;
+    }
+
+    /**
+     * Get isRoot
+     *
+     * @return boolean 
+     */
+    public function getIsRoot()
+    {
+        return $this->isRoot;
     }
 }

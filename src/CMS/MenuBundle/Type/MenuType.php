@@ -16,10 +16,11 @@ class MenuType extends AbstractType
         $menu_taxonomy = $options['menu_taxonomy'];
         $builder
             ->add('title')
+            ->add('isRoot', 'choice', array('choices' => array(1 => 'Oui', 0 => 'Non'), 'expanded' => true, 'label' => 'is root ?'))
             ->add('published', 'choice', array('choices' => array(1 => 'Oui', 0 => 'Non'), 'expanded' => true, 'label' => 'Publié'))
             ->add('default_page', 'choice', array('choices' => array(1 => 'Oui', 0 => 'Non'), 'expanded' => true, 'label' => 'Page par défaut'))
             ->add('intern', 'choice', array('choices' => array(1 => 'Oui', 0 => 'Non'), 'expanded' => true, 'label' => 'Lien interne'))
-            ->add('name_route', 'text', array('label' => 'Nom de la route'))
+            ->add('name_route', 'text', array('label' => 'Nom de la route', 'required' => false))
             ->add('category', 'entity', array(
                 'class'=>'CMSContentBundle:CMCategory',
                 'query_builder' => function(EntityRepository $er) use ($lang_id) {

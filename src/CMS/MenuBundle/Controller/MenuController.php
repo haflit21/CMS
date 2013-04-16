@@ -47,7 +47,7 @@ class MenuController extends Controller
             'total' => $total,
             'defaultLanguage' => $defaultLanguage,
             'languages' => $languages,
-            'menu_taxonomy' => $id,
+            'menu_taxonomy' => $menu_taxonomy,
             'active' => 'Menus'
         );
     }
@@ -151,23 +151,23 @@ class MenuController extends Controller
 
                 $em->flush();
 
-                return $this->redirect($this->generateUrl('entries_list', array('id' => $menu_taxonomy, 'active' => 'Menus')));
+                return $this->redirect($this->generateUrl('entries_list', array('id' => $menu_taxonomy_obj->getId(), 'active' => 'Menus')));
             }
         }
 
         return array(
             'form' => $form->createView(), 
             'lang' => $lang, 
-            'menu_taxonomy' => $menu_taxonomy, 
+            'menu_taxonomy' => $menu_taxonomy_obj, 
             'active' => 'Menus'
         );
     }
 
     /**
-     * @Route("/entries/edit/{id}/{menu_taxonomy}", name="entries_edit")
+     * @Route("/entries/edit/{id}", name="entries_edit")
      * @Template("CMSMenuBundle:Menu:entries-item.html.twig")
      */
-    public function editAction(Request $request, $id, $menu_taxonomy)
+    public function editAction(Request $request, $id)
     {
         $entry = $this->getDoctrine()->getRepository('CMSMenuBundle:Menu')->find($id);
         $language = $this->getDoctrine()->getRepository('CMSContentBundle:CMLanguage')->find($entry->getLanguage()->getId());
@@ -205,7 +205,7 @@ class MenuController extends Controller
         return array(
             'form' => $form->createView(), 
             'id' => $id, 
-            'menu_taxonomy' => $menu_taxonomy,
+            'menu_taxonomy' => $menu_taxonomy_obj,
             'active' => 'Menus'
         );
     }
@@ -242,11 +242,11 @@ class MenuController extends Controller
                 $em->persist($menu);
                 $em->flush();
 
-                return $this->redirect($this->generateUrl('entries_list'));
+                return $this->redirect($this->generateUrl('entries_list', array('id' => $menuReference->getMenuTaxonomy())));
             }
         }
 
-        return array('form' => $form->createView(),'category' => $category, 'lang' => $lang, 'referenceMenu'=>$reference, 'menu_taxonomy' => $menuReference->getMenuTaxonomy()->getId());
+        return array('form' => $form->createView(),'category' => $category, 'lang' => $lang, 'referenceMenu'=>$reference, 'menu_taxonomy' => $menuReference->getMenuTaxonomy());
     }
 
     /**
@@ -259,5 +259,23 @@ class MenuController extends Controller
         $em = $this->getDoctrine()->getManager();
         $em->remove($entry);
         $em->flush();
+    }
+
+    /**
+     * @Route("/entries/move/{id}/{direction}", name="entries_move")
+     */
+    public function moveOrder($id, $direction)
+    {
+        $em = $this->getDoctrine()->getRepository('CMSMenuBundle:Menu');
+        $entry = $em->find($id);
+        switch($direction) {
+            case 'UP':
+                $em->moveUp($entry);
+                break;
+            case 'DOWN':
+                $em->moveDown($entry);
+                break;    
+        }
+        return $this->redirect($this->generateUrl('entries_list', array('id' => $entry->getMenuTaxonomy()->getId())));
     }
 }

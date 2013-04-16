@@ -1,5 +1,5 @@
 {% extends('::admin.html.twig') %}
-
+{% block title %}{% trans %}Menus{% endtrans %} - {{ menu_taxonomy.name }}{% endblock %}
 {% block body %}
 
     <div class="row-fluid">
@@ -12,21 +12,21 @@
                 </div>
             {% endfor %}
 
-            <h1 class="pull-left">Menu</h1>
+           <h1 class="pull-left">{% trans %}Menus{% endtrans %} - {{ menu_taxonomy.name }}</h1>
 
 
-             <a href="{{ path('entries_list', {'id' : menu_taxonomy}) }}" class="btn btn-small pull-right"><i class="icon icon-chevron-left"></i> Retour</a>
+             <a href="{{ path('entries_list', {'id' : menu_taxonomy.id }) }}" class="btn btn-small pull-right"><i class="icon icon-chevron-left"></i> Retour</a>
               <div class="clearfix sep3"></div>
             {% if id is defined %}
-                <form class="form-horizontal" action="{{path('entries_edit', {'id' : id, 'menu_taxonomy' :  menu_taxonomy} )}}" method="post" {{ form_enctype(form) }}>
+                <form class="form-horizontal" action="{{path('entries_edit', {'id' : id, 'menu_taxonomy' :  menu_taxonomy.id} )}}" method="post" {{ form_enctype(form) }}>
             {% else %}
-                <form class="form-horizontal" action="{{path('entries_new', {'lang' : lang, 'menu_taxonomy' : menu_taxonomy} )}}" method="post" {{ form_enctype(form) }}>
+                <form class="form-horizontal" action="{{path('entries_new', {'lang' : lang, 'menu_taxonomy' : menu_taxonomy.id} )}}" method="post" {{ form_enctype(form) }}>
             {% endif %}
                 <div class="span8">
                     {{ form_errors(form) }}
                     {{ form_widget(form) }}
                     <div class="form-actions">
-                        <a href="{{ path('entries_list', {'id': menu_taxonomy}) }}" class="btn btn-small">{% trans %}Cancel{% endtrans %}</a>
+                        <a href="{{ path('entries_list', {'id': menu_taxonomy.id }) }}" class="btn btn-small">{% trans %}Cancel{% endtrans %}</a>
                         <button type="submit" class="btn btn-primary btn-small">{% trans %}Validate{% endtrans %}</button>
                     </div>
                 </div>

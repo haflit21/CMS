@@ -47,9 +47,9 @@ class ModuleController extends Controller
                     $bloc_spec->setSession($this->get('session'));
                     break;
                 case 'BlocBreadcrumb':
-                    $url_courante = $this->generateUrl($url_courante);
+                    //$url_courante = $this->generateUrl($url_courante);
                     $bloc_spec->setRepositoryMenu($this->getDoctrine()->getRepository('CMSMenuBundle:Menu'));
-                    $bloc_spec->setUrlIntern($url_courante);
+                    //$bloc_spec->setUrlIntern($url_courante);
                     $bloc_spec->getOptionsBreadcrumb();
                     break;    
             }

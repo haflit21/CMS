@@ -1,0 +1,11 @@
+<title>Christophe Corona - {{ category.title }}</title>
+<description>{{ category.title }}</description>
+<link>{{ url }}</link>
+{% for content in contents %}
+<item>
+    <title>{{ content.title }}</title>
+    <description>{{ content.description }}</description>
+    <pubDate>{{ content.created|date("m/d/Y h:i:s") }}</pubDate>
+    <link>{{ url_site ~ lang ~ "/" ~ content.url ~ format_url }}</link>
+</item>
+{% endfor %}

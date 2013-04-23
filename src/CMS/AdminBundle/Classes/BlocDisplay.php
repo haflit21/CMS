@@ -58,6 +58,11 @@ class BlocDisplay
 		$this->url_intern = $url_intern;
 	}
 
+	public function getUrlIntern()
+	{
+		return $this->url_intern;
+	}
+
 	public function setRequest(\Symfony\Component\HttpFoundation\Request $request)
 	{
 		$this->request = $request;

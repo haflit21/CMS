@@ -41,10 +41,13 @@ class ModuleController extends Controller
             $name_class = '\CMS\AdminBundle\Classes\\'.$params->bloc_type.'Display';
             $bloc_spec = new $name_class;
             $bloc_spec->setBloc($bloc);
+            $options = array();
             switch($params->bloc_type) {
                 case 'BlocMenu':
                     $bloc_spec->setRequest($request);
+                    $bloc_spec->setUrlIntern($request->getPathInfo());
                     $bloc_spec->setSession($this->get('session'));
+                    $options = array('dir' => 'horizontal');
                     break;
                 case 'BlocBreadcrumb':
                     //$url_courante = $this->generateUrl($url_courante);
@@ -53,7 +56,7 @@ class ModuleController extends Controller
                     $bloc_spec->getOptionsBreadcrumb();
                     break;    
             }
-            $html .= $bloc_spec->displayBloc();
+            $html .= $bloc_spec->displayBloc($options);
             
 
         }

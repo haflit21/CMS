@@ -189,7 +189,7 @@ class BlocBreadcrumb
      * @param \CMS\BlocBundle\Entity\MenuTaxonomy $menuTaxonomy
      * @return BlocBreadcrumb
      */
-    public function setMenuTaxonomy(\CMS\BlocBundle\Entity\MenuTaxonomy $menuTaxonomy = null)
+    public function setMenuTaxonomy(\CMS\MenuBundle\Entity\MenuTaxonomy $menuTaxonomy = null)
     {
         $this->menuTaxonomy = $menuTaxonomy;
     

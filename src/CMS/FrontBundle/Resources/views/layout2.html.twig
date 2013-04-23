@@ -61,8 +61,10 @@
 				</div>
 			</div>
 		</div>
-		{% if category.id is defined %}
-	    {% render "CMSFrontBundle:Common:banner" with{'cat_id': category.id, 'item_id': ''} %}
+		{% if category.id is defined and content.id is defined %}
+	    {% render "CMSFrontBundle:Common:banner" with{'cat_id': category.id, 'item_id': content.id} %}
+	    {% elseif category.id is defined %}
+	     {% render "CMSFrontBundle:Common:banner" with{'cat_id': category.id, 'item_id': ''} %}
 	   {% elseif content.id is defined %}
 	    {% render "CMSFrontBundle:Common:banner" with{'cat_id': '', 'item_id': content.id} %}
 	   {% else %}

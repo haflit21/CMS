@@ -33,6 +33,7 @@
 	{% set month_suiv = 1 %}
 	{% set year_suiv = year + 1 %}
 {% endif %}
+
 <table class="table agenda-title">
 	<tr>
 		<td class="pull-left"><a href="{{ path('dashboard', {'month': month_prec, 'year': year_prec })}}"><i class="icon-circle-arrow-left"></i></a></td>
@@ -42,7 +43,7 @@
 </table>
 
 
-<table class="table table-bordered calendar ui-selectable">
+<table class="table calendar ui-selectable">
 	<tr>
 		{% set jour_semaine = ['Lun','Mar','Mer', 'Jeu', 'Ven', 'Sam', 'Dim'] %}
 		{% for i in jour_semaine %}
@@ -62,9 +63,11 @@
 			{% if jour == cur_day and month == cur_month and year == cur_year %}
 				{% set class = ' today'|e %}
 			{% endif%}
-			{% if jour in busyDays.jour %}
-				{% set class = class ~ ' busy'|e %}
-				{% set title = busyDays.title[jour] %}
+			{% if busyDays.jour is defined %}
+				{% if jour in busyDays.jour %}
+					{% set class = class ~ ' busy'|e %}
+					{% set title = busyDays.title[jour] %}
+				{% endif %}
 			{% endif %}
 			<td class="ui-widget-content{{ class }}">{{ jour }}<div class="event">{{ title }}</div></td>
 
@@ -76,9 +79,11 @@
 			{% if jour == cur_day and month == cur_month and year == cur_year %}
 				{% set class = ' today'|e %}
 			{% endif%}
-			{% if jour in busyDays.jour %}
-				{% set class = class ~ ' busy'|e %}
-				{% set title = busyDays.title[jour] %}
+			{% if busyDays.jour is defined %}
+				{% if jour in busyDays.jour %}
+					{% set class = class ~ ' busy'|e %}
+					{% set title = busyDays.title[jour] %}
+				{% endif %}
 			{% endif %}
 			<td class="ui-widget-content{{ class }}">{{ jour }}<div class="event">{{ title }}</div></td>
 			{% if (jour - radius) % 7 == 0 %}

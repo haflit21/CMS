@@ -1,6 +1,5 @@
 {% extends "CMSFrontBundle::layout2.html.twig" %}
 {% block body %}
-
-{% include "CMSContentBundle:_templates:" ~ template ~ ".html.twig" with {'content':content, 'category':category, 'contents': contents} %}
+{% include "CMSContentBundle:_templates:" ~ template ~ "." ~ format ~ ".twig" with {'content':content, 'category':category, 'contents': contents, 'url': url, 'url_site': url_site, 'lang': lang, 'format_url': format_url} %}
 
 {% endblock body %}

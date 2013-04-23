@@ -26,6 +26,8 @@ parameters:
         1: Publié
     options_image:
         images: ~
+    site_url: 'http://chris-local.com/' 
+    format_url: '.html'  
 
 
 # Twig Configuration

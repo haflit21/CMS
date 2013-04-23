@@ -10,7 +10,7 @@ class DefaultController extends Controller
 {
 
     /**
-     * @Route("/{lang}/{url}.{_format}", name="front", requirements={"lang" = "fr|en|de", "url"=".+", "_format"="html"}, defaults={"url"="accueil", "_format"="html"})
+     * @Route("/{lang}/{url}.{_format}", name="front", requirements={"lang" = "fr|en|de", "url"="[^\.]+", "_format"="html|xml"}, defaults={"url"="accueil", "_format"="html", "lang"="fr"})
      * @Template()
      */
     public function indexAction($lang,$url,$_format)
@@ -22,6 +22,9 @@ class DefaultController extends Controller
         $currentContent = null;
         $metas = null;
         $title = null;
+        //$url = explode(".", $url);
+        //$format = array_pop($url);
+
         $languages = $this->getDoctrine()
                           ->getRepository('CMSContentBundle:CMLanguage')
                           ->findAll(array('published'=>1));
@@ -36,14 +39,16 @@ class DefaultController extends Controller
                 $template = $content->getContenttype()->getTemplate().'/item';
                 $metas = $this->getMetasContent($content);
                 $title = $content->getTitle();
+                $categories = $content->getCategories();
+                $category = $categories[0];
+                //var_dump($category->getId()); die;
             }
-
         } else {
             $contents = $category->getContents();
 
             if (!empty($contents)) {
-                foreach ($category->getContents() as $content) {
-                    $currentContent = $content;
+                foreach ($category->getContents() as $content_cat) {
+                    $currentContent = $content_cat;
                     break;
                 }
                 $template = $currentContent->getContenttype()->getTemplate().'/category';
@@ -55,8 +60,22 @@ class DefaultController extends Controller
         }
 
         $default_url = $this->getDefaultUrl();
-        //echo $template; die;
-        return array('template' => $template,'contents' => $contents, 'content' => $content, 'category' => $category, 'metas' => $metas ,'title' => $title, 'default_url' => '/'.$lang.'/'.$default_url['url'], 'languages' => $languages);
+
+        return array(
+            'template' => $template, 
+            'format' => $_format, 
+            'url_site' => $this->container->getParameter('site_url'), 
+            'format_url' => $this->container->getParameter('format_url'), 
+            'lang' => $lang,  
+            'url' => $this->container->getParameter('site_url').$lang.'/'.$url.$this->container->getParameter('format_url'), 
+            'contents' => $contents, 
+            'content' => $content, 
+            'category' => $category, 
+            'metas' => $metas ,
+            'title' => $title, 
+            'default_url' => '/'.$lang.'/'.$default_url['url'], 
+            'languages' => $languages
+        );
     }
 
     private function getDefaultUrl()

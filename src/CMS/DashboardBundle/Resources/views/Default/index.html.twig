@@ -2,120 +2,147 @@
 {% block title "Dashboard" %}
 
 {% block body %}
-<div class="span3 list-widget">
-            <div class="list-head">
-                <h3>Dashboard</h3>
-                <ul class="unstyled">
-                    <li class="active"><a href="/admin/contents/list">Ajouter du contenu</a></li>
-                    <li><a href="{{ path('users') }}">Utilisateurs</a></li>
-                    <li><a href="#">Préférences</a></li>
-                    <li><a href="#">Notifications</a></li>
-                </ul>
-            </div>
-        </div>
-		<div class="span9 list-widget">
-			<div class="list-head">
-				<h3>Statistiques</h3>
-			</div>
-			<div id="stats" class="stats">
-				<button id="authorize-button" style="visibility:hidden">
-        Authorize Analytics</button>
-			</div>
+
+<div class="span12">
+	<div class="span3 actions_dashboard">
+		<a href="{{ path('contents') }}">
+			<span class="li_note">&nbsp;</span>
+			<p>{% trans %}Contents{% endtrans %}</p>
+		</a>
+	</div>
+	<div class="span3 actions_dashboard">
+		<a href="{{ path('users') }}">
+			<span class="li_user">&nbsp;</span>
+			<p>{% trans %}Users{% endtrans %}</p>
+		</a>
+	</div>
+	<div class="span3 actions_dashboard">
+		<a href="{{ path('medias') }}">
+			<span class="li_camera">&nbsp;</span>
+			<p>{% trans %}Medias{% endtrans %}</p>
+		</a>
+	</div>
+	
+	<div class="span3 actions_dashboard">
+		<a href="{{ path('languages') }}">
+			<span class="li_settings">&nbsp;</span>
+			<p>{% trans %}Langues{% endtrans %}</p>
+		</a>
+	</div>
+</div>
+<div class="sep3 clearfix"></div>
+<div class="row-fluid">
+	<div class="span12">
+		<div class="span3 actions_dashboard">
+			<input type="text" class="knob" data-readOnly="true" data-fgColor="#555" data-thickness=".2" data-linecap="round" data-width="128" data-height="128">
+			<p>Visites aujourd'hui</p>
 		</div>
-		<div class="clearfix sep3"></div>
-		{#<div class="span9 list-widget pull-right">
-			{% render 'CMSDashboardBundle:Agenda:index' with{'month':month,'year':year} %}
-		</div>#}
-		<div class="modal hide fade" id="myModal">
-		  <form method="post" action="{{ path('new_event') }}" class="form-horizontal">
-			  <div class="modal-header">
-			    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-			    <h3>Nouvel évènement</h3>
-			  </div>
-			  <div class="modal-body">
-			    <div class="control-group">
-			    	{{ form_label(form.name) }}
-				    <div class="controls">
-				      {{ form_widget(form.name) }}
-				    </div>
-				  </div>
-			  </div>
-			  <div class="modal-footer">
-			    <button type="button" class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-			    <button type="submit" class="btn btn-primary">Save changes</button>
-			  </div>
-			  {{ form_widget(form.date_debut) }}
-			  {{ form_widget(form.date_fin) }}
-			  {{ form_rest(form) }}
-			</form>
-		</div>
+	</div>
+</div>
+<button id="authorize-button" style="">Authorize</button>
 {% endblock body %}
+
 {% block javascripts %}
 <script type="text/javascript">
-	/*var data = [ { label: "Foo", data: [ [10, 1], [17, -14], [30, 5] ] },
-  				 { label: "Bar", data: [ [11, 13], [19, 11], [30, -7] ] }
-			   ];*/
+	// Enter a client ID for a web application from the Google Developer Console.
+	// The provided clientId will only work if the sample is run directly from
+	// https://google-api-javascript-client.googlecode.com/hg/samples/authSample.html
+	// In your Developer Console project, add a JavaScript origin that corresponds to the domain
+	// where you will be running the script.
+	var clientId = '413828165097-0olai6l0kcmrm02q71hoabmrqaesoaqr.apps.googleusercontent.com';
 
-	/*var data = [ { label: "À comités de lecture indexées", data: [ [1, 2], [2, 3], [3, 0], [4, 0], [5, 4], [6, 2], [7, 0], [8, 1], [9, 5], [10, 2], [11, 1], [12, 0] ] },
-				{ label: "À comités de lecture non indexées", data: [ [1, 1], [2, 0], [3, 2], [4, 3], [5, 1], [6, 3], [7, 0], [8, 1], [9, 4], [10, 6], [11, 2], [12, 1] ] } ];		   
-			   
-	var options = {
-		    series: {
-		        lines: { show: true },
-		        points: { show: true }
-		    },
-		    grid: {
-			    show: true,
-			    borderWidth: 1,
-			    borderColor: '#ccc'
-			},
-			colors: ['#777','#00adee']
+	// Enter the API key from the Google Develoepr Console - to handle any unauthenticated
+	// requests in the code.
+	// The provided key works for this sample only when run from
+	// https://google-api-javascript-client.googlecode.com/hg/samples/authSample.html
+	// To use in your own application, replace this API key with your own.
+	var apiKey = 'AIzaSyAjpBan6E_y5Ki3Emwsjj4CDcNkMlcsXiM';
 
-		};
+	// To enter one or more authentication scopes, refer to the documentation for the API.
+	var scopes = 'https://www.googleapis.com/auth/analytics.readonly';
+	var nbVisitsMonth = 0;
+	var nbVisitsToday = 0;
 
-	$(function() {
-		$.plot('#stats', data, options);
-	});*/
+	var configMonth = {
+	  	'ids':'ga:71306255',
+	    'last-n-days': '30',
+	    'start-date': '2013-03-20',
+	    'end-date': '2013-04-21',
+	    'metrics': 'ga:visits'
+	  };
 
+	var configToday = {
+	  	'ids':'ga:71306255',
+	    'last-n-days': '30',
+	    'start-date': '2013-04-20',
+	    'end-date': '2013-04-21',
+	    'metrics': 'ga:visits'
+	  };   
+
+	// Use a button to handle authentication the first time.
+	function handleClientLoad() {
+	gapi.client.setApiKey(apiKey);
+	window.setTimeout(checkAuth,1);
+	}
+
+	function checkAuth() {
+	gapi.auth.authorize({client_id: clientId, scope: scopes, immediate: true}, handleAuthResult);
+	}
+
+
+
+	function handleAuthResult(authResult) {
+	  if (authResult) {
+	    gapi.client.setApiVersions({'analytics': 'v3'});
+	    gapi.client.load('analytics', 'v3', handleAuthorized);
+	  } else {
+	    handleUnAuthorized();
+	  }
+	}
+
+	function handleAuthorized() {
+		var authorizeButton = document.getElementById('authorize-button');
+		authorizeButton.style.visibility = 'hidden';
+
+		makeApiCall(configMonth, configToday, initGauge);
+	}
+
+
+	function  handleUnAuthorized() {
+		var authorizeButton = document.getElementById('authorize-button');
+		authorizeButton.style.visibility = '';
+		authorizeButton.onclick = handleAuthClick;
+	}
+
+	function handleAuthClick(event) {
+		gapi.auth.authorize({client_id: clientId, scope: scopes, immediate: false}, handleAuthResult);
+		return false;
+	}
+
+
+
+	// Load the API and make an API call.  Display the results on the screen.
+	function makeApiCall(configMonth, configToday, callback) {
+		gapi.client.load('analytics', 'v3', function() {
+			var request = gapi.client.analytics.data.ga.get(configToday);
+			request.execute(function(resp) {
+				nbVisitsToday = resp.rows[0][0];
+			});
+			var request = gapi.client.analytics.data.ga.get(configMonth);
+			request.execute(function(resp) {
+				nbVisitsMonth = resp.rows[0][0];
+				console.log(nbVisitsToday);
+				callback(nbVisitsMonth, nbVisitsToday);
+			});
+		});
+	}
+	
+	function initGauge(maxValue, value) {
+		$('.knob').val(value);
+		$('.knob').knob({
+			'max':maxValue
+		})
+	}
 </script>
-
-<script src="https://www.google.com/jsapi"></script>
-<script type="text/javascript" src="/bundles/cmsdashboard/js/gadash.js"></script>
-<script src="https://apis.google.com/js/client.js?onload=gadashInit"></script>
- <script>
-    // Configure these parameters before you start.
-    var API_KEY = 'AIzaSyAjpBan6E_y5Ki3Emwsjj4CDcNkMlcsXiM';
-    var CLIENT_ID = '413828165097-0olai6l0kcmrm02q71hoabmrqaesoaqr.apps.googleusercontent.com';
-    var TABLE_ID = 'ga:71306255';
-    // Format of table ID is ga:xxx where xxx is the profile ID.
-
-    gadash.configKeys({
-      'apiKey': API_KEY,
-      'clientId': CLIENT_ID
-    });
-
-    // Create a new Chart that queries visitors for the last 30 days and plots
-    // visualizes in a line chart.
-    var chart1 = new gadash.Chart({
-      'type': 'LineChart',
-      'divContainer': 'stats',
-      'last-n-days':30,
-      'query': {
-        'ids': TABLE_ID,
-        'metrics': 'ga:visitors',
-        'dimensions': 'ga:date'
-      },
-      'chartOptions': {
-        height:300,
-        title: 'Visites ce mois-ci',
-        hAxis: {title:'Date'},
-        vAxis: {title:'Visites'},
-        curveType: 'none',
-        pointSize:5,
-        backgroundColor: {stroke: '#999', fill: '#fff'},
-        colors: ['#ccc']
-      }
-    }).render();
-  </script>
-
+<script src="https://apis.google.com/js/client.js?onload=handleClientLoad"></script>
 {% endblock %}

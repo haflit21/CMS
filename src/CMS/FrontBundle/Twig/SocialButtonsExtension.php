@@ -17,7 +17,10 @@ class SocialButtonsExtension extends Twig_Extension
 
         preg_match_all('/\[%%id:(.*), url:(.*), services:(.*)[^%%]%%\]/', $value, $values);
         $id = $values[1][0];
+        $url_format = explode('.',$values[2][0]);
+        $url_format = $url_format[0].'.'.$url_format[1];
         $url = urlencode($values[2][0]);
+        
         $services = explode(',',$values[3][0]);
         $str = '';
         $mail = '<a href="#modalMail-'.$id.'" data-toggle="modal"><i class="social-icon-mail"></i></a>';
@@ -45,6 +48,7 @@ class SocialButtonsExtension extends Twig_Extension
         $linkedin = '<a href="http://www.linkedin.com/shareArticle?mini=true&url='.$url.'" target="_blank" data-toggle="tooltip" data-placement="top" data-original-title="Linkedin"><i class="social-icon-linkedin"></i></a>';
         $gplus    = '<a href="https://plus.google.com/share?url='.$url.'" target="_blank" data-toggle="tooltip" data-placement="top" data-original-title="Google Plus"><i class="social-icon-gplus"></i></a>';
         $viadeo	  = '<a href="http://www.viadeo.com/shareit/share/?url='.$url.'" target="_blank" data-toggle="tooltip" data-placement="top" data-original-title="Viadeo"><i class="social-icon-viadeo"></i></a>';
+        $rss      = '<a href="'.$url_format.'.xml"><i class="social-icon-rss"></i></a>';
 
         foreach ($services as $service) {
             $str .= ${$service};

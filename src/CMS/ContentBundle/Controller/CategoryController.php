@@ -228,7 +228,7 @@ class CategoryController extends Controller
             if ($form->isValid()) {
 
                 $em = $this->getDoctrine()->getManager();
-                $category = $this->getMetas($category);
+                $category = $this->_getMetas($category);
                 $em->persist($category);
                 $em->flush();
 
@@ -259,6 +259,34 @@ class CategoryController extends Controller
         return $this->redirect($this->generateUrl('categories'));
     }
 
+    /**
+     * Change le statut d'un contenu
+     * 
+     * @param Request $request Objet request
+     * @param int     $id      id du contenu
+     * 
+     * @return [type]           [description]
+     *
+     * @Route("/contents/published/{id}", name="categories_published")
+     * @Template()
+     */
+    public function publishedItemAction(Request $request, $id)
+    {
+        $category = $this->getDoctrine()->getRepository('CMSContentBundle:CMCategory')->find($id);
+
+        if($category->getPublished())
+            $category->setPublished(0);
+        else
+            $category->setPublished(1);
+
+        $em = $this->getDoctrine()->getManager();
+
+        $em->persist($category);
+        $em->flush();
+
+        return $this->redirect($this->generateUrl('categories'));
+    }
+
 
     /**
      * Récupère toutes les métas d'une catégorie
@@ -282,7 +310,7 @@ class CategoryController extends Controller
             $url = str_replace(' ,\'\\', '-', $category->getTitle());
             $url = strtolower($url);
             $url = \Gedmo\Sluggable\Util\Urlizer::urlize($url);
-            $url .= '.html';
+            //$url .= '.html';
             $category->setUrl($url);
         }
 

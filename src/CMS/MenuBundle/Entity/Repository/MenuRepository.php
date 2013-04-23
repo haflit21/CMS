@@ -52,7 +52,31 @@ class MenuRepository extends NestedTreeRepository
     public function getEntryMenu($item_id,$cat_id)
     {
         $entry = null;
-        if ($item_id != '') {
+        if ($item_id != '' && $cat_id != '') {
+            $entry = $this->_em
+                    ->createQueryBuilder()
+                    ->select('m')
+                    ->from('CMSMenuBundle:Menu', 'm')
+                    ->join('m.category', 'c')
+                    ->join('m.content', 'co')
+                    ->where('c.id=:cat_id')
+                    ->andwhere('co.id=:item_id')
+                    ->setParameter('cat_id',$cat_id)
+                    ->setParameter('item_id',$item_id)
+                    ->getQuery()
+                    ->getResult();
+            if (!is_object($entry)) {
+                $entry = $this->_em
+                    ->createQueryBuilder()
+                    ->select('m')
+                    ->from('CMSMenuBundle:Menu', 'm')
+                    ->join('m.category', 'c')
+                    ->where('c.id=:cat_id')
+                    ->setParameter('cat_id',$cat_id)
+                    ->getQuery()
+                    ->getResult();
+            }        
+        } else if ($item_id != '') {
             $entry = $this->_em
                         ->createQueryBuilder()
                         ->select('m')

@@ -12,33 +12,54 @@ class BlocMenuDisplay extends \CMS\AdminBundle\Classes\BlocDisplay
 		parent::__construct();
 	}
 
-	public function displayBloc()
+	public function displayBloc($options=array())
     {
         $session = $this->getSession();
         $active = $session->get('active', 'Contenus');
+        switch($options['dir']) {
+            case 'vertical':
+                return $this->displayVertical($active);
+            case 'horizontal':
+                return $this->displayHorizontal($active);
+        }
+    }
+
+    public function displayHorizontal($active)
+    {
+
         $classe = '';
         $old_level = 1;
         $first = true;
         $id_old = 0;
         $menus = $this->getBloc()->getMenu()->getMenus();
         $html = '';
+        $hasChild = false;
+        $child_routes = array();
         if (!empty($menus)) {
             $html .= '<ul class="nav">';
             foreach ($menus as $entry) {
+                $hasChild = false;
+                $child_routes = array();
                 if(!$entry->getIsRoot()) {
                     switch ($entry->getLevel()) {
                         case 1:
+                            if(count($entry->getChildren())) {
+                                $hasChild = true;
+                                foreach($entry->getChildren() as $child)
+                                    $child_routes[] = $child->getNameRoute();
+                            }
                             switch ($old_level) {
                                 case 1:
                                     if (!$first) {
                                         $html .= '</li>';
                                     }
-                                    if($entry->getTitle() == $active) {
+                                        
+                                    if($entry->getNameRoute() == $this->getUrlIntern() || ($hasChild && in_array($this->getUrlIntern(), $child_routes))) {
                                         $classe = 'active';
                                     } else {
                                         $classe = '';
                                     }
-                                    if(count($entry->getChildren())) {
+                                    if($hasChild) {
                                         $html .= '<li class="dropdown '.$classe.'">';
                                         $html .= '<a id="drop-'.$entry->getId().'" class="dropdown-toggle" data-toggle="dropdown" href="'.$entry->getNameRoute().'">'.$entry->getTitle().' <b class="caret"></b></a>';
                                     } else {
@@ -48,7 +69,7 @@ class BlocMenuDisplay extends \CMS\AdminBundle\Classes\BlocDisplay
                                     $first = false;
                                     break;
                                 case 2:
-                                    if($entry->getTitle() == $active) {
+                                    if($entry->getNameRoute() == $this->getUrlIntern() || ($hasChild && in_array($this->getUrlIntern(), $child_routes))) {
                                         $classe = 'active';
                                     } else {
                                         $classe = '';
@@ -78,6 +99,27 @@ class BlocMenuDisplay extends \CMS\AdminBundle\Classes\BlocDisplay
                 }
             }
             $html .= '</ul>';
+        }
+        return $html;
+    }
+
+
+    public function displayVertical($active)
+    {
+        $classe = '';
+        $menus = $this->getBloc()->getMenu()->getMenus();
+        $html = '';
+        if (!empty($menus)) {
+            $html = '<ul class="unstyled nav-vertical">';
+            foreach ($menus as $entry) {
+                switch ($entry->getLevel()) {
+                    case 1:
+                        if($entry->getTitle() == $active)
+                            $classe = ' class="active"';
+                        $html .= '<li><a href="'.$entry->getNameRoute().'"'.$classe.'>'.$entry->getTitle().'</a></li>';
+                        break;    
+                }
+            }
         }
         return $html;
     }

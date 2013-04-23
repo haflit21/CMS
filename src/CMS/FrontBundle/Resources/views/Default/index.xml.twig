@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<rss version="2.0">
+    <channel>
+		{% include "CMSContentBundle:_templates:" ~ template ~ "." ~ format ~ ".twig" with {'content':content, 'category':category, 'contents': contents, 'url': url, 'format_url': format_url} %}
+	</channel>
+</rss>		

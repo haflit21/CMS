@@ -401,7 +401,7 @@ class ContentController extends Controller
             $url = str_replace(' ,\'\\', '-', $content->getTitle());
             $url = strtolower($url);
             $url = \Gedmo\Sluggable\Util\Urlizer::urlize($url);
-            $url .= '.html';
+            //$url .= '.html';
             $content->setUrl($url);
         }
 

@@ -128,6 +128,13 @@ class CMCategory
     private $referenceCategory;
 
     /**
+     * @var boolean published
+     *
+     * @ORM\Column(name="published", type="boolean")
+     */
+     private $published;
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -569,5 +576,28 @@ class CMCategory
     public function __toString()
     {
         return str_repeat('-', $this->getLevel()).' '.$this->getTitle();
+    }
+
+    /**
+     * Set published
+     *
+     * @param boolean $published
+     * @return CMCategory
+     */
+    public function setPublished($published)
+    {
+        $this->published = $published;
+    
+        return $this;
+    }
+
+    /**
+     * Get published
+     *
+     * @return boolean 
+     */
+    public function getPublished()
+    {
+        return $this->published;
     }
 }

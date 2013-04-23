@@ -25,6 +25,7 @@ class BlocType extends AbstractType
                             'left'=>'Gauche',
                             'right'=>'Droite',
                             'admin_menu_top' => 'Admin - menu haut',
+                            'admin_menu_left' => 'Admin - menu gauche',
                             'admin_breadcrumb' => 'Admin - Breadcrumb',
 
                     ),

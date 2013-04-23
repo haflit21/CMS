@@ -7,6 +7,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 
 use CMS\BlocBundle\Entity\Bloc;
+use CMS\MenuBundle\Entity\Menu;
 
 class ModuleController extends Controller
 {
@@ -60,14 +61,30 @@ class ModuleController extends Controller
         $repo = $this->getDoctrine()
                       ->getRepository('CMSMenuBundle:Menu');
 
+        $entry_item = null;              
+        if ($item_id != '') {
+            $item = $this->getDoctrine()
+                         ->getRepository('CMSContentBundle:CMContent')
+                         ->find($item_id);              
+            $entry_item = new Menu();
+            $entry_item->setTitle($item->getTitle());
+            $entry_item->setContent($item);             
+        }                 
+
         $entry = $repo->getEntryMenu($item_id,$cat_id);
+        
+        $parent = '';
 
         $entry = current($entry);
-        $parent = $entry->getParent();
-        while ($parent->getLevel() > 2) {
-            $parent = $parent->getParent();
+        if(is_object($entry)) {
+            $parent = $entry->getParent();
+            while ($parent->getLevel() > 2) {
+                $parent = $parent->getParent();
 
+            }
         }
+
+
         $path  = $repo->getChildren($parent, true, null, 'desc');
         $path_real = array();
         foreach ($path as $leaf) {
@@ -76,7 +93,11 @@ class ModuleController extends Controller
         }
         $path_real[] = $parent;
 
+
         $path = array_reverse($path_real);
+        if($entry_item != null && !in_array($entry_item, $path))
+            $path[] = $entry_item;
+
         $options['entries'] = $path;
         $options['default_url'] = $repo->getDefaultUrl();
         $options['url'] = $entry->getUrl();

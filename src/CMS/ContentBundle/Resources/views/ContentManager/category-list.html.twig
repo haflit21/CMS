@@ -23,6 +23,7 @@
 				            <th>{% trans %}Description{% endtrans %}</th>
 				            <th class="center-text">{% trans %}Language{% endtrans %}</th>
 				            <th class="center-text">{% trans %}Translations{% endtrans %}</th>
+				            <th class="center-text">{% trans %}Published{% endtrans %}</th>
 				            <th class="center-text">{% trans %}Actions{% endtrans %}</th>
 				        </tr>
 				    </thead>
@@ -54,6 +55,15 @@
 		                			{% set found = false %}
 		                  		{% endfor %}
 		                  	</td>
+		                  	<td class="center-text">
+			                  		<a href="{{ path('categories_published', {'id' : category.id }) }}">
+					                  	{% if category.published %}
+					                  		<i class="icon-ok"></i>
+					                  	{% else %}
+					                  		<i class="icon-remove"></i>
+					                  	{% endif %}
+				                  	</a>
+				                </td>
 				            <td class="center-text">
 				                <a href="{{ path('categories_edit', { 'id': category.id }) }}"><i class="icon-edit"></i></a>
 

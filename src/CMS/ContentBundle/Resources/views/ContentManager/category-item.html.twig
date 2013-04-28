@@ -14,15 +14,19 @@
 
             <h1 class="pull-left">{% trans %}Category{% endtrans %}</h1>
 
-             <a href="{{ path('categories') }}" class="btn btn-new btn-small pull-right"><i class="icon icon-chevron-left"></i> Retour</a>
-             <div class="clearfix sep3"></div>
+             <a href="{{ path('categories') }}" class="button btn-cancel pull-right"><i class="admin-icon-left-open-1"></i> {% trans %}Back{% endtrans %}</a>
+             
             {% if referenceCategory is defined %}
+            <div class="clear h30"></div>
+                <h5>{% trans %}Traduction de {% endtrans %} : {{ referenceCatObj }}</h5>
                 <form class="form-horizontal" action="{{path('categories_translation', {'lang' : lang, 'reference' : referenceCategory}) }}" method="post" {{ form_enctype(form) }}>
             {% elseif category.id != 0 %}
                 <form class="form-horizontal" action="{{path('categories_edit', {'id' : category.id })}}" method="post" {{ form_enctype(form) }}>
             {% else %}
                 <form class="form-horizontal" action="{{path('categories_new', {'lang' : lang }) }}" method="post" {{ form_enctype(form) }}>
             {% endif %}
+            <div class="clear h30"></div>
+            <div class="row">
                 <div class="span8">
                     {{ form_errors(form) }}
 
@@ -33,6 +37,15 @@
                         <div class="controls">
                             {{ form_widget(form.title) }}
                             {{ form_errors(form.title) }}
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <div class="control-label">
+                            {{ form_label(form.published) }}
+                        </div>
+                        <div class="controls inline_elements">
+                            {{ form_widget(form.published) }}
+                            {{ form_errors(form.published) }}
                         </div>
                     </div>
                     <div class="control-group">
@@ -62,12 +75,9 @@
                             {{ form_errors(form.ordre) }}
                         </div>
                     </div>
-                    <div class="form-actions">
-                        <a href="{{ path('categories') }}" class="btn btn-small">{% trans %}Cancel{% endtrans %}</a>
-                        <button type="submit" class="btn btn-primary btn-small">{% trans %}Validate{% endtrans %}</button>
-                    </div>
+                    
                 </div>
-                <div class="span4">
+                <div class="span4 well">
                     <div class="control-group">
                         <div class="control-label">
                             {{ form_label(form.metatitle) }}
@@ -105,9 +115,22 @@
                         </div>
                     </div>
                 </div>
+                </div>
                 {{ form_rest(form) }}
+                <div class="clear"></div>
+                <div class="form-actions">
+                    <a href="{{ path('categories') }}" class="button btn-cancel">{% trans %}Cancel{% endtrans %} <i class="admin-icon-cancel"></i></a>
+                    <button type="submit" class="button btn-main">{% trans %}Validate{% endtrans %} <i class="admin-icon-ok"></i></button>
+                </div>
             </form>
         </div>
     </div>
 
 {% endblock body %}
+{% block javascripts %}
+<script type="text/javascript">
+    $(function() {
+        $('select').selectBoxIt();
+    });
+</script>
+{% endblock %}

@@ -5,7 +5,7 @@
 	<div class="row-fluid">
 		<div class="span12">
 			<h1 class="pull-left">{% trans %}Menus{% endtrans %} - {{ menu_taxonomy.name }}</h1>
-			<a href="{{ path('entries_new', {'lang' : defaultLanguage.id, 'menu_taxonomy' : menu_taxonomy.id }) }}" class="btn btn-new btn-small pull-right"><i class="icon icon-plus-sign"></i> {% trans %}New{% endtrans %}</a>
+			<a href="{{ path('entries_new', {'lang' : defaultLanguage.id, 'menu_taxonomy' : menu_taxonomy.id }) }}" class="btn-new btn-small pull-right"><i class="admin-icon-plus-circled"></i> {% trans %}New{% endtrans %}</a>
 
 			{% for flashMessage in app.session.flashbag.get('info') %}
 				<div class="clear h20"></div>
@@ -59,20 +59,20 @@
 			                  		{% if found != false %}
 			                  			{% set found = found - 1 %}
 			                  			<a href="{{ path('entry_edit', { 'id' : entry.translations[found].id }) }}" class="flag-element">
-			                  				<img src="{{ asset('bundles/cmscontent/img/flags/'~language.iso~'.png') }}" class="flag" alt="{{ language.iso }}" height="16px"  style="height:16px;">
+			                  				<img src="{{ asset('bundles/cmscontent/img/flags/'~language.iso~'.png') }}" class="flag" alt="{{ language.iso }}">
 			                  				<img src="{{ asset('bundles/cmscontent/img/flags/flag-ok.png') }}" class="flag-ok" alt="{{ language.iso }}">
 			                  			</a>
 			                  		{% else %}
 			                  			<a href="{{ path('entries_translation', {'lang' : language.id, 'reference': entry.id }) }}">
-			                  				<img src="{{ asset('bundles/cmscontent/img/flags/'~language.iso~'.png') }}" class="flag" alt="{{ language.iso }}" height="16px"  style="height:16px;">
+			                  				<img src="{{ asset('bundles/cmscontent/img/flags/'~language.iso~'.png') }}" class="flag" alt="{{ language.iso }}">
 			                  			</a>
 			                  		{% endif %}
 		                			{% set found = false %}
 		                  		{% endfor %}
 		                  	</td>
 		                  	<td class="center-text">
-		                  		<a href="{{ path('entries_move', {'id': entry.id, 'direction': 'UP'}) }}"><i class="icon-chevron-up"></i></a>
-		                  		<a href="{{ path('entries_move', {'id': entry.id, 'direction': 'DOWN'}) }}"><i class="icon-chevron-down"></i></a>
+		                  		<a href="{{ path('entries_move', {'id': entry.id, 'direction': 'UP'}) }}"><i class="admin-icon-up-open"></i></a>
+		                  		<a href="{{ path('entries_move', {'id': entry.id, 'direction': 'DOWN'}) }}"><i class="admin-icon-down-open"></i></a>
 		                  	</td>
 							<td class="center-text">
 								{% if entry.defaultPage %}
@@ -102,7 +102,7 @@
 								    </div>
 								    <div class="modal-footer">
 								    	<a href="#" class="btn" data-dismiss="modal">Non</a>
-								    	<a href="#" class="btn btn-primary">Oui</a>
+								    	<a href="{{ path('entries_delete', {'id': entry.id }) }}" class="btn btn-primary">Oui</a>
 								    </div>
 								</div>
 							</td>

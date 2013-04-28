@@ -4,21 +4,15 @@
 
 	<div class="row-fluid">
 		<div class="span12">
-			{% for flashMessage in app.session.flashbag.get('info') %}
-			    <div class="alert alert-info">
-			    	<button class="close" data-dismiss="alert" type="button">×</button>
-			        <strong>Notice</strong>
-			        {{ flashMessage }}
-			    </div>
-			{% endfor %}
 
-      		<h1 class="pull-left">Content Manager</h1>
+      		<h1 class="pull-left">{% trans %}Content Manager{% endtrans %}</h1>
 
 
-		     <a href="{{ path('contents') }}" class="btn btn-new btn-small pull-right"><i class="icon icon-chevron-left"></i> Retour</a>
-		     <div class="clearfix sep3"></div>
+		     <a href="{{ path('contents') }}" class="button btn-cancel pull-right"><i class="admin-icon-left-open-1"></i> {% trans %}Back{% endtrans %}</a>
+		     <div class="clear h30"></div>
 
 			{% if referenceContent is defined %}
+				<h5>{% trans %}Traduction de {% endtrans %} : {{ referenceArticle.title }}</h5>
 				<form class="form-horizontal" action="{{path('contents_translation', {'lang' : lang, 'reference' : referenceContent, 'contenttype': contenttype })}}" method="post" {{ form_enctype(form) }}>
 			{% elseif content.id != 0 %}
 				<form class="form-horizontal" action="{{path('contents_edit', {'id' : content.id })}}" method="post" {{ form_enctype(form) }}>
@@ -39,15 +33,6 @@
 					</div>
 					<div class="control-group">
 						<div class="control-label">
-							{{ form_label(form.description) }}
-						</div>
-						<div class="controls">
-							{{ form_widget(form.description) }}
-							{{ form_errors(form.description) }}
-						</div>
-					</div>
-					<div class="control-group">
-						<div class="control-label">
 							{{ form_label(form.published) }}
 						</div>
 						<div class="controls inline_elements">
@@ -55,6 +40,16 @@
 							{{ form_errors(form.published) }}
 						</div>
 					</div>
+					<div class="control-group">
+						<div class="control-label">
+							{{ form_label(form.description) }}
+						</div>
+						<div class="controls">
+							{{ form_widget(form.description) }}
+							{{ form_errors(form.description) }}
+						</div>
+					</div>
+					
 					<div class="control-group">
 						<div class="control-label">
 							{{ form_label(form.categories) }}
@@ -71,12 +66,9 @@
 						{% endif %}
 					</div>
 
-					<div class="form-actions">
-					    <a href="{{ path('contents') }}" class="btn btn-small">{% trans %}Cancel{% endtrans %}</a>
-                        <button type="submit" class="btn btn-primary btn-small">{% trans %}Validate{% endtrans %}</button>
-				    </div>
+					
 				</div>
-				<div class="span4">
+				<div class="span4 well">
 					<div class="control-group">
 						<div class="control-label">
 							{{ form_label(form.metatitle) }}
@@ -114,6 +106,11 @@
 						</div>
 					</div>
 				</div>
+				<div class="clear"></div>
+				<div class="form-actions">
+					    <a href="{{ path('contents') }}" class="button btn-cancel">{% trans %}Cancel{% endtrans %} <i class="admin-icon-cancel"></i></a>
+                        <button type="submit" class="button btn-main">{% trans %}Validate{% endtrans %} <i class="admin-icon-ok"></i></button>
+				    </div>
 				{{ form_rest(form) }}
 			</form>
 		</div>
@@ -128,3 +125,5 @@
 	})
 </script>
 {% endblock javascripts %}
+
+

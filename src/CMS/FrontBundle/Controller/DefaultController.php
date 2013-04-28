@@ -60,6 +60,9 @@ class DefaultController extends Controller
         }
 
         $default_url = $this->getDefaultUrl();
+        if ($template == '') {
+            $template = 'default/category';
+        }
 
         return array(
             'template' => $template, 

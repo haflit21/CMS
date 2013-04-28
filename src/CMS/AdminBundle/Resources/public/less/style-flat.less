@@ -1,4 +1,5 @@
 @import "variables_admin.less"; 
+@import "icons_admin.less";
 
 body.login {
 	overflow: hidden;
@@ -84,21 +85,20 @@ body {
 	height:100%;
 	padding:0;
 	margin:0;
-	font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;
+	font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+	font-size:12px !important;
 }
 
 #wrapper {
 	min-height:100%;
 	position:relative;
+	overflow:hidden;
 }
 
 #main {
 	padding:0;
-	padding-bottom: 5000px;
-	margin-bottom: 5000px;
 	padding-bottom:50px;
-	overflow: hidden;
-
+	margin-top:20px;
 }
 
 #footer {
@@ -109,13 +109,75 @@ body {
 	left:0;
 }
 
+h1, h2, h3, h4, h5, h6 {
+	font-weight:300;
+}
+
+a {
+	color:@darkerGrey;	
+}
+
+a, a:hover, a:focus, a:active {
+	outline: none !important;
+}
+
+a:hover {
+	color:@river;
+	text-decoration: none;
+}
+
+.clear {
+	clear: both;
+}
+
+.h10 {
+	margin-bottom: 10px;
+}
+
+.h20 {
+	margin-bottom: 20px;
+}
+
+.h30 {
+	margin-bottom: 30px;
+}
+
+form {
+	margin:0px !important;
+}
+
+
+select, textarea, input[type="text"], 
+input[type="password"], input[type="datetime"], input[type="datetime-local"], 
+input[type="date"], input[type="month"], input[type="time"], 
+input[type="week"], input[type="number"], input[type="email"], 
+input[type="url"], input[type="search"], input[type="tel"], 
+input[type="color"], .uneditable-input {
+	height:15px !important;
+}
+
+
+/******************************
+HEADER
+/******************************/
+
+.modal-body {
+	overflow-y: visible !important;
+}
+
+
 /******************************
 HEADER
 /******************************/
 #header {
 	height:50px;
-	background: @lightGrey;
-	border-bottom: 1px solid @darkGrey;
+	background: @fondHeader;
+	color:#fff;
+	line-height:50px;
+
+	.brand {
+		font-size:20px;
+	}
 
 	img {
 		max-height: 50px;
@@ -126,21 +188,267 @@ HEADER
 LEFT NAVIGATION
 /******************************/
 .nav-full-height {
-	background-color: @blueDark;
 	text-align: center;
-	padding-bottom: 5000px;
-	margin-bottom: -5000px;
-	
-	li {
-		line-height: 50px;
-		text-align: center;
+	border-radius: 4px;
 
-		a {
-			color: @darkerGrey;
+	ul {
+	
+		li {
+			line-height:30px;
+
+			a {
+				color: @grey;
+				text-align: left;
+
+				span {
+					font-size:14px;
+					padding-right: 10px;
+				}
+
+				i {
+					float: right;
+				}
+
+				
+			}
+
+			a:hover {
+				color:@darkerGrey;
+				border-radius: 4px;
+			}
+
+			li {
+				padding-left: 10px;
+			}
+
 		}
 
-		a.active {
-			color: #fff;
+		li.header {
+
+			a {
+				background:@mintblue;
+				color:#fff;
+				border-radius: 4px 4px 0 0;
+			}
+		}
+
+		li.active {
+			text-align: left;
+			line-height: 30px;
+
+			a.active {
+				color: @darkerGrey;
+				background-color: @lightGrey;
+				border-radius: 4px;
+			}
+
+			li {
+				a.active {
+					background: transparent !important;
+				}
+			}
 		}
 	}
+}
+
+/******************************
+MAIN VIEW
+/******************************/
+.left-1 {
+	padding-left: 15px;
+}
+
+.flag {
+	height: 16px !important;
+}
+
+.breadcrumb_admin {
+	line-height: 30px;
+	background: @lightGrey;
+	border-radius: 4px;
+	padding: 0 10px;
+	margin-bottom: 10px;
+	color: @darkGrey;
+	
+	a {
+		color: @darkGrey;
+	}
+
+	a:hover {
+		color: @darkerGrey;
+	}
+
+	i {
+		padding: 0 5px;
+	}
+}
+
+.btn-new {
+	background-color:@mintblue;
+	color:#fff;
+	border-radius: 4px;
+	line-height: 20px;
+	margin-top:13px;
+
+	i {
+		margin-right:5px;
+	}
+}
+
+.btn-new:hover, .btn-new:focus, .btn-new:active {
+	color:#fff;
+}
+
+.flag-element {
+	position: relative;
+}
+
+.flag-ok{
+	position: absolute;
+	right: -2px;
+	bottom: -6px;
+	height: 12px;
+}
+
+.center-text {
+	text-align:center !important;
+}
+	
+.pagination {
+	font-weight:bold;
+
+	i {
+		font-size:10px;
+	}
+
+	.previous {
+
+		i {
+			margin-right: 10px;
+		}
+	}
+
+	.next {
+
+		i {
+			margin-left: 10px;
+		}
+	}
+
+	.page {
+
+		a {
+			padding:0 5px;
+		}
+	}
+	
+	.current {
+		color: @orange;
+		padding:0 5px;
+	}
+}
+
+/******************************
+DASHBOARD
+/******************************/
+
+.actions_dashboard {
+	
+	text-align: center;
+	border:1px solid @lightGrey;
+	border-radius: 4px;
+
+	.widget-header {
+		border-radius: 4px 4px 0 0;
+		background-color: @lightBlue;
+		color:#fff;
+		padding:0 0 0 10px;
+		text-align: center;
+		
+		h5 {
+			text-align: left;
+			margin-top:0px;
+		}
+
+		a {
+			line-height: 48px;
+			padding-bottom: 5px;
+
+			span {
+				font-size:48px;
+				color: #fff;
+			}	
+		}
+
+	}
+	.first {
+		border-right:1px solid @lightGrey;
+		margin-left:0px;
+	}
+
+	.span6 {
+		font-size:12px;
+		font-weight:300;
+		padding-top:5px;
+
+		.nb {
+			font-size: 20px;
+			font-weight: normal;
+		}
+	}
+
+	input {
+		box-shadow: none;
+		-webkit-box-shadow: none;
+		-moz-box-shadow: none;
+		height: 42px !important;
+	}
+	
+}
+
+/******************************
+FORM
+/******************************/
+.span4 input {
+	width:146px !important;
+}
+
+label {
+	font-size: 12px !important;
+}
+
+
+
+.form-horizontal .control-label {
+	padding-top: 0px !important;
+}
+
+/******************************
+BUTTONS
+/******************************/
+.button {
+	border-radius:4px;
+	line-height:20px;
+	padding:2px 10px;
+	color:#fff;
+	border:none;
+	display: inline-block;
+	margin-bottom: 0;
+	text-align: center;
+	vertical-align: middle;
+	cursor: pointer;
+	font-size:12px !important;
+}
+
+.button:hover, .button:active, .button:focus {
+	color:#fff !important;
+}
+
+
+.btn-main {
+	background-color:@btnMain;
+}
+
+.btn-cancel {
+	background-color:@btnCancel;
 }

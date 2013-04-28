@@ -1,95 +1,112 @@
 {% extends('::admin.html.twig') %}
 
 {% block body %}
+<div class="row-fluid">
+	<div class="span12">
+		<h1>{% trans %}Contacts{% endtrans %}</h1>
+		{% for flashMessage in app.session.flashbag.get('info') %}
+		    <div class="alert alert-info">
+		    	<button class="close" data-dismiss="alert" type="button">×</button>
+		        <strong>Notice</strong>
+		        {{ flashMessage }}
+		    </div>
+		{% endfor %}
+		{% for flashMessage in app.session.flashbag.get('error') %}
+		    <div class="alert alert-error">
+		    	<button class="close" data-dismiss="alert" type="button">×</button>
+		        <strong>Error</strong>
+		        {{ flashMessage }}
+		    </div>
+		{% endfor %}
+		<div class="clear h20"></div>
+		<form action="{{ path('entries_list', {'page': 1}) }}" method="post" id="form-main">
+		<table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                  	<th>#</th>
+                  	<th>{% trans %}Lastname{% endtrans %} {% trans %}Firstname{% endtrans %}</th>
+                  	<th>{% trans %}Sender{% endtrans %}</th>
+                  	<th>{% trans %}subject{% endtrans %}</th>
+                  	<th>{% trans %}message{% endtrans %}</th>
+                  	<th>{% trans %}Created{% endtrans %}</th>
+                  	<th class="center-text">{% trans %}Status{% endtrans %}</th>
+                  	<th class="center-text" colspan="2">{% trans %}Actions{% endtrans %}</th>
+                </tr>
+            </thead>
+            <tbody>
+              	{% for message in pagination %}
+				<tr id="row-{{ message.id }}">
+					<td>{{ message.id }}</td>
+					<td>{{ message.lastname }} {{ message.firstname }}</td>
+					<td>{{ message.sender }}</td>
+					<td>{{ message.subject }}</td>
+					<td>{{ message.message|truncate(50, '...') }}</td>
+					<td>{{ message.created|date('d/m/Y') }}</td>
+					<td class="center-text" id="col-{{ message.id }}">
+						{% if message.statut %}
+							<a href="#" data-toggle="tooltip" data-placement="top" title="Lu" class="icon-ok tooltip-link"></a>
+						{% else %}
+							<a href="#" data-toggle="tooltip" data-placement="top" title="Non Lu" class="icon-remove tooltip-link"></a>
+						{% endif %}
+					</td>
+					<td>
+						<a href="javascript:showMessage({{ message.id }});" class="icon-zoom-in"></a>
 
-	<div class="row-fluid">
-
-		<div class="span12">
-			{% for flashMessage in app.session.flashbag.get('info') %}
-			    <div class="alert alert-info">
-			    	<button class="close" data-dismiss="alert" type="button">×</button>
-			        <strong>Notice</strong>
-			        {{ flashMessage }}
-			    </div>
-			{% endfor %}
-			{% for flashMessage in app.session.flashbag.get('error') %}
-			    <div class="alert alert-error">
-			    	<button class="close" data-dismiss="alert" type="button">×</button>
-			        <strong>Error</strong>
-			        {{ flashMessage }}
-			    </div>
-			{% endfor %}
-			<table class="table table-striped table-hover">
-	            <thead>
-	                <tr>
-	                  	<th>#</th>
-	                  	<th>{% trans %}Lastname{% endtrans %} {% trans %}Firstname{% endtrans %}</th>
-	                  	<th>{% trans %}Sender{% endtrans %}</th>
-	                  	<th>{% trans %}subject{% endtrans %}</th>
-	                  	<th>{% trans %}message{% endtrans %}</th>
-	                  	<th>{% trans %}Created{% endtrans %}</th>
-	                  	<th class="center-text">{% trans %}Status{% endtrans %}</th>
-	                  	<th class="center-text" colspan="2">{% trans %}Actions{% endtrans %}</th>
-	                </tr>
-	            </thead>
-	            <tbody>
-	              	{% for message in messages %}
-					<tr id="row-{{ message.id }}">
-						<td>{{ message.id }}</td>
-						<td>{{ message.lastname }} {{ message.firstname }}</td>
-						<td>{{ message.sender }}</td>
-						<td>{{ message.subject }}</td>
-						<td>{{ message.message|truncate(50, '...') }}</td>
-						<td>{{ message.created|date('d/m/Y') }}</td>
-						<td class="center-text" id="col-{{ message.id }}">
-							{% if message.statut %}
-								<a href="#" data-toggle="tooltip" data-placement="top" title="Lu" class="icon-ok tooltip-link"></a>
-							{% else %}
-								<a href="#" data-toggle="tooltip" data-placement="top" title="Non Lu" class="icon-remove tooltip-link"></a>
-							{% endif %}
-						</td>
-						<td>
-							<a href="javascript:showMessage({{ message.id }});" class="icon-zoom-in"></a>
-
-						</td>
-						<td>
-							<a href="#myModal-{{ message.id }}" data-toggle="modal" class="icon-trash"></a>
-							<div class="modal hide" id="myModal-{{ message.id }}">
-								<div class="modal-header">
-							    	<button type="button" class="close" data-dismiss="modal">×</button>
-							    	<h3>Suppression du message ?</h3>
-							    </div>
-							    <div class="modal-body">
-							    	<p>Voulez-vous supprimer ce message ?</p>
-							    </div>
-							    <div class="modal-footer">
-							    	<a href="#" class="btn" data-dismiss="modal">Non</a>
-							    	<a href="{{ path('contacts_delete', { 'id' : message.id }) }}" class="btn btn-primary">Oui</a>
-							    </div>
-							</div>
-						</td>
-					</tr>
-					{% endfor %}
-				</tbody>
-				<tfoot>
-					<tr>
-						<td>{% trans %}Total{% endtrans %} : {{ messages|length }} {% trans %}message(s){% endtrans %}</td>
-					</tr>	
-				</tfoot>
-			</table>
+					</td>
+					<td>
+						<a href="#myModal-{{ message.id }}" data-toggle="modal" class="icon-trash"></a>
+						<div class="modal hide" id="myModal-{{ message.id }}">
+							<div class="modal-header">
+						    	<button type="button" class="close" data-dismiss="modal">×</button>
+						    	<h3>Suppression du message ?</h3>
+						    </div>
+						    <div class="modal-body">
+						    	<p>Voulez-vous supprimer ce message ?</p>
+						    </div>
+						    <div class="modal-footer">
+						    	<a href="#" class="btn" data-dismiss="modal">Non</a>
+						    	<a href="{{ path('contacts_delete', { 'id' : message.id }) }}" class="btn btn-primary">Oui</a>
+						    </div>
+						</div>
+					</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+			<tfoot>
+				<tr>
+					<td colspan="3">{% trans %}Total{% endtrans %} : {{ pagination|length }} {% trans %}message(s){% endtrans %}</td>
+					<td colspan="6">
+            			{% trans %}Afficher{% endtrans %} :
+		    			<select name="filter[display]" onchange="this.form.submit()">
+		    				{% for i in options_pagination %}
+		    					{% if i == nb %}
+		    					<option value="{{ i }}" selected="selected">{{ i }} {% trans %}elements{% endtrans %}</option>
+		    					{% else %}
+		    					<option value="{{ i }}">{{ i }} {% trans %}elements{% endtrans %}</option>
+		    					{% endif %}
+		    				{% endfor %}
+		    			</select>
+		    		</td>
+				</tr>	
+			</tfoot>
+		</table>
+		</form>
+		<div class="navigation">
+		    {{ knp_pagination_render(pagination) }}
 		</div>
 	</div>
-	<div class="modal hide" id="modalItem">
-		<div class="modal-header">
-			<button type="button" class="close" data-dismiss="modal">×</button>
-			<h3 id="titleModalItem"></h3>
-		</div>
-		<div class="modal-body">
-		</div>
-		<div class="modal-footer">
-	    	<a href="#" class="statut btn btn-primary">Marquer comme lu</a>
-	    </div>
+</div>
+<div class="modal hide" id="modalItem">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal">×</button>
+		<h3 id="titleModalItem"></h3>
 	</div>
+	<div class="modal-body">
+	</div>
+	<div class="modal-footer">
+    	<a href="#" class="statut button btn-main">Marquer comme lu <i class="admin-icon-ok"></i></a>
+    </div>
+</div>
 {% endblock body %}
 {% block javascripts %}
 <script type="text/javascript">
@@ -98,17 +115,33 @@
 			url: "/admin/contacts/item/" + id,
 			dataType:'json',
 			success: function(msg) {
+				var statut = 0;
 				$('#titleModalItem').html(msg.subject);
 				$('#modalItem .modal-body').html('<ul class="unstyled"><li>' + msg.from + '</li><li>' + msg.message + '</li></ul>');
-				$('#modalItem a.statut').attr('href', '/admin/contacts/statut/'+msg.id);
+				if(msg.statut == 0)
+					statut = 1;
+				
+				$('#modalItem a.statut').attr('href', '/admin/contacts/statut/'+msg.id+'/'+statut);
+				if(msg.statut == 1) {
+					$('#modalItem a.statut').removeClass('btn-main');
+					$('#modalItem a.statut').addClass('btn-cancel');
+					$('#modalItem a.statut').html('Marquer comme non lu <i class="admin-icon-cancel"></i>');
+				}	
 				$('#modalItem').modal('show');
 
 			}
 		})
 	}
 
+	
+
+	$(function() {
+
 		$('.tooltip-link').hover(function() {
 			$(this).tooltip('toggle');
 		});
+
+		$('select').selectBoxIt();
+	});
 </script>
 {% endblock javascripts %}

@@ -75,6 +75,7 @@ class BlocDisplay
 
 	public function getOptionsBreadcrumb() {
 		$entry = $this->repositoryMenu->getEntryMenuByUrlIntern($this->url_intern);
+		$entry = current($entry);
 		$parent = null;
 		if($entry != null && !$entry->getParent()->getIsRoot())
 			$parent = $entry->getParent();

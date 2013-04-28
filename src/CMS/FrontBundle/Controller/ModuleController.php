@@ -74,25 +74,27 @@ class ModuleController extends Controller
         $entry = $repo->getEntryMenu($item_id,$cat_id);
         
         $parent = '';
+        if (is_array($entry)) {
+            $entry = current($entry);
+            if (is_object($entry)) {
+                $parent = $entry->getParent();
+                while ($parent->getLevel() > 2) {
+                    $parent = $parent->getParent();
 
-        $entry = current($entry);
-        if(is_object($entry)) {
-            $parent = $entry->getParent();
-            while ($parent->getLevel() > 2) {
-                $parent = $parent->getParent();
-
+                }
             }
         }
-
-
-        $path  = $repo->getChildren($parent, true, null, 'desc');
+        
         $path_real = array();
-        foreach ($path as $leaf) {
-            if($leaf->getId() == $entry->getId())
-                $path_real[] = $leaf;
+        
+        if($parent != null) {
+            $path  = $repo->getChildren($parent, true, null, 'desc');
+            foreach ($path as $leaf) {
+                if($leaf->getId() == $entry->getId())
+                    $path_real[] = $leaf;
+            }
+            $path_real[] = $parent;
         }
-        $path_real[] = $parent;
-
 
         $path = array_reverse($path_real);
         if($entry_item != null && !in_array($entry_item, $path))
@@ -100,7 +102,10 @@ class ModuleController extends Controller
 
         $options['entries'] = $path;
         $options['default_url'] = $repo->getDefaultUrl();
-        $options['url'] = $entry->getUrl();
+        if($entry != null)
+            $options['url'] = $entry->getUrl();
+        else
+            $options['url'] = 'accueil';
 
         return $options;
     }

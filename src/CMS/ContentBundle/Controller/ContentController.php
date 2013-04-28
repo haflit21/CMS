@@ -71,7 +71,15 @@ class ContentController extends Controller
             ->getRepository('CMSContentBundle:CMContent')
             ->getTotalElements($defaultLanguage->getId());
 
-        return array('pagination'=>$results['pagination'], 'nb' => $results['nb'], 'total' => $total, 'defaultLanguage'=>$defaultLanguage, 'languages'=>$languages, 'display'=>true, 'contentType'=>$contentType);
+        return array(
+            'pagination'      => $results['pagination'], 
+            'nb'              => $results['nb'], 
+            'total'           => $total, 
+            'defaultLanguage' => $defaultLanguage, 
+            'languages'       => $languages, 
+            'display'         => true, 
+            'contentType'     => $contentType
+            );
     }
 
     /**
@@ -91,12 +99,13 @@ class ContentController extends Controller
         $filters = $request->request->get('filter');
         $nb_elem = isset($filters['display']) ? $filters['display'] : $nb_elem;
         $nb = $nb_elem;
-        if($nb_elem == 'all')
+        if($nb_elem == 'all') {
             $nb_elem = 10000;
+            $nb = 'all';
+        }    
 
         //$nb_elem = 10;
         $session->set('nb_elem', $nb_elem);
-        $session->set('active', 'Contenus');
 
         //echo $nb_elem; die;
 
@@ -109,7 +118,6 @@ class ContentController extends Controller
             $this->get('request')->query->get('page', $page),
             $nb_elem
         );
-
         return array('pagination' => $pagination, 'nb' => $nb);
     }
 
@@ -147,7 +155,7 @@ class ContentController extends Controller
     {
         $contentTypes = $this->getDoctrine()->getRepository('CMSContentBundle:CMContentType')->findAll();
 
-        $html = '<select name="contentType" id="contentType">';
+        $html = '<select name="contentType" id="contentType" width="220px">';
         foreach ($contentTypes as $key => $type) {
             $html .= '<option value="'.$type->getId().'">'.$type->getTitle().'</option>';
         }
@@ -198,12 +206,18 @@ class ContentController extends Controller
                 ExtraFields::saveFields($this, $em, $request, $content, $contenttype);
                 $em->persist($content);
                 $em->flush();
-
+                $this->get('session')->setFlash('success', 'Le contenu a bien été sauvegardé');
                 return $this->redirect($this->generateUrl('contents'));
             }
         }
 
-        return array('form' => $form->createView(),'content' => $content, 'lang' => $lang, 'html' => $html, 'contenttype' => $contenttype);
+        return array(
+            'form'        => $form->createView(),
+            'content'     => $content, 
+            'lang'        => $lang, 
+            'html'        => $html, 
+            'contenttype' => $contenttype
+        );
     }
 
     /**
@@ -223,8 +237,11 @@ class ContentController extends Controller
     {
         $content = new CMContent;
         $language = $this->getDoctrine()->getRepository('CMSContentBundle:CMLanguage')->find($lang);
+
+        $referenceArticle = $this->getDoctrine()->getRepository('CMSContentBundle:CMContent')->find($reference);
+
         $content->setLanguage($language);
-        $form = $this->createForm(new ContentType(), $content);
+        $form = $this->createForm(new ContentType(), $content, array('lang_id' => $lang));
         $html = ExtraFields::loadFields($this, $contenttype);
 
         if ($request->isMethod('POST')) {
@@ -232,7 +249,7 @@ class ContentController extends Controller
             if ($form->isValid()) {
                 $em = $this->getDoctrine()->getManager();
 
-                $referenceArticle = $this->getDoctrine()->getRepository('CMSContentBundle:CMContent')->find($reference);
+                
 
                 $taxonomy = $this->getDoctrine()->getRepository('CMSContentBundle:CMContentTaxonomy')->find($reference);
                 $taxonomy->addContent($content);
@@ -253,11 +270,21 @@ class ContentController extends Controller
                 $em->persist($content);
                 $em->flush();
 
+                $this->get('session')->setFlash('success', 'La traduction a bien été sauvegardée');
+
                 return $this->redirect($this->generateUrl('contents'));
             }
         }
 
-        return array('form' => $form->createView(),'content' => $content, 'lang' => $lang, 'referenceContent'=>$reference, 'html' => $html, 'contenttype' => $contenttype);
+        return array(
+            'form'             => $form->createView(),
+            'content'          => $content, 
+            'lang'             => $lang, 
+            'referenceContent' => $reference, 
+            'referenceArticle' => $referenceArticle, 
+            'html'             => $html, 
+            'contenttype'      => $contenttype
+        );
     }
 
     /**
@@ -332,6 +359,8 @@ class ContentController extends Controller
                 $em->persist($content);
                 $em->flush();
 
+                $this->get('session')->setFlash('success', 'Le contenu a bien été sauvegardé');
+                
                 return $this->redirect($this->generateUrl('contents'));
             }
         }

@@ -21,7 +21,7 @@ class BlocBreadcrumbDisplay extends \CMS\AdminBundle\Classes\BlocDisplay
             $str = '<div class="breadcrumb_admin">';
             if ($options['url'] != $options['default_url']) {
                 if($this->getBloc()->getDisplayHome())
-                    $str .= '<a href="/admin/dashboard"><i class="icon-home"></i></a>'.$this->getBloc()->getSeparator();
+                    $str .= '<a href="/admin/dashboard"><i class="admin-icon-home"></i></a>'.$this->getBloc()->getSeparator();
                 $i=0;
                 $nbLeaves = count($entries);
                 foreach ($entries as $entry) { 

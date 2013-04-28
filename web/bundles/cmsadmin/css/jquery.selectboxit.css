@@ -33,11 +33,11 @@
 
 /* Button */
 .selectboxit-container .selectboxit {
-  width: 220px; /* Width of the dropdown button */
+  width: 150px !important; /* Width of the dropdown button */
   cursor: pointer;
   margin: 0;
   padding: 0;
-  border-radius: 6px;
+  border-radius: 4px;
   overflow: hidden;
   display: block;
   position: relative;
@@ -83,6 +83,7 @@
   box-sizing: border-box;
   min-width: 100%;  /* Minimum Width of the dropdown list box options */
   *width: 100%;
+  width: auto !important;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -92,7 +93,7 @@
   cursor: pointer;
   display: none;
   z-index: 9999999999999;
-  border-radius: 6px;
+  border-radius: 4px;
   text-align: left;
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
@@ -203,8 +204,8 @@
   Note: Feel free to remove all of the CSS underneath this line if you are not using the default theme
 */
 .selectboxit-btn {
-  background-color: #f5f5f5;
-  background-image: -moz-linear-gradient(top, #ffffff, #e6e6e6);
+  background-color: #fff;
+  /*background-image: -moz-linear-gradient(top, #ffffff, #e6e6e6);
   background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), to(#e6e6e6));
   background-image: -webkit-linear-gradient(top, #ffffff, #e6e6e6);
   background-image: -o-linear-gradient(top, #ffffff, #e6e6e6);
@@ -213,14 +214,15 @@
   border: 1px solid #cccccc;
   border-color: #e6e6e6 #e6e6e6 #bfbfbf;
   border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
-  border-bottom-color: #b3b3b3;
+  border-bottom-color: #b3b3b3;*/
+  border:1px solid #A6A8AD;
 }
 
 .selectboxit-btn:hover,
 .selectboxit-btn:focus,
 .selectboxit-btn:active {
   color: #333333;
-  background-color: #e6e6e6;
+  background-color: #fff;
 }
 
 .selectboxit-btn:hover,
@@ -255,13 +257,7 @@
 .selectboxit-list > .selectboxit-focus > a:hover,
 .selectboxit-list > .selectboxit-focus > a:focus {
   color: #ffffff;
-  background-color: #0081c2;
-  background-image: -moz-linear-gradient(top, #0088cc, #0077b3);
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#0088cc), to(#0077b3));
-  background-image: -webkit-linear-gradient(top, #0088cc, #0077b3);
-  background-image: -o-linear-gradient(top, #0088cc, #0077b3);
-  background-image: linear-gradient(to bottom, #0088cc, #0077b3);
-  background-repeat: repeat-x;
+  background-color: #565962;
   font-weight: normal !important;
   text-shadow:none !important;
 }

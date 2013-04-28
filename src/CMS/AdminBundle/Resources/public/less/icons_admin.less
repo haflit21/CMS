@@ -1,0 +1,93 @@
+@font-face {
+  font-family: 'admin';
+  src: url('/bundles/cmsadmin/css/fonts/admin.eot?55654020');
+  src: url('/bundles/cmsadmin/css/fonts/admin.eot?55654020#iefix') format('embedded-opentype'),
+       url('/bundles/cmsadmin/css/fonts/admin.woff?55654020') format('woff'),
+       url('/bundles/cmsadmin/css/fonts/admin.ttf?55654020') format('truetype'),
+       url('/bundles/cmsadmin/css/fonts/admin.svg?55654020#admin') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+/* Chrome hack: SVG is rendered more smooth in Windozze. 100% magic, uncomment if you need it. */
+/* Note, that will break hinting! In other OS-es font will be not as sharp as it could be */
+
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+  @font-face {
+    font-family: 'admin';
+    src: url('/bundles/cmsadmin/css/fonts/admin.svg?55654020#admin') format('svg');
+  }
+}
+
+ 
+ [class^="admin-icon-"]:before, [class*=" icon-"]:before {
+  font-family: "admin";
+  font-style: normal;
+  font-weight: normal;
+  speak: none;
+ 
+  display: inline-block;
+  text-decoration: inherit;
+  /*width: 1em;
+  margin-right: .2em;*/
+  text-align: center;
+  /* opacity: .8; */
+ 
+  /* For safety - reset parent styles, that can break glyph codes*/
+  font-variant: normal;
+  text-transform: none;
+     
+  /* fix buttons height, for twitter bootstrap */
+  line-height: 1em;
+ 
+  /* Animation center compensation - magrins should be symmetric */
+  /* remove if not needed */
+  margin-left: .2em;
+ 
+  /* you can be more comfortable with increased icons size */
+  /* font-size: 120%; */
+ 
+  /* Uncomment for 3D effect */
+  /* text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3); */
+}
+ 
+
+.admin-icon-home:before { content: '\2302'; } /* '⌂' */
+.admin-icon-star:before { content: '\2605'; } /* '★' */
+.admin-icon-star-empty:before { content: '\2606'; } /* '☆' */
+.admin-icon-menu-1:before { content: '\2630'; } /* '☰' */
+.admin-icon-layout:before { content: '\268f'; } /* '⚏' */
+.admin-icon-attention:before { content: '\26a0'; } /* '⚠' */
+.admin-icon-edit:before { content: '\270d'; } /* '✍' */
+.admin-icon-ok:before { content: '\2713'; } /* '✓' */
+.admin-icon-cancel:before { content: '\2715'; } /* '✕' */
+.admin-icon-attention-circle:before { content: '\2757'; } /* '❗' */
+.admin-icon-plus-circled:before { content: '\e059'; } /* '' */
+.admin-icon-gauge:before { content: '\e09e'; } /* '' */
+.admin-icon-edit-1:before { content: '\e0bf'; } /* '' */
+.admin-icon-right-open-2:before { content: '\e0cc'; } /* '' */
+.admin-icon-left-open-2:before { content: '\e0cd'; } /* '' */
+.admin-icon-help-circle:before { content: '\e704'; } /* '' */
+.admin-icon-info-circle:before { content: '\e705'; } /* '' */
+.admin-icon-location:before { content: '\e724'; } /* '' */
+.admin-icon-trash:before { content: '\e729'; } /* '' */
+.admin-icon-down-open:before { content: '\e75c'; } /* '' */
+.admin-icon-left-open-1:before { content: '\e801'; } /* '' */
+.admin-icon-left-open:before { content: '\e75d'; } /* '' */
+.admin-icon-left-open-3:before { content: '\e803'; } /* '' */
+.admin-icon-right-open-1:before { content: '\e800'; } /* '' */
+.admin-icon-right-open:before { content: '\e75e'; } /* '' */
+.admin-icon-right-open-3:before { content: '\e802'; } /* '' */
+.admin-icon-up-open:before { content: '\e75f'; } /* '' */
+.admin-icon-down-open-mini:before { content: '\e760'; } /* '' */
+.admin-icon-up-open-mini:before { content: '\e763'; } /* '' */
+.admin-icon-list-nested:before { content: '\e766'; } /* '' */
+.admin-icon-spin5:before { content: '\e838'; } /* '' */
+.admin-icon-spin6:before { content: '\e839'; } /* '' */
+.admin-icon-menu:before { content: '\f0c9'; } /* '' */
+.admin-icon-twitter-bird:before { content: '\f303'; } /* '' */
+.admin-icon-github:before { content: '\f308'; } /* '' */
+.admin-icon-picture:before { content: '🌄'; } /* '\1f304' */
+.admin-icon-calendar:before { content: '📅'; } /* '\1f4c5' */
+.admin-icon-upload:before { content: '📤'; } /* '\1f4e4' */
+.admin-icon-camera:before { content: '📷'; } /* '\1f4f7' */
+.admin-icon-block:before { content: '🚫'; } /* '\1f6ab' */

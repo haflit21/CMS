@@ -16,12 +16,20 @@ class ContactRepository extends EntityRepository
     public function getNbMessageNotRead()
     {
         return count($this->_em
-                    ->createQueryBuilder()
-                    ->select('m')
-                       ->from('CMSContactBundle:Contact', 'm')
-                       ->where('m.statut = :statut')
-                     ->setParameter('statut', 0)
-                    ->getQuery()
-                       ->getResult());
+                          ->createQueryBuilder()
+                          ->select('m')
+                          ->from('CMSContactBundle:Contact', 'm')
+                          ->where('m.statut = :statut')
+                          ->setParameter('statut', 0)
+                          ->getQuery()
+                          ->getResult());
+    }
+
+    public function getAllMessagesQuery() {
+        return $this->_em
+                    ->createQueryBuilder('c')
+                    ->select('c')
+                    ->from('CMSContactBundle:Contact', 'c')
+                    ->getQuery();
     }
 }

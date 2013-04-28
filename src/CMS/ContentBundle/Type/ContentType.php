@@ -15,13 +15,13 @@ class ContentType extends AbstractType
         $lang_id = $options['lang_id'];
         $builder
             ->add('title', 'text', array('label'=>'Title'))
-            ->add('description', 'ckeditor', array('label'=>'Description', 'required'=>false))
             ->add('published', 'choice', array(
                 'choices'=> array('1'=>'Oui', '0'=>'Non'),
                 'expanded'=>true,
                 'multiple'=>false,
                 'label'=>'Published'
             ))
+            ->add('description', 'ckeditor', array('label'=>'Description', 'required'=>false))
             ->add('categories', 'entity', array(
                 'class'=>'CMSContentBundle:CMCategory',
                 'query_builder' => function(EntityRepository $er) use ($lang_id) {

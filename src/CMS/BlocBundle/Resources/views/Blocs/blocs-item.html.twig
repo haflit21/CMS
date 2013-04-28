@@ -30,8 +30,8 @@
 							<input type="hidden" name="bloctype" />
 						{% endif %}
 						<div class="form-actions">
-						    <a href="{{ path('blocs_list') }}" class="btn btn-small">{% trans %}Cancel{% endtrans %}</a>
-                        	<button type="submit" class="btn btn-primary btn-small">{% trans %}Validate{% endtrans %}</button>
+						    <a href="{{ path('blocs_list') }}" class="button btn-cancel">{% trans %}Cancel{% endtrans %} <i class="admin-icon-cancel"></i></a>
+                        	<button type="submit" class="button btn-main">{% trans %}Validate{% endtrans %} <i class="admin-icon-ok"></i></button>
 					    </div>
 					</div>
 				</form>

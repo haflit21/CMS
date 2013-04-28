@@ -25,7 +25,7 @@ class MenuController extends Controller
      *
      * @return array
      *
-     * @Route("/entries/list/{id}/{page}", name="entries_list", defaults={"page": 1})
+     * @Route("/entries/list/{id}/{page}", name="entries_list", defaults={"id": 1, "page": 1})
      * @Template("CMSMenuBundle:Menu:entries-list.html.twig")
      */
     public function listAction(Request $request, $id, $page)
@@ -256,9 +256,11 @@ class MenuController extends Controller
     public function deleteAction($id)
     {
         $entry = $this->getDoctrine()->getRepository('CMSMenuBundle:Menu')->find($id);
+        $idtaxonomy = $entry->getMenuTaxonomy()->getId();
         $em = $this->getDoctrine()->getManager();
-        $em->remove($entry);
-        $em->flush();
+        $this->getDoctrine()->getRepository('CMSMenuBundle:Menu')->removeFromTree($entry);
+        $em->clear();
+        return $this->redirect($this->generateUrl('entries_list', array('id' => $idtaxonomy)));
     }
 
     /**

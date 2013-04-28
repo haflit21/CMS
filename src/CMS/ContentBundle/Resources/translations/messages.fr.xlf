@@ -66,6 +66,34 @@
                 <source>Cancel</source>
                 <target>Annuler</target>
             </trans-unit>
+            <trans-unit id="17">
+                <source>Total</source>
+                <target>Total</target>
+            </trans-unit>
+            <trans-unit id="18">
+                <source>content(s)</source>
+                <target>contenu(s)</target>
+            </trans-unit>
+            <trans-unit id="19">
+                <source>elements</source>
+                <target>éléments</target>
+            </trans-unit>
+            <trans-unit id="20">
+                <source>categorie(s)</source>
+                <target>catégorie(s)</target>
+            </trans-unit>
+            <trans-unit id="21">
+                <source>Afficher</source>
+                <target>Afficher</target>
+            </trans-unit>
+            <trans-unit id="22">
+                <source>all</source>
+                <target>Tous les</target>
+            </trans-unit>
+            <trans-unit id="23">
+                <source>Choose your content type</source>
+                <target>Choisissez votre type de contenu</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

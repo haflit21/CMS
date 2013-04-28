@@ -165,7 +165,7 @@ class DefaultController extends Controller
 
                 //var_dump($json);die();
 
-                $this->get('session')->setFlash('success', 'New bloc were saved!');
+                $this->get('session')->setFlash('success', 'Le bloc a bien été sauvegardé');
 
                 return $this->redirect($this->generateUrl('blocs_list'));
             }
@@ -220,7 +220,7 @@ class DefaultController extends Controller
 
                 //var_dump($json);die();
 
-                $this->get('session')->setFlash('success', 'New bloc were saved!');
+                $this->get('session')->setFlash('success', 'Le bloc a bien été édité');
 
                 return $this->redirect($this->generateUrl('blocs_list'));
             }

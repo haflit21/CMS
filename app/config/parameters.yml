@@ -12,3 +12,4 @@ parameters:
     locale: fr
     secret: 76007789b14f0abdb99499bf4a4fc4a4a18b842d
     database_path: null
+    knp_paginator.template.pagination: ::pagination.html.twig

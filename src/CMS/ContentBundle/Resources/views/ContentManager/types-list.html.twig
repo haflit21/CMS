@@ -6,7 +6,7 @@
 		<div class="span12">
 			<h3 class="pull-left">{% trans %}Type{% endtrans %}</h3>
 
-			<a href="{{ path('types_new') }}" class="btn btn-new btn-small pull-right"><i class="icon icon-plus-sign"></i> {%trans%}New{%endtrans%}</a>
+			<a href="{{ path('types_new') }}" class="btn-new btn-small pull-right"><i class="admin-icon-plus-circled"></i> {%trans%}New{%endtrans%}</a>
 
 			{% for flashMessage in app.session.flashbag.get('info') %}
 				<div class="clear h20"></div>

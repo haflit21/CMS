@@ -10,7 +10,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  * CMS\AdminBundle\Entity\User
  *
  * @ORM\Table(name="user")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="CMS\AdminBundle\Entity\Repository\UserRepository")
  * @ORM\HasLifecycleCallbacks
  */
 class User implements UserInterface

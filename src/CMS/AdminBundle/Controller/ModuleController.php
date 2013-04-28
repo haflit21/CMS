@@ -45,9 +45,10 @@ class ModuleController extends Controller
             switch($params->bloc_type) {
                 case 'BlocMenu':
                     $bloc_spec->setRequest($request);
-                    $bloc_spec->setUrlIntern($request->getPathInfo());
+
+                    $bloc_spec->setUrlIntern($this->getUrlInternNormalized($request));
                     $bloc_spec->setSession($this->get('session'));
-                    $options = array('dir' => 'horizontal');
+                    $options = array('dir' => $bloc->getDisplayType());
                     break;
                 case 'BlocBreadcrumb':
                     //$url_courante = $this->generateUrl($url_courante);
@@ -71,6 +72,19 @@ class ModuleController extends Controller
                      ->getEntityManager()
                      ->getRepository('CMSBlocBundle:'.$params->bloc_type)
                       ->find($params->bloc_id);
+    }
+
+    public function getUrlInternNormalized($request) {
+        preg_match_all('$\/$', $request->getPathInfo(), $matches);
+        $matches = current($matches);
+        //var_dump($matches); die;
+        if(count($matches) > 2) {
+            $pos = strpos($request->getPathInfo(), '/',1);
+            $pos++;
+            $pos = strpos($request->getPathInfo(), '/', $pos);
+            return substr($request->getPathInfo(),0,$pos);
+        }
+        return $request->getPathInfo();
     }
     
 }

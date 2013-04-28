@@ -163,7 +163,7 @@ class CategoryController extends Controller
 
                 $em->persist($category);
                 $em->flush();
-
+                $this->get('session')->setFlash('success', 'La catégorie a bien été sauvegardée');
                 return $this->redirect($this->generateUrl('categories'));
             }
         }
@@ -187,6 +187,7 @@ class CategoryController extends Controller
         $category = new CMCategory;
         $language = $this->getDoctrine()->getRepository('CMSContentBundle:CMLanguage')->find($lang);
         $category->setLanguage($language);
+        $categoryReference = $this->getDoctrine()->getRepository('CMSContentBundle:CMCategory')->find($reference);
         $form = $this->createForm(new CategoryType(), $category);
 
         if ($request->isMethod('POST')) {
@@ -194,18 +195,26 @@ class CategoryController extends Controller
             if ($form->isValid()) {
                 $em = $this->getDoctrine()->getManager();
 
-                $category = $this->getMetas($category);
-                $categoryReference = $this->getDoctrine()->getRepository('CMSContentBundle:CMCategory')->find($reference);
+                $category = $this->_getMetas($category);
+                
                 $category->setReferenceCategory($categoryReference);
 
                 $em->persist($category);
                 $em->flush();
 
+                $this->get('session')->setFlash('success', 'La traduction a bien été sauvegardée');
+                
                 return $this->redirect($this->generateUrl('categories'));
             }
         }
 
-        return array('form' => $form->createView(),'category' => $category, 'lang' => $lang, 'referenceCategory'=>$reference);
+        return array(
+            'form'               => $form->createView(),
+            'category'           => $category, 
+            'lang'               => $lang, 
+            'referenceCategory'  => $reference, 
+            'referenceCatObj' => $categoryReference
+        );
     }
 
     /**
@@ -231,7 +240,7 @@ class CategoryController extends Controller
                 $category = $this->_getMetas($category);
                 $em->persist($category);
                 $em->flush();
-
+                $this->get('session')->setFlash('success', 'La catégorie a bien été sauvegardée');
                 return $this->redirect($this->generateUrl('categories'));
             }
         }

@@ -20,24 +20,65 @@ class UserController extends Controller
 {
 
     /**
-     * @Route("/list", name="users")
+     * @Route("/list/{page}", name="users", defaults={"page": 1})
      * @Template()
      **/
-    public function indexAction()
+    public function indexAction(Request $request, $page)
     {
         $users = $this->getDoctrine()
                 ->getRepository('CMSAdminBundle:User')
                 ->findAll();
 
-        $session = $this->get('session');
-        $session->set('active', 'Utilisateurs');        
+        $results = $this->_getElements($request, $page);      
 
         if (!$users) {
             return array('users' => null, 'active' => 'Utilisateurs');
         }
 
-        return array('users' => $users, 'active' => 'Utilisateurs');
+        return array(
+            'pagination' => $results['pagination'], 
+            'nb'         => $results['nb'], 
+            'users'      => $users, 
+            'active'     => 'Utilisateurs'
+        );
     }
+
+    /**
+     * Récupère la liste des catégories de la langue par défaut
+     *
+     * @param Request    $request         : récupère l'ensemble des paramètres de la requête
+     * @param int        $page            : indique le numéro de page courante 
+     * @param CMLanguage $defaultLanguage : Langue par défaut
+     *
+     * @return Liste des catégories et nombre total de catégories
+     */
+
+    private function _getElements(Request $request, $page)
+    {
+        $session = $this->get('session');
+        $nb_elem = $session->get('nb_elem', 5);
+
+        $filters = $request->request->get('filter');
+        $nb_elem = isset($filters['display']) ? $filters['display'] : $nb_elem;
+        $nb = $nb_elem;
+        if($nb_elem == 'all')
+            $nb_elem = 10000;
+
+        $session->set('nb_elem', $nb_elem);
+
+        $em = $this->getDoctrine()->getManager();
+        $query = $em->getRepository('CMSAdminBundle:User')->getAllUsersQuery();
+
+        $paginator  = $this->get('knp_paginator');
+        $pagination = $paginator->paginate(
+            $query,
+            $this->get('request')->query->get('page', $page),
+            $nb_elem
+        );
+
+        return array('pagination' => $pagination, 'nb' => $nb);
+    }
+
 
     /**
      * @Route("/new", name="new_user")

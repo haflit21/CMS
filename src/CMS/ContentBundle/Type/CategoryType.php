@@ -14,6 +14,12 @@ class CategoryType extends AbstractType
         $lang_id = $options['lang_id'];
         $builder
             ->add('title', 'text', array('label'=>'Title'))
+             ->add('published', 'choice', array(
+                'choices'=> array('1'=>'Oui', '0'=>'Non'),
+                'expanded'=>true,
+                'multiple'=>false,
+                'label'=>'Published'
+            ))
             ->add('description', 'ckeditor', array(
                 'label'     => 'Description',
                 'attr'      => array('class'=>'ckeditor'),

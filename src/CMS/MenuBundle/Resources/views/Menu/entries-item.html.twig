@@ -26,8 +26,8 @@
                     {{ form_errors(form) }}
                     {{ form_widget(form) }}
                     <div class="form-actions">
-                        <a href="{{ path('entries_list', {'id': menu_taxonomy.id }) }}" class="btn btn-small">{% trans %}Cancel{% endtrans %}</a>
-                        <button type="submit" class="btn btn-primary btn-small">{% trans %}Validate{% endtrans %}</button>
+                        <a href="{{ path('entries_list', {'id': menu_taxonomy.id }) }}" class="button btn-cancel">{% trans %}Cancel{% endtrans %} <i class="admin-icon-cancel"></i></a>
+                        <button type="submit" class="button btn-main">{% trans %}Validate{% endtrans %} <i class="admin-icon-ok"></i></button>
                     </div>
                 </div>
                 {{ form_rest(form) }}
@@ -49,7 +49,7 @@ $(document).ready(function() {
         $('#menu_content_control_group').show();
         $('#menu_name_route_control_group').fadeOut();
     });
-    
+    $('select').selectBoxIt();
 });
     
 </script>

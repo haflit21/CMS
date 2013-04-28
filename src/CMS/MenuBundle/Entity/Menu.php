@@ -3,6 +3,7 @@
 namespace CMS\MenuBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Constraints as Assert;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
 use CMS\ContentBundle\Entity\CMLanguage;
@@ -14,6 +15,7 @@ use CMS\ContentBundle\Entity\CMContent;
  * @Gedmo\Tree(type="nested")
  * @ORM\Table(name="menus")
  * @ORM\Entity(repositoryClass="CMS\MenuBundle\Entity\Repository\MenuRepository")
+ * @ORM\HasLifecycleCallbacks
  */
 class Menu
 {
@@ -151,6 +153,31 @@ class Menu
      */
     private $isRoot;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    public $path;
+
+    /**
+     * @Assert\File(maxSize="6000000")
+     */
+    public $file;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $classIcon;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $displayIcon;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $displayName;
+
 
     /**
      * Constructor
@@ -159,6 +186,80 @@ class Menu
     {
         $this->children = new \Doctrine\Common\Collections\ArrayCollection();
         $this->translations = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    public function getAbsolutePath()
+    {
+        return null === $this->path ? null : $this->getUploadRootDir().'/'.$this->path;
+    }
+
+    public function getWebPath()
+    {
+        return null === $this->path ? null : $this->getUploadDir().'/'.$this->path;
+    }
+
+    protected function getUploadRootDir()
+    {
+        // le chemin absolu du répertoire où les documents uploadés doivent être sauvegardés
+        return __DIR__.'/../../../../web/'.$this->getUploadDir();
+    }
+
+    protected function getUploadDir()
+    {
+        // on se débarrasse de « __DIR__ » afin de ne pas avoir de problème lorsqu'on affiche
+        // le document/image dans la vue.
+        return 'uploads/documents/'.date('m/Y');
+    }
+
+
+    /**
+     * @ORM\PrePersist()
+     * @ORM\PreUpdate()
+     */
+    public function preUpload()
+    {
+        if (null !== $this->file) {
+            // faites ce que vous voulez pour générer un nom unique
+            $this->path = $this->file->getClientOriginalName().'.'.$this->file->guessExtension();
+        }
+    }
+
+
+    /**
+     * @ORM\PostPersist()
+     * @ORM\PostUpdate()
+     */
+    public function upload()
+    {
+        // la propriété « file » peut être vide si le champ n'est pas requis
+        if (null === $this->file) {
+            return;
+        }
+
+        // utilisez le nom de fichier original ici mais
+        // vous devriez « l'assainir » pour au moins éviter
+        // quelconques problèmes de sécurité
+
+        // la méthode « move » prend comme arguments le répertoire cible et
+        // le nom de fichier cible où le fichier doit être déplacé
+        $this->file->move($this->getUploadRootDir(), $this->file->getClientOriginalName());
+
+        // définit la propriété « path » comme étant le nom de fichier où vous
+        // avez stocké le fichier
+        $this->path = $this->file->getClientOriginalName();
+
+        // « nettoie » la propriété « file » comme vous n'en aurez plus besoin
+        $this->file = null;
+    }
+
+    /**
+     * @ORM\PostRemove()
+     */
+    public function removeUpload()
+    {
+        if ($file = $this->getAbsolutePath()) {
+            unlink($file);
+        }
     }
 
     /**
@@ -788,5 +889,97 @@ class Menu
     public function getIsRoot()
     {
         return $this->isRoot;
+    }
+
+    /**
+     * Set path
+     *
+     * @param string $path
+     * @return Menu
+     */
+    public function setPath($path)
+    {
+        $this->path = $path;
+    
+        return $this;
+    }
+
+    /**
+     * Get path
+     *
+     * @return string 
+     */
+    public function getPath()
+    {
+        return $this->path;
+    }
+
+    /**
+     * Set classIcon
+     *
+     * @param string $classIcon
+     * @return Menu
+     */
+    public function setClassIcon($classIcon)
+    {
+        $this->classIcon = $classIcon;
+    
+        return $this;
+    }
+
+    /**
+     * Get classIcon
+     *
+     * @return string 
+     */
+    public function getClassIcon()
+    {
+        return $this->classIcon;
+    }
+
+    /**
+     * Set displayIcon
+     *
+     * @param boolean $displayIcon
+     * @return Menu
+     */
+    public function setDisplayIcon($displayIcon)
+    {
+        $this->displayIcon = $displayIcon;
+    
+        return $this;
+    }
+
+    /**
+     * Get displayIcon
+     *
+     * @return boolean 
+     */
+    public function getDisplayIcon()
+    {
+        return $this->displayIcon;
+    }
+
+    /**
+     * Set displayName
+     *
+     * @param boolean $displayName
+     * @return Menu
+     */
+    public function setDisplayName($displayName)
+    {
+        $this->displayName = $displayName;
+    
+        return $this;
+    }
+
+    /**
+     * Get displayName
+     *
+     * @return boolean 
+     */
+    public function getDisplayName()
+    {
+        return $this->displayName;
     }
 }

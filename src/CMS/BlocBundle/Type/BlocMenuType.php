@@ -25,7 +25,7 @@ class BlocMenuType extends AbstractType
                     )
                 )
             ->add('display_type',
-                'choice', array( 'empty_value' => 'Choose a display format','choices' =>  array('header'=>'Menu Principal', 'footer'=>'Menu du bas', 'admin' => 'Administration'))
+                'choice', array( 'empty_value' => 'Choose a display format','choices' =>  array('header'=>'Menu Principal', 'footer'=>'Menu du bas', 'admin_h' => 'Administration Horizontal', 'admin_v' => 'Administration Vertical'))
                 )
         ;
     }

@@ -145,7 +145,7 @@ class MenuRepository extends NestedTreeRepository
                     ->andWhere('node.name_route=:url_intern')
                     ->setParameter('url_intern', $url_intern)
                     ->getQuery()
-                    ->getOneOrNullResult();
+                    ->getResult();
     }
 
 }

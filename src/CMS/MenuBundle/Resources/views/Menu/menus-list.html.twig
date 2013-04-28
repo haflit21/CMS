@@ -6,7 +6,7 @@
 
 		<div class="span12">
 			<h1 class="pull-left">{% trans %}Menus{% endtrans %}</h1>
-			<a href="{{ path('menus_new') }}" class="btn btn-new btn-small pull-right"><i class="icon icon-plus-sign"></i> {% trans %}New{% endtrans %}</a>
+			<a href="{{ path('menus_new') }}" class="btn-new btn-small pull-right"><i class="admin-icon-plus-circled"></i> {% trans %}New{% endtrans %}</a>
 			{% for flashMessage in app.session.flashbag.get('info') %}
 				<div class="clear h20"></div>
 			    <div class="alert alert-info">

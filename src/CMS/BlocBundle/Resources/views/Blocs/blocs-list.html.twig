@@ -5,14 +5,7 @@
 	<div class="row-fluid">
 		<div class="span12">
 			<h1 class="pull-left">{% trans %}Bloc Manager{% endtrans %}</h1>
-			{% for flashMessage in app.session.flashbag.get('info') %}
-			    <div class="alert alert-info">
-			    	<button class="close" data-dismiss="alert" type="button">×</button>
-			        <strong>Notice</strong>
-			        {{ flashMessage }}
-			    </div>
-			{% endfor %}
-			<a href="#myModal" role="button" class="btn btn-new btn-small pull-right" data-toggle="modal"><i class="icon icon-plus-sign"></i> {% trans %}New{% endtrans %}</a>
+			<a href="#myModal" role="button" class="btn-new btn-small pull-right" data-toggle="modal"><i class="admin-icon-plus-circled"></i> {% trans %}New{% endtrans %}</a>
 			<div class="modal hide fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 					<form action="{{ path('blocs_new', {'lang' : defaultLanguage.id }) }}" method="get">
 						<div class="modal-header">
@@ -28,7 +21,19 @@
 						</div>
 					</form>
 				</div>
-
+			{% if app.session.hasFlash('error') %}
+				<div class="clear h20"></div>
+			    <div class="alert alert-error">
+			  		<a class="close" data-dismiss="alert" href="#">×</a>
+			        {{ app.session.flash('error') }}
+			    </div>
+			{% elseif app.session.hasFlash('success') %}
+				<div class="clear h20"></div>
+			    <div class="alert alert-success">
+			  		<a class="close" data-dismiss="alert" href="#">×</a>
+			        {{ app.session.flash('success') }}
+			    </div>
+			{% endif %}
 		    <div class="clear h20"></div>
 			<form action="{{ path('blocs_list', {'page': 1 }) }}" method="post">
 				<table class="table table-striped table-hover">
@@ -52,7 +57,7 @@
 				    		<td><a href="{{ path('blocs_edit', {'id' : bloc.id }) }}">{{ bloc.title }}</a></td>
 				    		<td>{{ bloc.position }}</td>
 				    		<td>{{ bloc.type }}</td>
-				    		<td class="center-text"><img src="{{ asset('bundles/cmscontent/img/flags/'~bloc.language.iso~'.png') }}" height="23px" style="height:23px;" alt="{{ bloc.language.iso }}"></td>
+				    		<td class="center-text"><img src="{{ asset('bundles/cmscontent/img/flags/'~bloc.language.iso~'.png') }}" class="flag" alt="{{ bloc.language.iso }}"></td>
 				    		<td class="center-text">
 		                  		{% for language in languages %}
 		                  			{% for translation in bloc.translations %}
@@ -62,7 +67,7 @@
 		                  			{% endfor %}
 			                  		{% if found > 0 %}
 			                  			<a href="{{ path('blocs_edit', {'id' : bloc.id }) }}" class="flag-element">
-			                  				<img src="{{ asset('bundles/cmscontent/img/flags/'~language.iso~'.png') }}" class="flag" alt="{{ language.iso }}">
+			                  				<img src="{{ asset('bundles/cmscontent/img/flags/'~language.iso~'.png') }}"  class="flag" alt="{{ language.iso }}">
 			                  				<img src="{{ asset('bundles/cmscontent/img/flags/flag-ok.png') }}" class="flag-ok" alt="{{ language.iso }}">
 			                  			</a>
 			                  		{% else %}

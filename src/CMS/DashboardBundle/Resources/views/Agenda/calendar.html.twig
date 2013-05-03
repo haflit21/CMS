@@ -1,6 +1,5 @@
-<div class="list-head">
-	<h3>Agenda</h3>
-</div>
+<div class="widget-header vert">
+	<h5>Agenda</h5>
 
 {% if month == 0 %}
 	{% set month = 1 %}
@@ -36,64 +35,65 @@
 
 <table class="table agenda-title">
 	<tr>
-		<td class="pull-left"><a href="{{ path('dashboard', {'month': month_prec, 'year': year_prec })}}"><i class="icon-circle-arrow-left"></i></a></td>
+		<td class="pull-left"><a href="{{ path('dashboard', {'month': month_prec, 'year': year_prec })}}"><i class="admin-icon-left-open"></i></a></td>
 		<td><h4 class="month-agenda" data-month="{{ first_day|strftime('%m') }}" data-year="{{ first_day|strftime('%Y') }}">{{ first_day|strftime('%B %Y')|capitalize }}</h4></td>
-		<td class="pull-right"><a href="{{ path('dashboard', {'month': month_suiv, 'year': year_suiv })}}"><i class="icon-circle-arrow-right"></i></a></td>
+		<td class="pull-right"><a href="{{ path('dashboard', {'month': month_suiv, 'year': year_suiv })}}"><i class="admin-icon-right-open"></i></a></td>
 	</tr>
 </table>
-
-
-<table class="table calendar ui-selectable">
-	<tr>
-		{% set jour_semaine = ['Lun','Mar','Mer', 'Jeu', 'Ven', 'Sam', 'Dim'] %}
-		{% for i in jour_semaine %}
-			<th>{{ i }}</th>
-		{% endfor %}
-		</tr><tr class="selectable">
-		{% if decalage != 0 %}
-			{% for i in 1..decalage %}
-				<td></td>
+</div>
+<div class="centered">
+	<table class="table calendar">
+		<tr>
+			{% set jour_semaine = ['Lun','Mar','Mer', 'Jeu', 'Ven', 'Sam', 'Dim'] %}
+			{% for i in jour_semaine %}
+				<th>{{ i }}</th>
 			{% endfor %}
-		{% endif %}
-		{% set class = '' %}
-		{% set i = 1 %}
-		{% for jour in 1..7-decalage %}
-			{% set class = '' %}
-			{% set title = '' %}
-			{% if jour == cur_day and month == cur_month and year == cur_year %}
-				{% set class = ' today'|e %}
-			{% endif%}
-			{% if busyDays.jour is defined %}
-				{% if jour in busyDays.jour %}
-					{% set class = class ~ ' busy'|e %}
-					{% set title = busyDays.title[jour] %}
-				{% endif %}
-			{% endif %}
-			<td class="ui-widget-content{{ class }}">{{ jour }}<div class="event">{{ title }}</div></td>
-
-		{% endfor %}
 			</tr><tr class="selectable">
-		{% for jour in 7-decalage+1..nb_jour %}
+			{% if decalage != 0 %}
+				{% for i in 1..decalage %}
+					<td></td>
+				{% endfor %}
+			{% endif %}
 			{% set class = '' %}
-			{% set title = '' %}
-			{% if jour == cur_day and month == cur_month and year == cur_year %}
-				{% set class = ' today'|e %}
-			{% endif%}
-			{% if busyDays.jour is defined %}
-				{% if jour in busyDays.jour %}
-					{% set class = class ~ ' busy'|e %}
-					{% set title = busyDays.title[jour] %}
+			{% set i = 1 %}
+			{% for jour in 1..7-decalage %}
+				{% set class = '' %}
+				{% set title = '' %}
+				{% if jour == cur_day and month == cur_month and year == cur_year %}
+					{% set class = 'today'|e %}
+				{% endif%}
+				{% if busyDays.jour is defined %}
+					{% if jour in busyDays.jour %}
+						{% set class = class ~ ' busy'|e %}
+						{% set title = busyDays.title[jour] %}
+					{% endif %}
 				{% endif %}
-			{% endif %}
-			<td class="ui-widget-content{{ class }}">{{ jour }}<div class="event">{{ title }}</div></td>
-			{% if (jour - radius) % 7 == 0 %}
-				</tr><tr class="selectable">
-			{% endif %}
-		{% endfor %}
-		{% if last_day_week > 0 and last_day_week < 7 %}
-			{% for jour in 1..last_day_week %}
-				<td></td>
+				<td class="{{ class }}">{{ jour }}<div class="event">{{ title }}</div></td>
+
 			{% endfor %}
-		{% endif %}
-	</tr>
-</table>
+				</tr><tr class="selectable">
+			{% for jour in 7-decalage+1..nb_jour %}
+				{% set class = '' %}
+				{% set title = '' %}
+				{% if jour == cur_day and month == cur_month and year == cur_year %}
+					{% set class = 'today'|e %}
+				{% endif%}
+				{% if busyDays.jour is defined %}
+					{% if jour in busyDays.jour %}
+						{% set class = class ~ ' busy'|e %}
+						{% set title = busyDays.title[jour] %}
+					{% endif %}
+				{% endif %}
+				<td class="{{ class }}">{{ jour }}<div class="event">{{ title }}</div></td>
+				{% if (jour - radius) % 7 == 0 %}
+					</tr><tr class="selectable">
+				{% endif %}
+			{% endfor %}
+			{% if last_day_week > 0 and last_day_week < 7 %}
+				{% for jour in 1..last_day_week %}
+					<td></td>
+				{% endfor %}
+			{% endif %}
+		</tr>
+	</table>
+</div>

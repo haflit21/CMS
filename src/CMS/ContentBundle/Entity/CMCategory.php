@@ -90,27 +90,6 @@ class CMCategory
     private $contents;
 
     /**
-     * @var string $metatitle
-     *
-     * @ORM\Column(name="metatitle", type="string", length=255)
-     */
-    private $metatitle;
-
-    /**
-     * @var text $metadescription
-     *
-     * @ORM\Column(name="metadescription", type="text", nullable=true)
-     */
-    private $metadescription;
-
-    /**
-     * @var string $canonical
-     *
-     * @ORM\Column(name="canonical", type="string", length=255, nullable=true)
-     */
-    private $canonical;
-
-    /**
      * @var string url
      *
      * @ORM\Column(name="url", type="string", length=255, unique=true)
@@ -133,6 +112,11 @@ class CMCategory
      * @ORM\Column(name="published", type="boolean")
      */
      private $published;
+
+     /**
+     * @ORM\OneToMany(targetEntity="CMMetaValueCategory", mappedBy="category", cascade={"remove", "persist"})
+     */
+    private $metavalues;
 
     /**
      * Constructor
@@ -229,75 +213,6 @@ class CMCategory
     public function getContents()
     {
         return $this->contents;
-    }
-
-    /**
-     * Set metatitle
-     *
-     * @param  string     $metatitle
-     * @return CMCategory
-     */
-    public function setMetatitle($metatitle)
-    {
-        $this->metatitle = $metatitle;
-
-        return $this;
-    }
-
-    /**
-     * Get metatitle
-     *
-     * @return string
-     */
-    public function getMetatitle()
-    {
-        return $this->metatitle;
-    }
-
-    /**
-     * Set metadescription
-     *
-     * @param  string     $metadescription
-     * @return CMCategory
-     */
-    public function setMetadescription($metadescription)
-    {
-        $this->metadescription = $metadescription;
-
-        return $this;
-    }
-
-    /**
-     * Get metadescription
-     *
-     * @return string
-     */
-    public function getMetadescription()
-    {
-        return $this->metadescription;
-    }
-
-    /**
-     * Set canonical
-     *
-     * @param  string     $canonical
-     * @return CMCategory
-     */
-    public function setCanonical($canonical)
-    {
-        $this->canonical = $canonical;
-
-        return $this;
-    }
-
-    /**
-     * Get canonical
-     *
-     * @return string
-     */
-    public function getCanonical()
-    {
-        return $this->canonical;
     }
 
     /**
@@ -599,5 +514,38 @@ class CMCategory
     public function getPublished()
     {
         return $this->published;
+    }
+
+    /**
+     * Add metavalues
+     *
+     * @param \CMS\ContentBundle\Entity\CMMetaValueCategory $metavalues
+     * @return CMCategory
+     */
+    public function addMetavalue(\CMS\ContentBundle\Entity\CMMetaValueCategory $metavalues)
+    {
+        $this->metavalues[] = $metavalues;
+    
+        return $this;
+    }
+
+    /**
+     * Remove metavalues
+     *
+     * @param \CMS\ContentBundle\Entity\CMMetaValueCategory $metavalues
+     */
+    public function removeMetavalue(\CMS\ContentBundle\Entity\CMMetaValueCategory $metavalues)
+    {
+        $this->metavalues->removeElement($metavalues);
+    }
+
+    /**
+     * Get metavalues
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getMetavalues()
+    {
+        return $this->metavalues;
     }
 }

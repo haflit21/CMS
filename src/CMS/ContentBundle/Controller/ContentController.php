@@ -25,6 +25,7 @@ use CMS\ContentBundle\Entity\CMFieldValue;
 use CMS\ContentBundle\Type\ContentType;
 
 use CMS\ContentBundle\Classes\ExtraFields;
+use CMS\ContentBundle\Classes\ExtraMetas;
 
 /**
  * Controller de contenu : gère toutes les actions qui peuvent être faites sur les contenus
@@ -183,15 +184,16 @@ class ContentController extends Controller
         $form = $this->createForm(new ContentType(), $content, array('lang_id' => $lang));
         $contenttype = $request->query->get('contentType');
         $html = ExtraFields::loadFields($this, $contenttype);
+
+        $metas = ExtraMetas::loadMetas($this);
+
         if ($request->isMethod('POST')) {
             $form->bind($request);
             if ($form->isValid()) {
                 $em = $this->getDoctrine()->getManager();
 
-                $created = $this->getDateTimeObject($content->getCreated());
+                $created = $this->_getDateTimeObject($content->getCreated());
                 $content->setCreated($created);
-
-                $content = $this->getMetas($content);
 
                 $contentTaxonomy = new CMContentTaxonomy;
                 $contentTaxonomy->addContent($content);
@@ -204,6 +206,7 @@ class ContentController extends Controller
 
                 $contenttype = $request->get('contenttype');
                 ExtraFields::saveFields($this, $em, $request, $content, $contenttype);
+                ExtraMetas::saveMetas($this, $em, $request, $content);
                 $em->persist($content);
                 $em->flush();
                 $this->get('session')->setFlash('success', 'Le contenu a bien été sauvegardé');
@@ -215,7 +218,8 @@ class ContentController extends Controller
             'form'        => $form->createView(),
             'content'     => $content, 
             'lang'        => $lang, 
-            'html'        => $html, 
+            'html'        => $html,
+            'metas'       => $metas,  
             'contenttype' => $contenttype
         );
     }
@@ -243,6 +247,7 @@ class ContentController extends Controller
         $content->setLanguage($language);
         $form = $this->createForm(new ContentType(), $content, array('lang_id' => $lang));
         $html = ExtraFields::loadFields($this, $contenttype);
+        $metas = ExtraMetas::loadMetas($this);
 
         if ($request->isMethod('POST')) {
             $form->bind($request);
@@ -267,6 +272,7 @@ class ContentController extends Controller
                 $em->persist($taxonomy);
                 $contenttype = $request->request->get('contenttype');
                 ExtraFields::saveFields($this, $em, $request, $content, $contenttype);
+                ExtraMetas::saveMetas($this, $em, $request, $content);
                 $em->persist($content);
                 $em->flush();
 
@@ -302,25 +308,9 @@ class ContentController extends Controller
     {
         $content = $this->getDoctrine()->getRepository('CMSContentBundle:CMContent')->find($id);
         $content = $this->_getStringDate($content);
-        $html = '';
-
-        foreach ($content->getContentType()->getFields() as $key1 => $field) {
-            $display_elem=null;
-            foreach ($content->getFieldValues() as $key2 => $value) {
-                if ($field->getPublished()) {
-                    if ($field->getId() == $value->getField()->getId() && $content->getId() == $value->getContent()->getId()) {
-                        $html .= $field->getField()->displayfield($field, $value->getValue());
-                        $display_elem=1;
-                    }
-                }
-            }
-            if (!$display_elem) {
-                if ($field->getPublished()) {
-                    $html .= $field->getField()->displayfield($field);
-                }
-            }
-
-        }
+        
+        $html  = ExtraFields::loadEditFields($content);
+        $metas = ExtraMetas::loadEditMetas($content, $this);
 
         $form = $this->createForm(new ContentType(), $content, array('lang_id' => $content->getLanguage()->getId()));
 
@@ -331,41 +321,29 @@ class ContentController extends Controller
 
                 $created = $this->_getDateTimeObject($content->getCreated());
                 $content->setCreated($created);
-                $content = $this->_getMetas($content);
 
                 $type = $content->getContentType();
-                foreach ($type->getFields() as $key => $field) {
-                    $additem=null;
-                    foreach ($content->getFieldValues() as $key => $fieldvalue) {
-                        if ($fieldvalue->getField()->getId() == $field->getId()) {
-                            $value = $request->request->get($field->getName());
-                            $fieldvalue->setValue($value);
-                            $em->persist($fieldvalue);
-                            $additem=1;
-                        }
-                    }
-                    if (!$additem) {
-                        $value = $request->request->get($field->getName());
-                        $fieldvalue = new CMFieldValue;
-                        $fieldvalue->setValue($value);
-                        $fieldvalue->setContent($content);
-                        $fieldvalue->setField($field);
-                        $content->addFieldValue($fieldvalue);
-                        $field->addFieldValue($fieldvalue);
-                        $em->persist($fieldvalue);
-                    }
-                }
+                
+
+                ExtraFields::updateFields($this, $em, $request, $content, $type);
+
 
                 $em->persist($content);
                 $em->flush();
-
+                ExtraMetas::updateMetas($this, $em, $request, $content); 
+                $em->flush();
                 $this->get('session')->setFlash('success', 'Le contenu a bien été sauvegardé');
                 
                 return $this->redirect($this->generateUrl('contents'));
             }
         }
 
-        return array('form' => $form->createView(),'content' => $content, 'html'=>$html);
+        return array(
+            'form'    => $form->createView(),
+            'content' => $content, 
+            'html'    => $html, 
+            'metas'   => $metas
+        );
     }
 
     /**

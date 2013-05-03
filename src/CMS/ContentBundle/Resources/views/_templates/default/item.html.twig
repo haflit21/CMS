@@ -1,4 +1,13 @@
 <div class="col12">
-<h2>{{ content.title }}</h2>
-{{ content.description|formContact('fr')|raw }}
+{% if content.getFieldValue('icon-title') != '' %}
+	<h2><i class="{{ content.getFieldValue('icon-title') }}"></i> {{ content.title }}</h2>	
+	{% else %}
+	<h2>{{ content.title }}</h2>	
+	{% endif %}
+{{ content.description|formContact('fr')|googleMap|raw }}
 </div>
+{% block javascript %}
+	{% if srcipt is defined %}
+		{{ script }}
+	{% endif %}
+{% endblock %}

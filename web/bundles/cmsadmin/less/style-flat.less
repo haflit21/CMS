@@ -109,6 +109,22 @@ body {
 	left:0;
 }
 
+.fill{
+    min-height: 100%;
+    position: relative;    
+}
+
+.filler:after{
+    background-color: inherit;
+    bottom: 0;
+    content: "";
+    right: 0;
+    position: absolute;
+    top: 0;
+    width: inherit;
+    z-index: -1;  
+}
+
 h1, h2, h3, h4, h5, h6 {
 	font-weight:300;
 }
@@ -147,6 +163,16 @@ form {
 }
 
 
+textarea, input[type="text"], 
+input[type="password"], input[type="datetime"], input[type="datetime-local"], 
+input[type="date"], input[type="month"], input[type="time"], 
+input[type="week"], input[type="number"], input[type="email"], 
+input[type="url"], input[type="search"], input[type="tel"], 
+input[type="color"], .uneditable-input {
+	height:15px;
+}
+
+
 /******************************
 HEADER
 /******************************/
@@ -172,6 +198,33 @@ HEADER
 	img {
 		max-height: 50px;
 	}
+
+	.bloc-user {
+		color:#fff;
+		margin: 25px 0 0 0;
+
+		li > a {
+			color:#fff;
+			background: none;
+		}
+
+		li > a:hover {
+			color:#fff;
+			background: none;
+		}
+
+		ul.dropdown-menu {
+
+			a {
+				color: @darkerGrey !important;
+			}
+
+			a:hover {
+				color: #fff !important;
+				background-color: @darkerGrey !important;
+			}
+		}
+	}
 }
 
 /******************************
@@ -179,7 +232,8 @@ LEFT NAVIGATION
 /******************************/
 .nav-full-height {
 	text-align: center;
-	border-radius: 4px;
+	/*box-shadow: 0 0 20px 0px #eee;
+	border-radius: 4px;*/
 
 	ul {
 	
@@ -204,7 +258,7 @@ LEFT NAVIGATION
 
 			a:hover {
 				color:@darkerGrey;
-				border-radius: 4px;
+				/*border-radius: 4px;*/
 			}
 
 			li {
@@ -218,7 +272,7 @@ LEFT NAVIGATION
 			a {
 				background:@mintblue;
 				color:#fff;
-				border-radius: 4px 4px 0 0;
+				/*border-radius: 4px 4px 0 0;*/
 			}
 		}
 
@@ -229,7 +283,7 @@ LEFT NAVIGATION
 			a.active {
 				color: @darkerGrey;
 				background-color: @lightGrey;
-				border-radius: 4px;
+				/*border-radius: 4px;*/
 			}
 
 			li {
@@ -276,7 +330,7 @@ MAIN VIEW
 .btn-new {
 	background-color:@mintblue;
 	color:#fff;
-	border-radius: 4px;
+	/*border-radius: 4px;*/
 	line-height: 20px;
 	margin-top:13px;
 
@@ -344,16 +398,74 @@ DASHBOARD
 
 .actions_dashboard {
 	
-	h4.widget-header {
-		border-radius: 4px 4px 0 0;
-		background-color: @river;
+	text-align: center;
+	border:1px solid @lightGrey;
+	/*box-shadow: 0 0 20px 0px #eee;*/
+
+	.widget-header {
 		color:#fff;
-		font-
+		padding:5px 10px 0px;
+		text-align: center;
+		
+		h5 {
+			text-align: left;
+			margin-top:0px;
+		}
+
+		a {
+			line-height: 48px;
+			padding-bottom: 5px;
+
+			span {
+				font-size:48px;
+				color: #fff;
+			}	
+		}
+
+	}
+	.first {
+		border-right:1px solid @lightGrey;
+		margin-left:0px;
 	}
 
-	span {
-		font-size:32px;
+	.span6 {
+		font-size:12px;
+		font-weight:300;
+		padding-top:5px;
+
+		.nb {
+			font-size: 20px;
+			font-weight: normal;
+		}
 	}
+
+	input {
+		box-shadow: none;
+		-webkit-box-shadow: none;
+		-moz-box-shadow: none;
+		height: 42px !important;
+	}
+
+	.bleufonce {
+		background-color: @bleufonce;
+	}
+
+	.bleuclair {
+		background-color: @bleuclair;
+	}
+
+	.rouge {
+		background-color: @rouge;
+	}
+
+	.vert {
+		background-color: @vert;
+	}
+
+	.bleudark {
+		background-color: @bleudark;
+	}
+	
 }
 
 /******************************
@@ -367,14 +479,7 @@ label {
 	font-size: 12px !important;
 }
 
-select, textarea, input[type="text"], 
-input[type="password"], input[type="datetime"], input[type="datetime-local"], 
-input[type="date"], input[type="month"], input[type="time"], 
-input[type="week"], input[type="number"], input[type="email"], 
-input[type="url"], input[type="search"], input[type="tel"], 
-input[type="color"], .uneditable-input {
-	height:15px !important;
-}
+
 
 .form-horizontal .control-label {
 	padding-top: 0px !important;
@@ -398,7 +503,7 @@ BUTTONS
 }
 
 .button:hover, .button:active, .button:focus {
-	color:#fff !important;
+	color:#fff;
 }
 
 
@@ -406,6 +511,70 @@ BUTTONS
 	background-color:@btnMain;
 }
 
+.btnMain:hover {
+	background-color: @btnMainHover !important;
+}
+
 .btn-cancel {
 	background-color:@btnCancel;
+}
+
+/******************************
+CALENDAR
+/******************************/
+.centered {
+	padding:0 25px;
+}
+
+table.calendar {
+	width: 32*7px;
+	border:none;
+	font-size:11px;
+
+	tr {
+		text-align: center;
+		th {
+			border: none;
+			text-align: center;
+		}
+	
+		td {
+			border: none !important;
+			text-align: center;
+			padding: 0px !important;
+			height: 32px;
+			line-height:32px;
+			text-align: center;
+			width:28px;
+		}
+
+		td.today {
+			background-color: @vert;
+			color:#fff;
+			border-radius:60px;
+			font-weight:bold;
+		}
+	}
+}
+
+table.agenda-title {
+	margin-bottom: 10px;
+	tr {
+		td {
+			border: none !important;
+			color: #fff;
+
+			a {
+				color:#fff !important;
+			}
+
+			a:hover {
+				color:#fff !important;
+			}
+
+			h4 {
+				text-align: center;
+			}
+		}
+	}
 }

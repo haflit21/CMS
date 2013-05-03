@@ -68,27 +68,6 @@ class CMContent
     private $published;
 
     /**
-     * @var string $metatitle
-     *
-     * @ORM\Column(name="metatitle", type="string", length=255)
-     */
-    private $metatitle;
-
-    /**
-     * @var text $metadescription
-     *
-     * @ORM\Column(name="metadescription", type="text", nullable=true)
-     */
-    private $metadescription;
-
-    /**
-     * @var string $canonical
-     *
-     * @ORM\Column(name="canonical", type="string", length=255, nullable=true)
-     */
-    private $canonical;
-
-    /**
      * @var string url
      *
      * @ORM\Column(name="url", type="string", length=255, unique=true)
@@ -114,6 +93,11 @@ class CMContent
      * @ORM\ManyToOne(targetEntity="CMContentType", inversedBy="contents")
      */
     private $contenttype;
+
+    /**
+     * @ORM\OneToMany(targetEntity="CMMetaValueContent", mappedBy="content", cascade={"remove", "persist"})
+     */
+    private $metavalues;
 
     /**
      * Constructor
@@ -225,75 +209,6 @@ class CMContent
     public function getPublished()
     {
         return $this->published;
-    }
-
-    /**
-     * Set metatitle
-     *
-     * @param  string    $metatitle
-     * @return CMContent
-     */
-    public function setMetatitle($metatitle)
-    {
-        $this->metatitle = $metatitle;
-
-        return $this;
-    }
-
-    /**
-     * Get metatitle
-     *
-     * @return string
-     */
-    public function getMetatitle()
-    {
-        return $this->metatitle;
-    }
-
-    /**
-     * Set metadescription
-     *
-     * @param  string    $metadescription
-     * @return CMContent
-     */
-    public function setMetadescription($metadescription)
-    {
-        $this->metadescription = $metadescription;
-
-        return $this;
-    }
-
-    /**
-     * Get metadescription
-     *
-     * @return string
-     */
-    public function getMetadescription()
-    {
-        return $this->metadescription;
-    }
-
-    /**
-     * Set canonical
-     *
-     * @param  string    $canonical
-     * @return CMContent
-     */
-    public function setCanonical($canonical)
-    {
-        $this->canonical = $canonical;
-
-        return $this;
-    }
-
-    /**
-     * Get canonical
-     *
-     * @return string
-     */
-    public function getCanonical()
-    {
-        return $this->canonical;
     }
 
     /**
@@ -508,5 +423,47 @@ class CMContent
     public function getUrl()
     {
         return $this->url;
+    }
+
+    /**
+     * Add metavalues
+     *
+     * @param \CMS\ContentBundle\Entity\CMMetaValueContent $metavalues
+     * @return CMContent
+     */
+    public function addMetavalue(\CMS\ContentBundle\Entity\CMMetaValueContent $metavalues)
+    {
+        $this->metavalues[] = $metavalues;
+    
+        return $this;
+    }
+
+    /**
+     * Remove metavalues
+     *
+     * @param \CMS\ContentBundle\Entity\CMMetaValueContent $metavalues
+     */
+    public function removeMetavalue(\CMS\ContentBundle\Entity\CMMetaValueContent $metavalues)
+    {
+        $this->metavalues->removeElement($metavalues);
+    }
+
+    /**
+     * Get metavalues
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getMetavalues()
+    {
+        return $this->metavalues;
+    }
+
+    public function getFieldValue($name) {
+        foreach ($this->fieldvalues as $fieldvalue) {
+            if($fieldvalue->getField()->getName() == $name) {
+                return $fieldvalue->getField()->getField()->display($fieldvalue->getValue());
+            }
+                
+        }
     }
 }

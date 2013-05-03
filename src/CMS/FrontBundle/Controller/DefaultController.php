@@ -22,8 +22,7 @@ class DefaultController extends Controller
         $currentContent = null;
         $metas = null;
         $title = null;
-        //$url = explode(".", $url);
-        //$format = array_pop($url);
+
 
         $languages = $this->getDoctrine()
                           ->getRepository('CMSContentBundle:CMLanguage')
@@ -52,11 +51,11 @@ class DefaultController extends Controller
                     break;
                 }
                 $template = $currentContent->getContenttype()->getTemplate().'/category';
-                $metas = $this->getMetasCategory($category);
                 $title = $category->getTitle();
             } else {
                 $template = 'default/category';
             }
+            $metas = $this->getMetasCategory($category);
         }
 
         $default_url = $this->getDefaultUrl();
@@ -64,20 +63,21 @@ class DefaultController extends Controller
             $template = 'default/category';
         }
 
+
         return array(
-            'template' => $template, 
-            'format' => $_format, 
-            'url_site' => $this->container->getParameter('site_url'), 
-            'format_url' => $this->container->getParameter('format_url'), 
-            'lang' => $lang,  
-            'url' => $this->container->getParameter('site_url').$lang.'/'.$url.$this->container->getParameter('format_url'), 
-            'contents' => $contents, 
-            'content' => $content, 
-            'category' => $category, 
-            'metas' => $metas ,
-            'title' => $title, 
+            'template'    => $template, 
+            'format'      => $_format, 
+            'url_site'    => $this->container->getParameter('site_url'), 
+            'format_url'  => $this->container->getParameter('format_url'), 
+            'lang'        => $lang,  
+            'url'         => $this->container->getParameter('site_url').$lang.'/'.$url.$this->container->getParameter('format_url'), 
+            'contents'    => $contents, 
+            'content'     => $content, 
+            'category'    => $category, 
+            'metas'       => $metas,
+            'title'       => $title, 
             'default_url' => '/'.$lang.'/'.$default_url['url'], 
-            'languages' => $languages
+            'languages'   => $languages
         );
     }
 
@@ -92,20 +92,32 @@ class DefaultController extends Controller
     private function getMetasContent($content)
     {
         $str = '';
-        $str .= '<title>'.$content->getMetaTitle().'</title>';
-        $str .= '<meta name="description" content="'.$content->getMetadescription().'" />';
-        $str .= '<link rel="canonical" href="'.$content->getCanonical().'" />';
-
+        $metas = $this->getDoctrine()->getRepository('CMSContentBundle:CMMeta')->findBy(array('published' => 1));
+        foreach ($metas as $meta) {
+            $additem = false;
+            foreach ($content->getMetavalues() as $metavalue) {
+                if ($metavalue->getMeta()->getId() == $meta->getId()) {
+                    if(strpos($meta->getValue(), '%s') !== false && $metavalue->getValue() != '')
+                        $str .= sprintf($meta->getValue(), $metavalue->getValue());
+                }
+            }
+        }            
         return $str;
     }
 
     private function getMetasCategory($category)
     {
         $str = '';
-        $str .= '<title>'.$category->getMetaTitle().'</title>';
-        $str .= '<meta name="description" content="'.$category->getMetadescription().'" />';
-        $str .= '<link rel="canonical" href="'.$category->getCanonical().'" />';
-
+        $metas = $this->getDoctrine()->getRepository('CMSContentBundle:CMMeta')->findBy(array('published' => 1));
+        foreach ($metas as $meta) {
+            $additem = false;
+            foreach ($category->getMetavalues() as $metavalue) {
+                if ($metavalue->getMeta()->getId() == $meta->getId()) {
+                    if(strpos($meta->getValue(), '%s') !== false && $metavalue->getValue() != '')
+                        $str .= sprintf($meta->getValue(), $metavalue->getValue());
+                }
+            }
+        }            
         return $str;
     }
 }

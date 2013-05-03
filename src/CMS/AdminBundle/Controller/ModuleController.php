@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use CMS\BlocBundle\Entity\Bloc;
 use CMS\AdminBundle\Classes\BlocDisplay;
 use CMS\AdminBundle\Classes\BlocMenuDisplay;
+use CMS\AdminBundle\Classes\BlocUserDisplay;
 
 /**
  * @Route("/admin")
@@ -26,22 +27,25 @@ class ModuleController extends Controller
                        ->getRepository('CMSBlocBundle:Bloc');
         $bloc_base = $repository->getBlocBaseAdmin($position);
 
+
         if (empty($bloc_base)) {
             $bloc_base = $repository->getBlocBaseDefault($position, 1);
         }
-
         $html = '';
         foreach ($bloc_base as $key => $bloc_b) {
             $params = json_decode($bloc_b->getParams());
-            $bloc = $this->getBlocBaseType($params);
             
+            $bloc = $this->getBlocBaseType($params);
             $bloc_display = new BlocDisplay();
            
 
             $name_class = '\CMS\AdminBundle\Classes\\'.$params->bloc_type.'Display';
+            /*if($position == 'admin_menu_top')
+                var_dump($params->bloc_type);*/
             $bloc_spec = new $name_class;
             $bloc_spec->setBloc($bloc);
             $options = array();
+            //var_dump($params->bloc_type); die;
             switch($params->bloc_type) {
                 case 'BlocMenu':
                     $bloc_spec->setRequest($request);
@@ -55,10 +59,13 @@ class ModuleController extends Controller
                     $bloc_spec->setRepositoryMenu($this->getDoctrine()->getRepository('CMSMenuBundle:Menu'));
                     $bloc_spec->setUrlIntern($request->getPathInfo());
                     $bloc_spec->getOptionsBreadcrumb();
-                    break;    
+                    break; 
+                case 'BlocUser':
+                    $options['site_url'] = 'http://chris-local.com/fr/accueil.html';
+                    $options['user'] = $this->get('security.context')->getToken()->getUser()->getFirstname().' '.$this->get('security.context')->getToken()->getUser()->getLastname();
+                    break;         
             }
             $html .= $bloc_spec->displayBloc($options);
-            
 
         }
 
@@ -71,7 +78,7 @@ class ModuleController extends Controller
         return $this->getDoctrine()
                      ->getEntityManager()
                      ->getRepository('CMSBlocBundle:'.$params->bloc_type)
-                      ->find($params->bloc_id);
+                     ->find($params->bloc_id);
     }
 
     public function getUrlInternNormalized($request) {

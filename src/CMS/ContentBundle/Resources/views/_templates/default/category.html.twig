@@ -1,6 +1,14 @@
 <div class="span8">
 {% for content in contents %}
-	<h2>{{ content.title }}</h2>
+<div class="content">
+	{% if content.getFieldValue('icon-title') != '' %}
+	<h2><i class="{{ content.getFieldValue('icon-title') }}"></i> {{ content.title }}</h2>	
+	{% else %}
+	<h2>{{ content.title }}</h2>	
+	{% endif %}
 	{{ content.description|raw }}
+</div>
+<div class="clearfix"></div>
 {% endfor %}
+
 </div>

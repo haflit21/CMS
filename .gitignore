@@ -1,0 +1,14 @@
+app/cache/*
+app/cache/prod/*
+app/cache/dev/*
+app/logs/*
+app/AppCache.php
+app/autoload.php
+app/bootstrap.php.cache
+app/check.php
+app/console
+app/phpunit.xml.dist
+app/SymfonyRequirements.php
+webuploads/*
+web/uploads/*
+README.md

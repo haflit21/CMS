@@ -1,4 +1,5 @@
 @import "variables.less";
+@import "icons_admin.less";
 html {
 	height:100%;
 	width:100%;
@@ -12,7 +13,7 @@ body {
 	padding:0;
 	margin:0;
 	color:@mainColor;
-	font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;
+	font-family:@fontMain;
 	background:@bgBody;
 	font-size:@sizeText;
 }
@@ -22,6 +23,7 @@ h1, h2 {
 	font-family: @fontTitle;
 	color: @alizarin;
 	border-bottom:1px solid @greyBorder;
+	font-weight: 300;
 }
 
 
@@ -60,16 +62,29 @@ a:hover {
 #header {
 	height:80px;
 	background: @bgHeader;
-	border-bottom:1px solid #e8e8e8;
+	border-bottom:1px solid #e8e8e8;	
+}
+
+#header-left {
+	float: right;
+	background: url('/bundles/cmsfront/images/map.png') right -75px no-repeat;
 }
 
 .slogan {
-	padding:20px 0 0 10px;
+	padding:0 10px;
 	color:#777;
-}
 
-.slogan a {
-	color:#777;
+	a {
+		color:#777;
+		font-family: @fontSlogan;
+		font-size:18px !important;
+		line-height: 80px;
+		font-weight: 300;
+	}
+
+	a:hover {
+		text-decoration: none;
+	}
 }
 
 #logo {
@@ -195,14 +210,11 @@ ul.horizontal li.dropdown:hover ul.dropdown-menu{
 /*********************************
  * SLIDER 
  *********************************/
-.bg-slider {
-	background:url('/bundles/cmsfront/V2/images/bg-slider.jpg');
-}
 
 #slider {
 	width:1170px;
 	height:132px;
-	margin:0 auto;
+	margin:10px auto 0;
 	overflow:hidden;
 }
 
@@ -243,6 +255,7 @@ ul.horizontal li.dropdown:hover ul.dropdown-menu{
 	color: @blanc;
 	font-size:18px;
 	font-family: @fontTitle;
+	font-weight: 300;
 }
 
 .ls-s2 {
@@ -254,6 +267,28 @@ ul.horizontal li.dropdown:hover ul.dropdown-menu{
 	color: @blanc;
 	font-size:18px;
 	font-family: @fontTitle;
+}
+
+/*********************************
+ * BREADCRUMB
+ *********************************/
+.breadcrumb {
+	background: none;
+	padding-left: 0px;
+
+	li {
+		
+		a {
+		
+			i {
+				padding: 0px;
+			}
+		}
+
+		i {
+			padding: 0 10px;
+		}
+	}
 }
 
 /*********************************
@@ -308,6 +343,53 @@ ul.horizontal li.dropdown:hover ul.dropdown-menu{
 }
 
 /*********************************
+ * FORMS
+ *********************************/
+.form-horizontal  {
+	.control-label {
+		width: 160px !important;
+		margin-right: 20px;
+		font-weight: 300;
+		font-size: @sizeText;
+	}	
+}	
+
+/*********************************
+ * BUTTONS
+ *********************************/
+.button {
+	border-radius: 4px;
+	line-height: 20px;
+	padding: 2px 10px;
+	color: #fff;
+	border: 0;
+	display: inline-block;
+	margin-bottom: 0;
+	text-align: center;
+	vertical-align: middle;
+	cursor: pointer;
+	font-family: @fontMain;
+	font-weight: 300;
+	font-size: @sizeText !important;
+}
+
+.btn-main {
+	background-color: @darkgreen;
+}
+
+.btn-cancel {
+	background-color: @alizarin;
+}
+
+
+/*********************************
+ * MAP
+ *********************************/
+.map img{max-width: inherit;}
+.map { height:500px; }
+
+
+/*********************************
  * FOOTER
  *********************************/
  #footer {
@@ -336,7 +418,7 @@ ul.horizontal li.dropdown:hover ul.dropdown-menu{
 			line-height: 30px;
 
 			a:hover {
-				text-decoration:none;
+				text-decoration: none;
 			}
 	 	}
  	}

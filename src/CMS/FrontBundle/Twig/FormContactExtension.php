@@ -33,7 +33,7 @@ class FormContactExtension extends Twig_Extension
     public function formContactFilter($value,$lang)
     {
 
-        preg_match_all('/\[%%[^%%]*%%\]/', $value, $vars_found, PREG_PATTERN_ORDER);
+        preg_match_all('/\[%%contact[^%%]*%%\]/', $value, $vars_found, PREG_PATTERN_ORDER);
         $vars_found = current($vars_found);
 
         if (is_array($vars_found)) {

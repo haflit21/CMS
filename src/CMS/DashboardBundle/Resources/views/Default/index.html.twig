@@ -91,5 +91,19 @@
 {% endblock body %}
 
 {% block javascripts %}
-
+<script src="http://localhost:3232/socket.io/socket.io.js"></script>
+<script>
+$(function() { 
+var last_li = $('.nav-full-height ul li').last().html();
+var socket = io.connect('http://localhost:3232');
+socket.on('wdgt_content', function (data) {
+	console.log(data);
+    $('#nb_content').html(data.nb_contents);
+    $('#nb_categories').html(data.nb_categories);
+    
+    $('div.nav-full-height ul li').last().html(last_li);
+    $('div.nav-full-height ul li').last().append('<span class="badge badge-important">' + data.nb_contacts + '</span>');
+});
+})
+</script>
 {% endblock %}

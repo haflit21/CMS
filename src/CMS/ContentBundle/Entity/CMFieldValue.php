@@ -22,7 +22,7 @@ class CMFieldValue
 
     /**
      * @ORM\Id
-     * @ORM\ManyToOne(targetEntity="CMField", inversedBy="fieldsvalues", cascade={"remove"})
+     * @ORM\ManyToOne(targetEntity="CMField", inversedBy="fieldsvalues")
      */
     private $field;
 

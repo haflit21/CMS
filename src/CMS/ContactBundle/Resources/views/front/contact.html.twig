@@ -1,8 +1,33 @@
 <div class="col8">
-<form class="form-horizontal" action="{{ path('contacts_new') }}" method="post">
+<form class="form-horizontal" method="post" id="form-contact">
 	{{ form_widget(form) }}
 	<label class="control-label"></label>
 	<input type="reset" class="button btn-cancel" value="Annuler" />
 	<input type="submit" class="button btn-main" value="Confirmer" onClick="_gaq.push(['_trackEvent', 'Formulaires', 'Valider', 'Contact']);" />
 </form>
 </div>
+<script src="http://localhost:3232/socket.io/socket.io.js"></script>
+<script type="text/javascript">
+$('#form-contact').submit(function(event) {
+		event.preventDefault();
+		var socket = io.connect('http://localhost:3232');
+		var date = new Date();
+		var month = date.getMonth()+1;
+		var day = date.getDate();
+		if(month < 10)
+			month = '0' + month;
+		if(day < 10)
+			day = '0' + day;
+
+		contact = {
+			lastname : $('#contact_lastname').val(),
+			firstname : $('#contact_firstname').val(),
+			email : $('#contact_sender').val(),
+			subject: $('#contact_subject').val(),
+			message: $('#contact_message').val(),
+			created: date.getFullYear() + '-' + month + '-' + day
+		};
+		console.log(contact);
+		socket.emit('contact', contact);
+	});
+</script>

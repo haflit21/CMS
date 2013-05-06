@@ -56,7 +56,7 @@ class BlocBreadcrumb
         $str = '<div class="container"><ul class="breadcrumb">';
         if ($options['url'] != $options['default_url']) {
             if($this->displayHome)
-                $str .= '<li><a href="'.$options['default_url'].'"><i class="icon-home"></i></a>'.$this->separator.'</li>';
+                $str .= '<li><a href="'.$options['default_url'].'"><i class="admin-icon-home"></i></a>'.$this->separator.'</li>';
             $i=0;
             $nbLeaves = count($entries);
             foreach ($entries as $entry) {

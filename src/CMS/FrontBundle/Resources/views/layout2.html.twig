@@ -1,8 +1,6 @@
 <!doctype html>
 <html lang="fr">
 <head>
-	<meta charset="UTF-8">
-	<meta charset="UTF-8" />
     {{ metas|raw }}
     <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -12,13 +10,27 @@
     {% stylesheets filter='less,?yui_css' output='css/front-main.css' debug=false
     	'@CMSAdminBundle/Resources/public/less/bootstrap.less'
     	'@CMSAdminBundle/Resources/public/less/responsive.less'
-		'bundles/cmsfront/css/social.css'
-    	'bundles/cmsfront/V2/less/style.less'
+    	'@CMSAdminBundle/Resources/public/css/style-linecons.css'
+		'@CMSFrontBundle/Resources/public/css/social.css'
+    	'@CMSFrontBundle/Resources/public/V2/less/style.less'
         %}
     <link rel="stylesheet" href="{{ asset_url }}" />
     {% endstylesheets %}
     <link href='http://fonts.googleapis.com/css?family=Lato:100,300,400,700,900,100italic,300italic,400italic,700italic,900italic' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800|Varela+Round|Montserrat:400,700"/>
     <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+    {% javascripts filter='yui_js' output='js/main.js' debug=false
+    'bundles/cmsadmin/js/jquery-1.9.1.min.js'
+    'bundles/cmsadmin/js/bootstrap.min.js'
+    'bundles/cmsadmin/js/jquery.cycle.all.min.js'
+    'bundles/cmsadmin/js/jquery.maximage.min.js'
+    'bundles/cmsfront/V2/js/jquery-easing-1.3.js'
+	'bundles/cmsfront/V2/js/layerslider.kreaturamedia.jquery.js'
+
+%}
+<script type="text/javascript" src="{{ asset_url }}"></script>
+
+{% endjavascripts %}
     <script type="text/javascript">
 
 	  var _gaq = _gaq || [];
@@ -41,23 +53,25 @@
 					<a href="{{ default_url }}"><img src="{{ asset('/bundles/cmsfront/V2/images/logo.png') }} " /></a>
 				</div>
 				<div class="pull-left slogan">
-					<a href="javascript:">Christophe<br />Corona</a>
+					<a href="javascript:">Christophe Corona</a>
 				</div>
-				<div id="languages">
-                    <ul class="horizontal">
-                        {% for language in languages %}
-                        	<li><a href="#">{{ language }}</a></li>
-                        {% endfor %}
-                    </ul>
-                </div>
-				<div id="menu">
-	               {% if category.id is defined %}
-	                {% render "CMSFrontBundle:Common:header" with{'cat_id': category.id, 'item_id': ''} %}
-	               {% elseif content.id is defined %}
-	                {% render "CMSFrontBundle:Common:header" with{'cat_id': '', 'item_id': content.id} %}
-	               {% else %}
-	                {% render "CMSFrontBundle:Common:header" with{'cat_id': '', 'item_id': ''} %}
-	               {% endif %}
+				<div id="header-left" class="span8">
+					<div id="languages">
+	                    <ul class="horizontal">
+	                        {% for language in languages %}
+	                        	<li><a href="#">{{ language }}</a></li>
+	                        {% endfor %}
+	                    </ul>
+	                </div>
+					<div id="menu">
+		               {% if category.id is defined %}
+		                {% render "CMSFrontBundle:Common:header" with{'cat_id': category.id, 'item_id': ''} %}
+		               {% elseif content.id is defined %}
+		                {% render "CMSFrontBundle:Common:header" with{'cat_id': '', 'item_id': content.id} %}
+		               {% else %}
+		                {% render "CMSFrontBundle:Common:header" with{'cat_id': '', 'item_id': ''} %}
+		               {% endif %}
+					</div>
 				</div>
 			</div>
 		</div>
@@ -88,33 +102,27 @@
 		<div class="clearfix"></div>
 		<div id="footer" class="row-fluid">
 			<div class="container">
-				<div class="row">
-					<div class="span6 pull-left">Copyright &copy; Christophe Corona {{ "2009 - " ~ "now"|date("Y") }}</div>
-					<div class="span6 pull-right visible-tablet visible-desktop">
-						{% if category.id is defined %}
-	                    {% render "CMSFrontBundle:Common:bottom" with{'cat_id': category.id, 'item_id': ''} %}
-	                   {% elseif content.id is defined %}
-	                    {% render "CMSFrontBundle:Common:bottom" with{'cat_id': '', 'item_id': content.id} %}
-	                   {% else %}
-	                    {% render "CMSFrontBundle:Common:bottom" with{'cat_id': '', 'item_id': ''} %}
-	                	{% endif %}
-					</div>
+			
+				<div class="span6 pull-left">Copyright &copy; Christophe Corona {{ "2009 - " ~ "now"|date("Y") }}</div>
+				<div class="span6 pull-right visible-tablet visible-desktop">
+					{% if category.id is defined %}
+                    {% render "CMSFrontBundle:Common:bottom" with{'cat_id': category.id, 'item_id': ''} %}
+                   {% elseif content.id is defined %}
+                    {% render "CMSFrontBundle:Common:bottom" with{'cat_id': '', 'item_id': content.id} %}
+                   {% else %}
+                    {% render "CMSFrontBundle:Common:bottom" with{'cat_id': '', 'item_id': ''} %}
+                	{% endif %}
 				</div>
 			</div>
 		</div>
 	</div>
 
-{% javascripts filter='yui_js' output='js/main.js' debug=false
-    'bundles/cmsadmin/js/jquery-1.9.1.min.js'
-    'bundles/cmsadmin/js/bootstrap.min.js'
-    'bundles/cmsadmin/js/jquery.cycle.all.min.js'
-    'bundles/cmsadmin/js/jquery.maximage.min.js'
-    'bundles/cmsfront/V2/js/jquery-easing-1.3.js'
-	'bundles/cmsfront/V2/js/layerslider.kreaturamedia.jquery.js'
 
-%}
-<script type="text/javascript" src="{{ asset_url }}"></script>
-{% endjavascripts %}
+{% block javascript %}
+	{% if srcipt is defined %}
+		{{ script }}
+	{% endif %}
+{% endblock %}
 <script type="text/javascript">
 $(document).ready(function() {
 	$('#slider').layerSlider({

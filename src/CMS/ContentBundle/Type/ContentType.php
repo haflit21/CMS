@@ -34,9 +34,6 @@ class ContentType extends AbstractType
                 'required'=>true,
                 'attr' => array('class' => 'categories')
             ))
-            ->add('metatitle', 'text', array('label'=>'MetaTitle', 'required'=>false))
-            ->add('metadescription', 'text', array('label'=>'MetaDescription', 'required'=>false))
-            ->add('canonical', 'text', array('label'=>'Canonical', 'required'=>false))
             ->add('url', 'text', array('label'=>'Url', 'required' => false))
         ;
     }

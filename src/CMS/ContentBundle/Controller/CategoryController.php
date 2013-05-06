@@ -22,6 +22,8 @@ use CMS\ContentBundle\Entity\CMCategory;
 use CMS\ContentBundle\Type\CategoryType;
 use Gedmo\Sluggable\Util\Urlizer;
 
+use CMS\ContentBundle\Classes\ExtraMetas;
+
 /**
  * Controller de category : gère toutes les actions qui peuvent être faites sur les catégories
  *
@@ -152,6 +154,7 @@ class CategoryController extends Controller
         $language = $this->getDoctrine()->getRepository('CMSContentBundle:CMLanguage')->find($lang);
         $category->setLanguage($language);
         $form = $this->createForm(new CategoryType(), $category, array('lang_id' => $lang));
+        $metas = ExtraMetas::loadMetas($this);
 
         if ($request->isMethod('POST')) {
 
@@ -160,15 +163,22 @@ class CategoryController extends Controller
             if ($form->isValid()) {
 
                 $em = $this->getDoctrine()->getManager();
-
+                
                 $em->persist($category);
                 $em->flush();
+
+                ExtraMetas::saveMetasCategory($this, $em, $request, $category);
                 $this->get('session')->setFlash('success', 'La catégorie a bien été sauvegardée');
                 return $this->redirect($this->generateUrl('categories'));
             }
         }
 
-        return array('form' => $form->createView(),'category' => $category, 'lang' => $lang);
+        return array(
+            'form'     => $form->createView(),
+            'metas'    => $metas,
+            'category' => $category, 
+            'lang'     => $lang
+        );
     }
 
     /**
@@ -189,6 +199,7 @@ class CategoryController extends Controller
         $category->setLanguage($language);
         $categoryReference = $this->getDoctrine()->getRepository('CMSContentBundle:CMCategory')->find($reference);
         $form = $this->createForm(new CategoryType(), $category);
+        $metas = ExtraMetas::loadMetas($this);
 
         if ($request->isMethod('POST')) {
             $form->bind($request);
@@ -210,10 +221,11 @@ class CategoryController extends Controller
 
         return array(
             'form'               => $form->createView(),
-            'category'           => $category, 
+            'category'           => $category,
+            'metas'              => $metas, 
             'lang'               => $lang, 
             'referenceCategory'  => $reference, 
-            'referenceCatObj' => $categoryReference
+            'referenceCatObj'    => $categoryReference
         );
     }
 
@@ -231,21 +243,29 @@ class CategoryController extends Controller
     {
         $category = $this->getDoctrine()->getRepository('CMSContentBundle:CMCategory')->find($id);
         $form = $this->createForm(new CategoryType(), $category, array('lang_id' => $category->getLanguage()->getId()));
+        $metas = ExtraMetas::loadEditMetasCategory($category, $this);
 
         if ($request->isMethod('POST')) {
             $form->bind($request);
             if ($form->isValid()) {
 
                 $em = $this->getDoctrine()->getManager();
-                $category = $this->_getMetas($category);
+
+
+
                 $em->persist($category);
                 $em->flush();
+                ExtraMetas::updateMetasCategory($this, $em, $request, $category);
                 $this->get('session')->setFlash('success', 'La catégorie a bien été sauvegardée');
                 return $this->redirect($this->generateUrl('categories'));
             }
         }
 
-        return array('form' => $form->createView(),'category' => $category);
+        return array(
+            'form'     => $form->createView(),
+            'category' => $category, 
+            'metas'    => $metas
+        );
     }
 
     /**

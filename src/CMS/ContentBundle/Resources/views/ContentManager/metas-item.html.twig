@@ -1,0 +1,31 @@
+{% extends('::admin.html.twig') %}
+{% block title %}{% trans %}Metas{% endtrans %}{% endblock %}
+{% block body %}
+
+    <div class="row-fluid">
+        <div class="span12">
+
+           <h1 class="pull-left">{% trans %}Metas{% endtrans %}</h1>
+
+
+             <a href="{{ path('metas') }}" class="button btn-cancel pull-right"><i class="admin-icon-left-open-1"></i> {% trans %}Retour{% endtrans %}</a>
+              <div class="clearfix sep3"></div>
+            {% if id is defined %}
+                <form class="form-horizontal" action="{{path('metas_edit', {'id' : id} )}}" method="post" {{ form_enctype(form) }}>
+            {% else %}
+                <form class="form-horizontal" action="{{path('metas_new') }}" method="post" {{ form_enctype(form) }}>
+            {% endif %}
+                <div class="span8">
+                    {{ form_errors(form) }}
+                    {{ form_widget(form) }}
+                    <div class="form-actions">
+                        <a href="{{ path('metas') }}" class="button btn-cancel">{% trans %}Cancel{% endtrans %} <i class="admin-icon-cancel"></i></a>
+                        <button type="submit" class="button btn-main">{% trans %}Validate{% endtrans %} <i class="admin-icon-ok"></i></button>
+                    </div>
+                </div>
+                {{ form_rest(form) }}
+            </form>
+        </div>
+    </div>
+
+{% endblock body %}

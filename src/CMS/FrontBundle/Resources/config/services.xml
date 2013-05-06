@@ -25,5 +25,8 @@
         <service id="cms.twig.socialButtons_exension" class="CMS\FrontBundle\Twig\SocialButtonsExtension">
             <tag name="twig.extension" />
         </service>
+        <service id="cms.twig.googleMap_exension" class="CMS\FrontBundle\Twig\GoogleMapExtension">
+            <tag name="twig.extension" />
+        </service>
     </services>
 </container>

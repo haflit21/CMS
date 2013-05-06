@@ -6,6 +6,10 @@
                 <source>Users</source>
                 <target>Utilisateurs</target>
             </trans-unit>
+            <trans-unit id="2">
+            	<source>Back</source>
+            	<target>Retour</target>
+            </trans-unit>	
         </body>
     </file>
 </xliff>

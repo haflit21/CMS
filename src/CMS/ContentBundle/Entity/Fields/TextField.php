@@ -40,7 +40,7 @@ class TextField extends Fields
     public function displayfield($field, $value=null)
     {
         $html = '<div class="control-group"><div class="control-label">'.$field->getTitle().'</div>';
-        $html .= '<div class="controls"><input type="text" name="'.$field->getName().'" value="'.$value.'" size="'.$this->getParamsValue($this->params, 'size').'" /></div></div>';
+        $html .= '<div class="controls"><input type="text" name="'.$field->getName().'" value="'.htmlentities($value).'" size="'.$this->getParamsValue($this->params, 'size').'" /></div></div>';
 
         return $html;
     }
@@ -63,6 +63,10 @@ class TextField extends Fields
                 $start = '<p>';
                 $end = '</p>';
             break;
+            default:
+                $start = '';
+                $end = '';
+            break;    
         }
 
         $html = $start.' '.$value.' '.$end;
@@ -92,6 +96,7 @@ class TextField extends Fields
             </select>
             <label for="displaytype">Display in </label>
             <select if="displaytype" name="options[displaytype]" >
+                <option '.$this->getParamsValue($this->params, 'displaytype', 'select', '--').' value ="--"> </option>
                 <option '.$this->getParamsValue($this->params, 'displaytype', 'select', 'div').' value ="div">div</option>
                 <option '.$this->getParamsValue($this->params, 'displaytype', 'select', 'span').' value ="span">span</option>
                 <option '.$this->getParamsValue($this->params, 'displaytype', 'select', 'p').' value ="p">paragraphe</option>

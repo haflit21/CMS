@@ -14,7 +14,7 @@ class CategoryType extends AbstractType
         $lang_id = $options['lang_id'];
         $builder
             ->add('title', 'text', array('label'=>'Title'))
-             ->add('published', 'choice', array(
+            ->add('published', 'choice', array(
                 'choices'=> array('1'=>'Oui', '0'=>'Non'),
                 'expanded'=>true,
                 'multiple'=>false,
@@ -41,9 +41,6 @@ class CategoryType extends AbstractType
                     'empty_value' => 'Après l\'élément',
                     'required' => false,
                 ))
-            ->add('metatitle', 'text', array('label'=>'MetaTitle'))
-            ->add('metadescription', 'text', array('label'=>'MetaDescription', 'required'=>false))
-            ->add('canonical', 'text', array('label'=>'Canonical', 'required'=>false))
             ->add('url', 'text', array('label'=>'Url', 'required' => true))
         ;
     }

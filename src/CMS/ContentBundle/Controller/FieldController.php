@@ -147,7 +147,7 @@ class FieldController extends Controller
         $fieldsOptions = null;
         $fieldtype = $request->query->get('fieldtype');
         if ($fieldtype) {
-            $fieldPath = $this->getFieldPath();
+            $fieldPath = $this->_getFieldPath();
             $fieldclass = $fieldPath.$fieldtype;
             $fieldsOptions = new $fieldclass;
             $fieldsOptions = $fieldsOptions->getOptions();
@@ -160,7 +160,7 @@ class FieldController extends Controller
                 $em = $this->getDoctrine()->getManager();
                 $fieldtype = $request->request->get('fieldtype');
 
-                $fieldPath = $this->getFieldPath();
+                $fieldPath = $this->_getFieldPath();
                 $fieldclass = $fieldPath.$fieldtype;
                 $fieldValue = new $fieldclass;
 

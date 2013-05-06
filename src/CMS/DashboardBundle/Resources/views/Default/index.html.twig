@@ -84,6 +84,12 @@
 		</div>-->
 		<div class="span4 actions_dashboard">
 			{% render "CMSDashboardBundle:Agenda:index" with {'year':year, 'month': month } %}
+<<<<<<< HEAD
+=======
+			<div class="stats">
+				
+			</div>
+>>>>>>> master
 		</div>
 	</div>
 </div>
@@ -91,6 +97,7 @@
 {% endblock body %}
 
 {% block javascripts %}
+<<<<<<< HEAD
 <script src="http://localhost:3232/socket.io/socket.io.js"></script>
 <script>
 $(function() { 
@@ -108,4 +115,7 @@ socket.on('wdgt_content', function (data) {
 });
 })
 </script>
+=======
+
+>>>>>>> master
 {% endblock %}

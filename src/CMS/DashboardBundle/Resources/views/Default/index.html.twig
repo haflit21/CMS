@@ -94,15 +94,17 @@
 <script src="http://localhost:3232/socket.io/socket.io.js"></script>
 <script>
 $(function() { 
-var last_li = $('.nav-full-height ul li').last().html();
+var last_li = $('.nav-full-height ul li:last > a > i').html();
+console.log(last_li);
 var socket = io.connect('http://localhost:3232');
 socket.on('wdgt_content', function (data) {
 	console.log(data);
     $('#nb_content').html(data.nb_contents);
     $('#nb_categories').html(data.nb_categories);
     
-    $('div.nav-full-height ul li').last().html(last_li);
-    $('div.nav-full-height ul li').last().append('<span class="badge badge-important">' + data.nb_contacts + '</span>');
+    //$('.nav-full-height ul li:last > a > i').insertBefore(last_li);
+
+    $('.nav-full-height ul li:last > a > i').before('<span class="badge badge-important">' + data.nb_contacts + '</span>');
 });
 })
 </script>

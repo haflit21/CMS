@@ -12,4 +12,3 @@ app/SymfonyRequirements.php
 webuploads/*
 web/uploads/*
 README.md
-*.DS_Store

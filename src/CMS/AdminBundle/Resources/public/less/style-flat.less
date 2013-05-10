@@ -238,7 +238,7 @@ LEFT NAVIGATION
 	ul {
 	
 		li {
-			line-height:30px;
+			line-height:24px;
 
 			a {
 				color: @grey;
@@ -249,16 +249,15 @@ LEFT NAVIGATION
 					padding-right: 10px;
 				}
 
-				.badge {
-					margin-left:20px;
-					font-size:10px;
-				}
-
 				i {
 					float: right;
 				}
 
-				
+				.badge {
+					font-size:10px;
+					font-weight:normal;
+					margin-left:15px;
+				}
 			}
 
 			a:hover {
@@ -275,7 +274,7 @@ LEFT NAVIGATION
 		li.header {
 
 			a {
-				background:@mintblue;
+				background:@rouge;
 				color:#fff;
 				/*border-radius: 4px 4px 0 0;*/
 			}
@@ -313,8 +312,7 @@ MAIN VIEW
 
 .breadcrumb_admin {
 	line-height: 30px;
-	background: @lightGrey;
-	border-radius: 4px;
+	background: @beigeClair;
 	padding: 0 10px;
 	margin-bottom: 10px;
 	color: @darkGrey;
@@ -411,23 +409,28 @@ DASHBOARD
 		color:#fff;
 		padding:5px 10px 0px;
 		text-align: center;
+		background-color: @rouge;
 		
 		h5 {
 			text-align: left;
 			margin-top:0px;
-		}
-
-		a {
-			line-height: 48px;
 			padding-bottom: 5px;
-
-			span {
-				font-size:48px;
-				color: #fff;
-			}	
 		}
 
 	}
+
+	a {
+		line-height: 48px;
+		padding-bottom: 5px;
+
+		span {
+			font-size:48px;
+			color: @gris;
+		}
+
+
+	}
+
 	.first {
 		border-right:1px solid @lightGrey;
 		margin-left:0px;
@@ -437,6 +440,7 @@ DASHBOARD
 		font-size:12px;
 		font-weight:300;
 		padding-top:5px;
+		border-top: 1px solid @lightGrey;
 
 		.nb {
 			font-size: 20px;
@@ -469,6 +473,10 @@ DASHBOARD
 
 	.bleudark {
 		background-color: @bleudark;
+	}
+
+	canvas {
+		padding:10px 0;
 	}
 	
 }
@@ -553,10 +561,14 @@ table.calendar {
 			width:28px;
 		}
 
+		td.disabled {
+			color:@lightGrey;
+		}
+
 		td.today {
-			background-color: @vert;
+			background-color: @rouge;
 			color:#fff;
-			border-radius:60px;
+			/*border-radius:60px;*/
 			font-weight:bold;
 		}
 	}

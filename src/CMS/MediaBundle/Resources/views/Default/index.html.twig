@@ -36,7 +36,7 @@
 	<div class="clearfix sep3"></div>
 	<ul class="span12 thumbnails" id="media">
 		{% for dir in directories %}
-			<li class="span3">
+			<li class="span3 file">
 				<a href="{{ path('medias', {'directory': url ~ dir }) }}"><img src="{{ asset('bundles/cmsmedia/images/folder.png') }}" alt="" /></a>
 				<div class="caption">
 					<h6>{{ dir }}</h6>
@@ -50,11 +50,15 @@
 		{% endfor %}
 		{% for file in fichiers %}
 			<li class="span3 file">
-				<a href="{{ asset(url_asset ~ '/' ~ file) }}" class="fancybox"><img src="{{ (url_asset ~ '/' ~ file) | imagine_filter('thumb_media_pin')  }}" alt=""></a>
+				{% if file.ext != 'doc' and file.ext != 'docx' and file.ext != 'xls' and file.ext != 'xlsx' and file.ext != 'pdf' %}
+					<a href="{{ asset(url_asset ~ '/' ~ file.file) }}" class="fancybox"><img src="{{ (url_asset ~ '/' ~ file.file) | imagine_filter('thumb_media_pin')  }}" alt=""></a>
+				{% else %}
+					<a href="{{ asset(url_asset ~ '/' ~ file.file) }}" targte="_blank" class="fancybox"><img src="{{ asset('bundles/cmsdashboard/images/' ~ file.ext ~ '.png') }}" height="224px" /></a>
+				{% endif %}
 				<div class="caption">
-					<div class="pull-left legend_image">{{ file|slice(0,15)|lower ~'...' }}</div>
+					<div class="pull-left legend_image">{{ file.file|slice(0,15)|lower ~'...' }}</div>
 					<div class="pull-right">
-						<a class="remove" rel="tooltip" data-placement="bottom" data-original-title="Supprimer" href="{{ path('delete_media', {'current':current, 'elem': file}) }}" data-current="{{ current }}" data-elem="{{ file }}">
+						<a class="remove" rel="tooltip" data-placement="bottom" data-original-title="Supprimer" href="{{ path('delete_media', {'current':current, 'elem': file.file}) }}" data-current="{{ current }}" data-elem="{{ file.file }}">
 							<i class="icon icon-trash"></i>
 						</a>
 					</div>

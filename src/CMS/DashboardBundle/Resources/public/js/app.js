@@ -13,6 +13,7 @@ client.connect();
 
 app.listen(3232);
 var resultats = {};
+var contacts = [];
 io.sockets.on('connection', function (socket) {
     var TEST_DATABASE = 'chrisSymfony';
     var TEST_TABLE = 'cm_contents';
@@ -34,16 +35,20 @@ io.sockets.on('connection', function (socket) {
         
     });
 
-    client.query('SELECT count(c.id) as nb_contacts FROM contact c WHERE statut=0', function(err, results) {
+    client.query('SELECT count(c.id) as nb_contacts FROM contact c GROUP BY statut', function(err, results) {
         //if (err) throw err;
-        console.log(results[0].nb_contacts);
-        resultats.nb_contacts = results[0].nb_contacts;
+        resultats.nb_contacts_unread = results[0].nb_contacts;
+        resultats.nb_contacts_read = results[1].nb_contacts;
         //resultats.nb_categories = results[0].nb_categories;
         
     });
 
+    client.query('SELECT count(c.id) as nb_messages, MONTH(created) as month FROM contact c GROUP BY YEAR(c.created), MONTH(c.created)', function(err, results) {
+        contacts = results;
+         
+    })
+
     socket.on('contact', function(message) {
-        console.log(message);
         client.query('INSERT INTO contact (lastname, firstname, sender, subject, message, created) VALUES ("' + message.lastname + '", "' + message.firstname + '", "' + message.email + '", "' + message.subject + '","' + message.message + '", "' + message.created + '")', function(err, results) {
             if(err) throw err;
             resultats.nb_contacts++;
@@ -51,5 +56,6 @@ io.sockets.on('connection', function (socket) {
         })
     })
 
+    io.sockets.emit('wdgt_contact',contacts);
     io.sockets.emit('wdgt_content',resultats); 
 });

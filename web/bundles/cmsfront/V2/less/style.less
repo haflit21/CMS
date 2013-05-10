@@ -18,12 +18,21 @@ body {
 	font-size:@sizeText;
 }
 
-h1, h2 {
+h1, h2, h3 {
 	font-size: @sizeTitle;
 	font-family: @fontTitle;
 	color: @alizarin;
 	border-bottom:1px solid @greyBorder;
 	font-weight: 300;
+
+	i {
+		font-size: 16px;
+		padding-right: 5px;
+	}
+}
+
+h3 {
+	border:none;
 }
 
 
@@ -53,6 +62,10 @@ a:hover {
 ::selection { /* Pour les autres */
 	background:@alizarin;
 	color:@blanc;
+}
+
+.row.no-margin {
+	margin-left:0px !important;
 }
 
 /*********************************
@@ -351,8 +364,73 @@ ul.horizontal li.dropdown:hover ul.dropdown-menu{
 		margin-right: 20px;
 		font-weight: 300;
 		font-size: @sizeText;
-	}	
-}	
+	}
+
+}
+
+.contact textarea {
+	width:350px;
+	height: 200px;
+}
+
+/*********************************
+ * MAP CONTACT
+ *********************************/	
+
+ @-webkit-keyframes pulse{
+	0%{
+		opacity:1;
+		width: 16px;
+		height: 16px;
+	}
+	50% {
+		opacity:.5;
+		-webkit-transform: scale(3);
+	}
+	100%{
+		opacity: 0;	
+	}
+}
+@-moz-keyframes pulse{
+	0%{
+		opacity:1;
+		width: 16px;
+		height: 16px;
+	}
+	50% {
+		opacity:.5;
+		-moz-transform: scale(3);
+	}
+	100%{
+		opacity: 0;	
+	}
+}
+
+#map {
+	position: relative;
+	a {
+		position: absolute;
+		z-index:2;
+		width: 16px;
+		height:16px;
+	}
+
+	a#clermont {
+		left:229px;
+		top:244px;
+	}
+
+	a#grenoble {
+		left:266px;
+		top:256px;
+	}
+
+	a#berne {
+		left:302px;
+		top:232px;
+	}
+
+}
 
 /*********************************
  * BUTTONS

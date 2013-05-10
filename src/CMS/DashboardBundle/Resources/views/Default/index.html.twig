@@ -5,12 +5,13 @@
 <div class="row-fluid">
 	<div class="span12">
 		<div class="span4 actions_dashboard">
-			<div class="widget-header bleufonce">
+			<div class="widget-header">
 				<h5>{% trans %}Contents{% endtrans %}</h5>
-				<a href="{{ path('contents') }}">
-					<span class="li_note">&nbsp;</span>
-				</a>
 			</div>
+			<a href="{{ path('contents') }}">
+				<span class="li_note">&nbsp;</span>
+			</a>
+			
 			<div class="stats">
 				<div class="span6 first">
 					<span class="nb" id="nb_content"></span><br />
@@ -23,30 +24,32 @@
 			</div>
 		</div>
 		<div class="span4 actions_dashboard">
-			<div class="widget-header bleuclair">
+			<div class="widget-header">
 				<h5>{% trans %}Messages{% endtrans %}</h5>
-				<a href="{{ path('contacts_list') }}">
-					<span class="li_stack">&nbsp;</span>
-				</a>
 			</div>
+			<a href="{{ path('contacts_list') }}">
+				<span class="li_stack">&nbsp;</span>
+			</a>
+			
 			<div class="stats">
 				<div class="span6 first">
-					<span class="nb">3</span><br />
+					<span class="nb" id="unread"></span><br />
 					{% trans %}unread{% endtrans %}
 				</div>
 				<div class="span6">
-					<span class="nb">4</span><br>
+					<span class="nb" id="read"></span><br>
 					{% trans %}messages{% endtrans %}
 				</div>	
 			</div>
 		</div>
 		<div class="span4 actions_dashboard">
-			<div class="widget-header rouge">
+			<div class="widget-header">
 				<h5>{% trans %}Medias{% endtrans %}</h5>
-				<a href="{{ path('medias') }}">
-					<span class="li_camera">&nbsp;</span>
-				</a>
 			</div>
+			<a href="{{ path('medias') }}">
+				<span class="li_camera">&nbsp;</span>
+			</a>
+			
 			<div class="stats">
 				<div class="span6 first">
 					<span class="nb">10</span><br>
@@ -59,37 +62,22 @@
 			</div>
 		</div>
 		
-		{#<div class="span3 actions_dashboard">
-			<div class="widget-header  vert">
-				<h5>{% trans %}Langues{% endtrans %}</h5>
-				<a href="{{ path('languages') }}">
-					<span class="li_settings">&nbsp;</span>
-				</a>
-			</div>
-			<div class="stats">
-				<div class="span6 first"></div>
-				<div class="span6"></div>
-			</div>
-		</div>#}
 	</div>
 </div>
 
 <div class="h20 clearfix"></div>
 <div class="row-fluid">
 	<div class="span12">
-		<!--<div class="span3 actions_dashboard">
-			<h5 class="widget-header">{% trans %}Visites aujourd'hui{% endtrans %}</h5>
-			<input type="text" class="knob" data-readOnly="true" data-fgColor="#555" data-thickness=".2" data-linecap="round" data-width="128" data-height="128">
-			<p class="legend"></p>
-		</div>-->
 		<div class="span4 actions_dashboard">
 			{% render "CMSDashboardBundle:Agenda:index" with {'year':year, 'month': month } %}
-<<<<<<< HEAD
-=======
-			<div class="stats">
-				
+		</div>
+		<div class="span4 actions_dashboard">
+			<div class="widget-header">
+				<h5>{% trans %}Statistiques{% endtrans %}</h5>
 			</div>
->>>>>>> master
+			<div class="stats">
+				<canvas id="chartMsg" width="285px" height="142px"></canvas>
+			</div>
 		</div>
 	</div>
 </div>
@@ -97,25 +85,56 @@
 {% endblock body %}
 
 {% block javascripts %}
-<<<<<<< HEAD
+{% javascripts 
+'@CMSAdminBundle/Resources/public/js/Chart.js/Chart.min.js'
+%}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+{% endjavascripts %}
 <script src="http://localhost:3232/socket.io/socket.io.js"></script>
 <script>
 $(function() { 
-var last_li = $('.nav-full-height ul li:last > a > i').html();
-console.log(last_li);
-var socket = io.connect('http://localhost:3232');
-socket.on('wdgt_content', function (data) {
-	console.log(data);
-    $('#nb_content').html(data.nb_contents);
-    $('#nb_categories').html(data.nb_categories);
-    
-    //$('.nav-full-height ul li:last > a > i').insertBefore(last_li);
+	var last_li = $('.nav-full-height ul li:last > a > i').html();
+	var dataChart = '';
+	var socket = io.connect('http://localhost:3232');
+	socket.on('wdgt_content', function (data) {
+	    $('#nb_content').html(data.nb_contents);
+	    $('#nb_categories').html(data.nb_categories);
+	    $('#unread').html(data.nb_contacts_unread);
+	    $('#read').html(data.nb_contacts_read+data.nb_contacts_unread);
+	    $('.nav-full-height ul li:last > a > i').before('<span class="badge badge-important">' + data.nb_contacts_unread + '</span>');
+	    dataChart = data.contacts;
+	});
 
-    $('.nav-full-height ul li:last > a > i').before('<span class="badge badge-important">' + data.nb_contacts + '</span>');
-});
+
+	socket.on('wdgt_contact', function (data) {
+		var ctx = document.getElementById("chartMsg").getContext("2d");
+
+		var months = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
+		var labelsChart = [];
+		var dataChartNumber = []
+		for(k in data) {
+			labelsChart.push(months[data[k].month-1]);
+			dataChartNumber.push(data[k].nb_messages);
+		}
+
+		var dataChart = {
+			labels : labelsChart,
+			datasets : [
+						{
+							fillColor : "rgba(220,220,220,0.5)",
+							strokeColor : "rgba(220,220,220,1)",
+							pointColor : "rgba(220,220,220,1)",
+							pointStrokeColor : "#fff",
+							data : dataChartNumber
+						}
+					]
+		}
+
+		new Chart(ctx).Line(dataChart);
+	
+	});
 })
-</script>
-=======
 
->>>>>>> master
+
+</script>
 {% endblock %}

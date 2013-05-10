@@ -51,9 +51,13 @@ class DefaultController extends Controller
         foreach ($uploads_dir as $dir) {
             $directories[] = substr($dir, strrpos($dir, $directory_separator)+1);
         }
-
+        $i=0;
         foreach ($uploads_file as $fichier) {
-            $fichiers[] = substr($fichier, strrpos($fichier, $directory_separator)+1);
+            $ext = explode('.',$fichier);
+            $ext = array_pop($ext);
+            $fichiers[$i]['file'] = substr($fichier, strrpos($fichier, $directory_separator)+1);
+            $fichiers[$i]['ext'] = $ext;
+            $i++;
         }
 
         $session = $this->get('session');

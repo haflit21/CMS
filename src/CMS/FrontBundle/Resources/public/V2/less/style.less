@@ -64,6 +64,10 @@ a:hover {
 	color:@blanc;
 }
 
+.row.no-margin {
+	margin-left:0px !important;
+}
+
 /*********************************
  * MENU 
  *********************************/
@@ -360,8 +364,73 @@ ul.horizontal li.dropdown:hover ul.dropdown-menu{
 		margin-right: 20px;
 		font-weight: 300;
 		font-size: @sizeText;
-	}	
-}	
+	}
+
+}
+
+.contact textarea {
+	width:350px;
+	height: 200px;
+}
+
+/*********************************
+ * MAP CONTACT
+ *********************************/	
+
+ @-webkit-keyframes pulse{
+	0%{
+		opacity:1;
+		width: 16px;
+		height: 16px;
+	}
+	50% {
+		opacity:.5;
+		-webkit-transform: scale(3);
+	}
+	100%{
+		opacity: 0;	
+	}
+}
+@-moz-keyframes pulse{
+	0%{
+		opacity:1;
+		width: 16px;
+		height: 16px;
+	}
+	50% {
+		opacity:.5;
+		-moz-transform: scale(3);
+	}
+	100%{
+		opacity: 0;	
+	}
+}
+
+#map {
+	position: relative;
+	a {
+		position: absolute;
+		z-index:2;
+		width: 16px;
+		height:16px;
+	}
+
+	a#clermont {
+		left:229px;
+		top:244px;
+	}
+
+	a#grenoble {
+		left:266px;
+		top:256px;
+	}
+
+	a#berne {
+		left:302px;
+		top:232px;
+	}
+
+}
 
 /*********************************
  * BUTTONS

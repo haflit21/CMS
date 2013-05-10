@@ -1,4 +1,4 @@
-<div class="widget-header vert">
+<div class="widget-header">
 	<h5>Agenda</h5>
 
 {% if month == 0 %}
@@ -7,6 +7,9 @@
 {% set first_day = month ~ "/01/" ~ year %}
 {% set nb_jour = first_day|date('t') %}
 {% set last_day = month ~ "/" ~ nb_jour ~ "/" ~ year %}
+{% set month_prec = month - 1 %}
+{% set last_day_monthprec =   (month_prec ~ "/01/" ~ year)|date('t') %}
+
 {% set decalage_lundi = first_day|date('w') %}
 {% set last_day_week = 7 - (last_day|strftime('%w')) %}
 {% if last_day_week == 1 %}
@@ -15,7 +18,7 @@
 
 {% set decalage = decalage_lundi -1 %}
 {% set radius = 7 - decalage %}
-
+{% set first_last_month = last_day_monthprec - decalage + 1  %}
 {% set cur_day = "now"|date('d') %}
 {% set cur_month = "now"|date('m') %}
 {% set cur_year = "now"|date('Y') %}
@@ -50,8 +53,8 @@
 			{% endfor %}
 			</tr><tr class="selectable">
 			{% if decalage != 0 %}
-				{% for i in 1..decalage %}
-					<td></td>
+				{% for i in first_last_month..last_day_monthprec %}
+					<td class="disabled">{{ i }}</td>
 				{% endfor %}
 			{% endif %}
 			{% set class = '' %}
@@ -91,7 +94,7 @@
 			{% endfor %}
 			{% if last_day_week > 0 and last_day_week < 7 %}
 				{% for jour in 1..last_day_week %}
-					<td></td>
+					<td class="disabled">{{ jour }}</td>
 				{% endfor %}
 			{% endif %}
 		</tr>

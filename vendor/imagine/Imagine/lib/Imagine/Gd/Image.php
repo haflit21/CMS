@@ -22,12 +22,16 @@ use Imagine\Exception\InvalidArgumentException;
 use Imagine\Exception\OutOfBoundsException;
 use Imagine\Exception\RuntimeException;
 
+/**
+ * Image implementation using the GD library
+ */
 final class Image implements ImageInterface
 {
     /**
      * @var resource
      */
     private $resource;
+    private $layers;
 
     /**
      * Constructs a new Image instance using the result of
@@ -45,7 +49,9 @@ final class Image implements ImageInterface
      */
     public function __destruct()
     {
-        imagedestroy($this->resource);
+        if (is_resource($this->resource) && 'gd' === get_resource_type($this->resource)) {
+            imagedestroy($this->resource);
+        }
     }
 
     /**
@@ -460,6 +466,18 @@ final class Image implements ImageInterface
             ),
             (int) round($info['alpha'] / 127 * 100)
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function layers()
+    {
+        if (null === $this->layers) {
+            $this->layers = new Layers($this, $this->resource);
+        }
+
+        return $this->layers;
     }
 
     /**

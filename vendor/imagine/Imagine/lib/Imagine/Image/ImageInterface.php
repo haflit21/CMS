@@ -17,7 +17,11 @@ use Imagine\Image\BoxInterface;
 use Imagine\Image\Color;
 use Imagine\Image\PointInterface;
 use Imagine\Exception\RuntimeException;
+use Imagine\Exception\OutOfBoundsException;
 
+/**
+ * The image interface
+ */
 interface ImageInterface extends ManipulatorInterface
 {
     const RESOLUTION_PIXELSPERINCH = 'ppi';
@@ -88,4 +92,14 @@ interface ImageInterface extends ManipulatorInterface
      * @return Color
      */
     public function getColorAt(PointInterface $point);
+
+    /**
+     * Returns the image layers when applicable.
+     *
+     * @throws RuntimeException     In case the layer can not be returned
+     * @throws OutOfBoundsException In case the index is not a valid value
+     *
+     * @return LayersInterface
+     */
+    public function layers();
 }

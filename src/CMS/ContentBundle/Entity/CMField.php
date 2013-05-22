@@ -78,7 +78,7 @@ class CMField
     private $contentType;
 
     /**
-     * @ORM\OneToMany(targetEntity="CMFieldValue", mappedBy="content", cascade={"remove"})
+     * @ORM\OneToMany(targetEntity="CMFieldValue", mappedBy="content", cascade={"remove", "persist"})
      */
     private $fieldvalues;
 

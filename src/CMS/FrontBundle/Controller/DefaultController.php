@@ -9,6 +9,56 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 class DefaultController extends Controller
 {
 
+
+    /**
+     * Route to articles with this tag
+     * @param  String $tag tag to view
+     * @return Array       infos for displaying tag view
+     * @Route("/tag/{tag}.{_format}", name="tag", requirements={"_format"="html|xml"}, defaults={"_format"="html", "lang"="fr"})
+     * @Template("CMSFrontBundle:Default:index.html.twig")
+     */
+    public function tagAction($tag,$_format)
+    {
+
+        $content = null;
+        $template = '';
+        $contents = null;
+        $currentContent = null;
+        $metas = null;
+        $title = null;
+
+
+        $languages = $this->getDoctrine()
+                          ->getRepository('CMSContentBundle:CMLanguage')
+                          ->findAll(array('published'=>1));
+
+        $lang = $this->getDoctrine()
+                          ->getRepository('CMSContentBundle:CMLanguage')
+                          ->findOneBy(array('default_lan' => 1));
+        $lang = current(explode('_', $lang->getIso()));
+
+        $tag = $this->getDoctrine()->getRepository('CMSContentBundle:CMTag')->findOneBy(array('slug' => $tag));
+        $contents = $tag->getContents();
+        $template = 'default/category';
+        $default_url = $this->getDefaultUrl();
+
+        return array(
+            'template'    => $template, 
+            'format'      => $_format, 
+            'url_site'    => $this->container->getParameter('site_url'), 
+            'format_url'  => $this->container->getParameter('format_url'), 
+            'lang'        => null,  
+            'url'         => $this->container->getParameter('site_url').'/tag/'.$tag.$this->container->getParameter('format_url'), 
+            'contents'    => $contents, 
+            'content'     => null, 
+            'category'    => null, 
+            'metas'       => null,
+            'title'       => $tag->getTitle(), 
+            'default_url' => '/'.$lang.'/'.$default_url['url'], 
+            'languages'   => $languages
+        );
+    }
+
     /**
      * @Route("/{lang}/{url}.{_format}", name="front", requirements={"lang" = "fr|en|de", "url"="[^\.]+", "_format"="html|xml"}, defaults={"url"="accueil", "_format"="html", "lang"="fr"})
      * @Template()
@@ -27,6 +77,8 @@ class DefaultController extends Controller
         $languages = $this->getDoctrine()
                           ->getRepository('CMSContentBundle:CMLanguage')
                           ->findAll(array('published'=>1));
+
+        
 
         $category = $this->getDoctrine()->getRepository('CMSContentBundle:CMCategory')->findBy(array('url' => $url));
         $category = current($category);
@@ -80,6 +132,8 @@ class DefaultController extends Controller
             'languages'   => $languages
         );
     }
+
+    
 
     private function getDefaultUrl()
     {

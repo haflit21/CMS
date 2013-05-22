@@ -33,6 +33,15 @@
 					</div>
 					<div class="control-group">
 						<div class="control-label">
+							{{ form_label(form.tags) }}
+						</div>
+						<div class="controls">
+							{{ form_widget(form.tags) }}
+							{{ form_errors(form.tags) }}
+						</div>
+					</div>
+					<div class="control-group">
+						<div class="control-label">
 							{{ form_label(form.published) }}
 						</div>
 						<div class="controls inline_elements">
@@ -96,6 +105,8 @@
 <script type="text/javascript">
 	$(function(){
 		$('.datepicker-field').datepicker();
+		{% set tags_string = tags|join('", "')%}
+		$('.input-tags').tag({source: [ "{{ tags_string|raw }}" ]})
 	})
 </script>
 {% endblock javascripts %}

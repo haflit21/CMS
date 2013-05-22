@@ -123,6 +123,8 @@ class UserController extends Controller
             $form->bindRequest($request);
             if ($form->isValid()) {
                 $factory = $this->get('security.encoder_factory');
+                 $em = $this->getDoctrine()->getEntityManager();
+                
                 if (!$user) {
                     throw $this->createNotFoundException('No user found for id '.$id);
                 }

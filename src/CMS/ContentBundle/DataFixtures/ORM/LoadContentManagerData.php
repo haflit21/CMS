@@ -40,7 +40,7 @@ class LoadContentManagerData implements FixtureInterface
      */
     public function load(ObjectManager $manager)
     {
-        $langs = $this->getLangues();
+        /*$langs = $this->getLangues();
         foreach ($langs as $key => $lg) {
             $lang = new CMLanguage;
             $lang->setTitle($lg['title']);
@@ -51,7 +51,7 @@ class LoadContentManagerData implements FixtureInterface
             $manager->persist($lang);
         }
 
-        $manager->flush();
+        $manager->flush();*/
     }
 
     /**

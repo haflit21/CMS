@@ -23,12 +23,19 @@ use Imagine\Image\Fill\FillInterface;
 use Imagine\Image\Point;
 use Imagine\Image\PointInterface;
 
+/**
+ * Image implementation using the Gmagick PHP extension
+ */
 class Image implements ImageInterface
 {
     /**
      * @var \Gmagick
      */
     private $gmagick;
+    /**
+     * @var Layers
+     */
+    private $layers;
 
     /**
      * Constructs Image with Gmagick and Imagine instances
@@ -38,6 +45,7 @@ class Image implements ImageInterface
     public function __construct(\Gmagick $gmagick)
     {
         $this->gmagick = $gmagick;
+        $this->layers = new Layers($this, $this->gmagick);
     }
 
     /**
@@ -254,10 +262,12 @@ class Image implements ImageInterface
                 $this->gmagick->setimageformat($options['format']);
             }
 
+            $this->layers()->merge();
             $this->applyImageOptions($this->gmagick, $options);
 
             // flatten only if image has multiple layers
-            if ($this->gmagick->hasnextimage() || $this->gmagick->haspreviousimage()) {
+            if ((!isset($options['flatten']) || $options['flatten'] === true)
+                && count($this->layers()) > 1) {
                 $this->flatten();
             }
 
@@ -288,6 +298,7 @@ class Image implements ImageInterface
     public function get($format, array $options = array())
     {
         try {
+            $this->applyImageOptions($this->gmagick, $options);
             $this->gmagick->setimageformat($format);
         } catch (\GmagickException $e) {
             throw new RuntimeException(
@@ -518,6 +529,15 @@ class Image implements ImageInterface
             )
         );
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function layers()
+    {
+        return $this->layers;
+    }
+
 
     /**
      * Internal

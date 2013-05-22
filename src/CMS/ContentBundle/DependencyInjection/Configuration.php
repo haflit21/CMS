@@ -1,6 +1,6 @@
 <?php
 
-namespace CMS\ContentBundleDependencyInjection;
+namespace CMS\ContentBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;

@@ -26,8 +26,17 @@ class ImageTest extends AbstractImageTest
         }
     }
 
+    public function testImageResolutionChange() {
+        $this->markTestSkipped('GD driver does not support resolution options');
+    }
+
     protected function getImagine()
     {
         return new Imagine();
+    }
+
+    protected function supportMultipleLayers()
+    {
+        return false;
     }
 }

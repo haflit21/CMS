@@ -100,6 +100,12 @@ class CMContent
     private $metavalues;
 
     /**
+     * @ORM\ManyToMany(targetEntity="CMTag", inversedBy="contents")
+     * @ORM\JoinTable(name="CMContent_tag_relation")
+     */
+    private $tags;
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -107,6 +113,7 @@ class CMContent
         $this->categories = new \Doctrine\Common\Collections\ArrayCollection();
         $this->translations = new \Doctrine\Common\Collections\ArrayCollection();
         $this->fieldvalues = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->tags = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -465,5 +472,43 @@ class CMContent
             }
                 
         }
+    }
+
+    /**
+     * Add tags
+     *
+     * @param \CMS\ContentBundle\Entity\CMTag $tags
+     * @return CMContent
+     */
+    public function addTag(\CMS\ContentBundle\Entity\CMTag $tags)
+    {
+        $this->tags[] = $tags;
+    
+        return $this;
+    }
+
+    /**
+     * Remove tags
+     *
+     * @param \CMS\ContentBundle\Entity\CMTag $tags
+     */
+    public function removeTag(\CMS\ContentBundle\Entity\CMTag $tags)
+    {
+        $this->tags->removeElement($tags);
+    }
+
+    /**
+     * Get tags
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getTags()
+    {
+        return $this->tags;
+    }
+
+    public function setTags($tags)
+    {
+       $this->tags = $tags;
     }
 }

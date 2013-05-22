@@ -125,6 +125,43 @@ In this example, the final rendered path would be something like
 `/media/cache/my_thumb/relative/path/to/image.jpg`. This is where Imagine
 would save the filtered image file.
 
+## HTTP Cache Headers
+
+ - `cache_type` - one of the three values: `false`, `public` or `private`.
+    Setting `false` disables caching i.e. sets `Cache-Control: no-cache`.
+
+    default: `false`
+
+ - `cache_expires` - Sets time when cache expires. Uses format that the `DateTime`
+    parser understands. Expression will be prefixed with `+` so expression
+    should be like `2 weeks`. Used only when `cache_type` equal `public` or `private`.
+
+    default: `1 day`
+
+Configuration example:
+
+``` yaml
+# app/config/config.yml
+
+avalanche_imagine:
+    filters:
+        my_thumb:
+            type:    thumbnail
+            options: { size: [120, 90], mode: outbound, cache_type: public, cache_expires: 2 weeks }
+```
+
+Cache headers are set only for first request when image is generated.
+To solve this issue you should add additional configuration for your web server.
+Example for apache web server:
+```apache
+<IfModule mod_expires.c>
+    <Directory "/path/to/web/media/cache">
+        ExpiresActive On
+        ExpiresDefault "access plus 2 weeks"
+    </Directory>
+</IfModule>
+```
+
 ## Configuration
 
 The default configuration for the bundle looks like this:
@@ -177,10 +214,10 @@ Each filter that you specify have the following options:
 
 Currently, this bundles comes with just one built-in filter: `thumbnail`.
 
-### The `thumbnail` filter
+### Thumbnail
 
-The thumbnail filter, as the name implies, performs a thumbnail transformation
-on your image. Configuration looks like this:
+The `thumbnail` filter, as the name implies, performs a thumbnail transformation
+on your image. The configuration looks like this:
 
 ``` yaml
 filters:
@@ -190,6 +227,91 @@ filters:
 ```
 
 The `mode` can be either `outbound` or `inset`.
+
+### Resize
+
+The `resize` filter may be used to simply change the width and height of an
+image irrespective of its proportions.
+
+Consider the following configuration example, which defines two filters to alter
+an image to an exact screen resolution:
+
+``` yaml
+avalanche_imagine:
+    filters:
+        cga:
+            type:    resize
+            options: { size: [320, 200] }
+        wuxga:
+            type:    resize
+            options: { size: [1920, 1200] }
+```
+
+### RelativeResize
+
+The `relative_resize` filter may be used to `heighten`, `widen`, `increase` or
+`scale` an image with respect to its existing dimensions. These options directly
+correspond to methods on Imagine's `BoxInterface`.
+
+Given an input image sized 50x40 (width, height), consider the following
+annotated configuration examples:
+
+``` yaml
+avalanche_imagine:
+    filters:
+        heighten:
+            type:    relative_resize
+            options: { heighten: 60 } # Transforms 50x40 to 75x60
+        widen:
+            type:    relative_resize
+            options: { widen: 32 }    # Transforms 50x40 to 40x32
+        increase:
+            type:    relative_resize
+            options: { increase: 10 } # Transforms 50x40 to 60x50
+        scale:
+            type:    relative_resize
+            options: { scale: 2.5 }   # Transforms 50x40 to 125x100
+```
+
+If you prefer using Imagine without a filter configuration, the `RelativeResize`
+class may be used directly.
+
+### Paste
+
+The `paste` filter pastes an image into your image.
+
+``` yaml
+avalanche_imagine:
+    filters:
+        paste:
+            type:        paste
+            options:
+                image:   %kernel.root_dir%/Resources/image.png  # path to image
+                x:       right                                  # [left|right|center] or integer
+                y:       bottom                                 # [top|bottom|middle] or integer
+```
+
+### Chain
+
+With `chain` filter you can apply some filters on your image.
+You can quite simply create a `watermark` filter:
+
+``` yaml
+avalanche_imagine:
+    filters:
+        watermark:
+            type:                chain
+            options:
+                filters:
+                    thumbnail:                                          # filter type
+                        size:    [100, 100]                             # filter options
+                        mode:    outbound
+                    paste:
+                        image:   %kernel.root_dir%/Resources/image.png
+                        x:       right
+                        y:       bottom
+
+```
 
 ## Load your Custom Filters
 
@@ -220,3 +342,31 @@ filters:
 
 For an example of a filter loader implementation, refer to
 `Avalanche\Bundle\ImagineBundle\Imagine\Filter\Loader\ThumbnailFilterLoader`.
+
+## Caveats
+
+If you are generating your image names from multiple parts in a Twig template,
+please be aware that Twig applies filters __before__ concatenation, so
+
+``` jinja
+<img src="{{ '/relative/path/to/' ~ some_variable ~ '.jpg' | apply_filter('my_thumb') }}" />
+```
+
+will apply your filter to '.jpg', and then concatenate the result to
+`'/relative/path/to/'` and `some_variable`. So the correct invocation would be
+
+``` jinja
+<img src="{{ ('/relative/path/to/' ~ some_variable ~ '.jpg') | apply_filter('my_thumb') }}" />
+```
+
+## Using as a service
+
+You can also use ImagineBundle as a service and create the cache image from controller.
+```php
+$avalancheService = $this->get('imagine.cache.path.resolver');
+```
+
+Then, call the getBrowserPath and pass the original image webpath and the filter you want to use
+```php
+$cachedImage = $avalancheService->getBrowserPath($object->getWebPath(), 'my_thumb');
+```

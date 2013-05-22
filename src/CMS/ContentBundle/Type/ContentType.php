@@ -13,8 +13,10 @@ class ContentType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $lang_id = $options['lang_id'];
+        $em = $options['om'];
         $builder
             ->add('title', 'text', array('label'=>'Title'))
+            ->add('tags', 'tag_selector')
             ->add('published', 'choice', array(
                 'choices'=> array('1'=>'Oui', '0'=>'Non'),
                 'expanded'=>true,
@@ -41,7 +43,7 @@ class ContentType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'CMS\ContentBundle\Entity\CMContent', 'lang_id' => ''
+            'data_class' => 'CMS\ContentBundle\Entity\CMContent', 'lang_id' => '', 'om' => ''
         ));
     }
 

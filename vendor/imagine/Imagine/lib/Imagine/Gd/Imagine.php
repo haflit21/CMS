@@ -17,6 +17,9 @@ use Imagine\Image\ImagineInterface;
 use Imagine\Exception\InvalidArgumentException;
 use Imagine\Exception\RuntimeException;
 
+/**
+ * Imagine implementation using the GD library
+ */
 final class Imagine implements ImagineInterface
 {
     /**
@@ -58,7 +61,7 @@ final class Imagine implements ImagineInterface
     private function requireGdVersion($version)
     {
         if (version_compare(GD_VERSION, $version, '<')) {
-            throw new RuntimeException('GD2 version 2.0.1 or higher is required');
+            throw new RuntimeException(sprintf('GD2 version %s or higher is required', $version));
         }
     }
 

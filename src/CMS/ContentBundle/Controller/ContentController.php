@@ -22,6 +22,7 @@ use CMS\ContentBundle\Entity\CMContent;
 use CMS\ContentBundle\Entity\CMLanguage;
 use CMS\ContentBundle\Entity\CMContentTaxonomy;
 use CMS\ContentBundle\Entity\CMFieldValue;
+use CMS\ContentBundle\Entity\CMTag;
 use CMS\ContentBundle\Type\ContentType;
 
 use CMS\ContentBundle\Classes\ExtraFields;
@@ -187,6 +188,8 @@ class ContentController extends Controller
 
         $metas = ExtraMetas::loadMetas($this);
 
+        $tags = implode(', ',$this->getDoctrine()->getRepository('CMSContentBundle:CMTag')->getAllTagsTitle());
+
         if ($request->isMethod('POST')) {
             $form->bind($request);
             if ($form->isValid()) {
@@ -220,7 +223,8 @@ class ContentController extends Controller
             'lang'        => $lang, 
             'html'        => $html,
             'metas'       => $metas,  
-            'contenttype' => $contenttype
+            'contenttype' => $contenttype,
+            'tags'        => $tags
         );
     }
 
@@ -248,6 +252,8 @@ class ContentController extends Controller
         $form = $this->createForm(new ContentType(), $content, array('lang_id' => $lang));
         $html = ExtraFields::loadFields($this, $contenttype);
         $metas = ExtraMetas::loadMetas($this);
+
+        $tags = implode(', ',$this->getDoctrine()->getRepository('CMSContentBundle:CMTag')->getAllTagsTitle());
 
         if ($request->isMethod('POST')) {
             $form->bind($request);
@@ -289,7 +295,8 @@ class ContentController extends Controller
             'referenceContent' => $reference, 
             'referenceArticle' => $referenceArticle, 
             'html'             => $html, 
-            'contenttype'      => $contenttype
+            'contenttype'      => $contenttype,
+            'tags'             => $tags
         );
     }
 
@@ -311,19 +318,26 @@ class ContentController extends Controller
         
         $html  = ExtraFields::loadEditFields($content);
         $metas = ExtraMetas::loadEditMetas($content, $this);
+        $em = $this->getDoctrine()->getManager();
+        $tags = $this->getDoctrine()->getRepository('CMSContentBundle:CMTag')->getAllTagsTitle();
 
-        $form = $this->createForm(new ContentType(), $content, array('lang_id' => $content->getLanguage()->getId()));
+        $form = $this->createForm(new ContentType(), $content, array('lang_id' => $content->getLanguage()->getId(), 'om' => $em));
 
         if ($request->isMethod('POST')) {
             $form->bind($request);
             if ($form->isValid()) {
-                $em = $this->getDoctrine()->getManager();
+                
 
                 $created = $this->_getDateTimeObject($content->getCreated());
                 $content->setCreated($created);
 
                 $type = $content->getContentType();
                 
+                $content_form = $request->request->get('contentmanager_content');
+                $tags = $content_form['tags'];
+                $tags = $this->_setTags($tags);
+
+                $content->setTags($tags);
 
                 ExtraFields::updateFields($this, $em, $request, $content, $type);
 
@@ -342,7 +356,8 @@ class ContentController extends Controller
             'form'    => $form->createView(),
             'content' => $content, 
             'html'    => $html, 
-            'metas'   => $metas
+            'metas'   => $metas,
+            'tags'    => $tags
         );
     }
 
@@ -509,6 +524,34 @@ class ContentController extends Controller
         $em->flush();
 
         return $this->redirect($this->generateUrl('contents'));
+    }
+
+    private function _setTags($tags)
+    {
+
+        if(is_array($tags))
+            $tags = explode(', ', $tags['tag']);
+        else
+            $tags = explode(", ", $tags);
+
+        $tags_result = new \Doctrine\Common\Collections\ArrayCollection();
+
+        $tags_source = $this->getDoctrine()->getRepository('CMSContentBundle:CMTag')->getAllTagsTitle();
+        $tags_objects = $this->getDoctrine()->getRepository('CMSContentBundle:CMTag')->getAllTagsTitleObject();
+        $em = $this->getDoctrine()->getManager();
+
+        foreach ($tags as $tag) {
+            if (in_array($tag, $tags_source)) {
+                $tag_current = $tags_objects[$tag];
+                $tags_result[] = $tag_current;
+            } else if($tag != '') {
+                $tag_current = new CMTag;
+                $tag_current->setTitle($tag);
+                $tags_result[] = $tag_current;
+                $em->persist($tag_current);
+            }
+        }
+        return $tags_result;
     }
 
 }

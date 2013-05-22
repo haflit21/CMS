@@ -1,13 +1,20 @@
-{% extends "CMSDashboardBundle::layout.html.twig" %}
-{% block title "Utilisateurs" %}
-{% block titlesection "Utilisateurs" %}
+{% extends('::admin.html.twig') %}
+{% block title %}{% trans %}Users{% endtrans %}{% endblock %}
 {% block body %}
+<h1 class="pull-left">{% trans %}Users{% endtrans %}</h1>
+<a href="{{ path('users') }}" class="button btn-cancel pull-right"><i class="admin-icon-left-open-1"></i> {% trans %}Back{% endtrans %}</a>
+		     <div class="clear h30"></div>
 {% if id is not defined %}
 	<form action="{{ path('new_user') }}" method="post" {{ form_enctype(form) }}>
 {% else %}
 	<form action="{{ path('edit_user', {'id' : id }) }}" method="post" {{ form_enctype(form) }}>
 {% endif %}
     {{ form_widget(form) }}
-    <button type="submit" class="btn">Valider</button>
+    <div class="clear"></div>
+	<div class="form-actions">
+		    <a href="{{ path('users') }}" class="button btn-cancel">{% trans %}Cancel{% endtrans %} <i class="admin-icon-cancel"></i></a>
+            <button type="submit" class="button btn-main">{% trans %}Validate{% endtrans %} <i class="admin-icon-ok"></i></button>
+	    </div>
+	{{ form_rest(form) }}
 </form>
 {% endblock body %}

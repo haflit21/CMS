@@ -9,7 +9,35 @@
             <trans-unit id="2">
             	<source>Back</source>
             	<target>Retour</target>
-            </trans-unit>	
+            </trans-unit>
+            <trans-unit id="3">
+                <source>titre_site</source>
+                <target>Titre du site</target>
+            </trans-unit>
+            <trans-unit id="4">
+                <source>url_site</source>
+                <target>Adresse du site</target>
+            </trans-unit>
+            <trans-unit id="5">
+                <source>email_admin</source>
+                <target>Votre adresse e-mail</target>
+            </trans-unit>
+            <trans-unit id="6">
+                <source>timezone_string</source>
+                <target>Timezone</target>
+            </trans-unit>
+            <trans-unit id="7">
+                <source>nb_articles_page</source>
+                <target>Nombre d'articles par page</target>
+            </trans-unit>  
+            <trans-unit id="8">
+                <source>nb_articles_rss</source>
+                <target>Nombre d'articles dans le flux RSS</target>
+            </trans-unit>   
+            <trans-unit id="9">
+                <source>settings_general</source>
+                <target>Paramètres - Général</target>
+            </trans-unit> 
         </body>
     </file>
 </xliff>

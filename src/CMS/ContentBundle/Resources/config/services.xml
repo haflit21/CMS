@@ -4,17 +4,19 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
-    <!--
+
     <parameters>
-        <parameter key="admin.example.class">ContentBundle\AdminBundle\Example</parameter>
+        <parameter key="cms_content.form_type.tag.class">CMS\ContentBundle\Type\TagType</parameter>
     </parameters>
 
     <services>
-        <service id="admin.example" class="%admin.example.class%">
-            <argument type="service" id="service_id" />
-            <argument>plain_value</argument>
-            <argument>%parameter_name%</argument>
+        <service id="form.type.tag" class="CMS\ContentBundle\Type\TagType">
+            <tag name="form.type" alias="tag" />
+        </service>
+        <service id="form.type.tag_selector" class="CMS\ContentBundle\Type\TagType">
+            <argument type="service" id="doctrine.orm.entity_manager"/>
+            <tag name="form.type" alias="tag_selector" />
         </service>
     </services>
-    -->
+    
 </container>

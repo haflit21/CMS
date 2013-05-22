@@ -46,6 +46,7 @@ services:
         tags:
             - { name: twig.extension }
 
+
 # Assetic Configuration
 assetic:
     debug:          %kernel.debug%

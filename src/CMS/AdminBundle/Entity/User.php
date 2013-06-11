@@ -14,7 +14,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="CMS\AdminBundle\Entity\Repository\UserRepository")
  * @ORM\HasLifecycleCallbacks
  */
-class User implements AdvancedUserInterface, EquatableInterface, \Serializable
+class User implements UserInterface, \Serializable
 {
 
     /**
@@ -70,7 +70,7 @@ class User implements AdvancedUserInterface, EquatableInterface, \Serializable
     private $language;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Role", inversedBy="users")
+     * @ORM\ManyToMany(targetEntity="Role", mappedBy="users")
      *
      */
     private $groups;
@@ -97,7 +97,7 @@ class User implements AdvancedUserInterface, EquatableInterface, \Serializable
      *
      * @param UploadedFile $file
      */
-    public function setFile(UploadedFile $file = null)
+    public function setFile($file = null)
     {
         $this->file = $file;
     }
@@ -105,7 +105,7 @@ class User implements AdvancedUserInterface, EquatableInterface, \Serializable
     /**
      * Get file.
      *
-     * @return UploadedFile
+     * @return String
      */
     public function getFile()
     {
@@ -423,5 +423,27 @@ class User implements AdvancedUserInterface, EquatableInterface, \Serializable
     public function getAvatar()
     {
         return $this->avatar;
+    }
+
+    /**
+     * Serializes the content of the current User object
+     * @return string
+     */
+    public function serialize()
+    {
+        return \json_encode(
+                array($this->username, $this->password, $this->salt,
+                         $this->id));
+    }
+
+    /**
+     * Unserializes the given string in the current User object
+     * @param serialized
+     */
+    public function unserialize($serialized)
+    {
+        list($this->username, $this->password, $this->salt,
+                         $this->id) = \json_decode(
+                $serialized);
     }
 }

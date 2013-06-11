@@ -90,7 +90,7 @@ class CMContent
     private $fieldvalues;
 
     /**
-     * @ORM\ManyToOne(targetEntity="CMContentType", inversedBy="contents")
+     * @ORM\ManyToOne(targetEntity="CMContentType", inversedBy="content")
      */
     private $contenttype;
 

@@ -1,0 +1,26 @@
+Dumping all dev assets.
+Debug mode is on.
+
+12:59:08 [file+] D:/inetpub/wwwroot/CMS/app/../web/js/0563c1e.js
+12:59:08 [file+] D:/inetpub/wwwroot/CMS/app/../web/js/0563c1e_Chart.min_1.js
+12:59:08 [file+] D:/inetpub/wwwroot/CMS/app/../web/css/381c042.css
+12:59:08 [file+] D:/inetpub/wwwroot/CMS/app/../web/css/381c042_bootstrap.min_1.css
+12:59:08 [file+] D:/inetpub/wwwroot/CMS/app/../web/css/381c042_bootstrap-responsive.min_2.css
+12:59:08 [file+] D:/inetpub/wwwroot/CMS/app/../web/css/381c042_style_3.css
+12:59:08 [file+] D:/inetpub/wwwroot/CMS/app/../web/css/381c042_jquery.maximage.min_4.css
+12:59:08 [file+] D:/inetpub/wwwroot/CMS/app/../web/js/b92f435.js
+12:59:08 [file+] D:/inetpub/wwwroot/CMS/app/../web/js/b92f435_jquery-1.9.1.min_1.js
+12:59:08 [file+] D:/inetpub/wwwroot/CMS/app/../web/js/b92f435_bootstrap.min_2.js
+12:59:08 [file+] D:/inetpub/wwwroot/CMS/app/../web/js/b92f435_jquery.maximage.min_3.js
+12:59:08 [file+] D:/inetpub/wwwroot/CMS/app/../web/css/b001b7a.css
+12:59:08 [file+] D:/inetpub/wwwroot/CMS/app/../web/css/b001b7a_bootstrap.min_1.css
+12:59:08 [file+] D:/inetpub/wwwroot/CMS/app/../web/css/b001b7a_bootstrap-responsive.min_2.css
+12:59:08 [file+] D:/inetpub/wwwroot/CMS/app/../web/css/b001b7a_style_3.css
+12:59:08 [file+] D:/inetpub/wwwroot/CMS/app/../web/css/b001b7a_social_4.css
+12:59:08 [file+] D:/inetpub/wwwroot/CMS/app/../web/css/b001b7a_jquery.maximage.min_5.css
+12:59:08 [file+] D:/inetpub/wwwroot/CMS/app/../web/js/921ef11.js
+12:59:08 [file+] D:/inetpub/wwwroot/CMS/app/../web/js/921ef11_jquery-1.9.1.min_1.js
+12:59:08 [file+] D:/inetpub/wwwroot/CMS/app/../web/js/921ef11_bootstrap.min_2.js
+12:59:08 [file+] D:/inetpub/wwwroot/CMS/app/../web/js/921ef11_jquery.cycle.all.min_3.js
+12:59:08 [file+] D:/inetpub/wwwroot/CMS/app/../web/js/921ef11_jquery.maximage.min_4.js
+12:59:08 [file+] D:/inetpub/wwwroot/CMS/app/../web/css/front-main.css

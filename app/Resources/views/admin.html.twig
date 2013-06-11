@@ -29,17 +29,17 @@
                         <span class="brand">SCMS</span>
                     </div>
                     <div class="pull-right">
-                        {% render "CMSAdminBundle:Module:generateBloc" with {'position': "admin_menu_top", 'url_courante': app.request.attributes.get('_route') } %}
+                        {{ render(controller("CMSAdminBundle:Module:generateBloc", {'position': "admin_menu_top", 'url_courante': app.request.attributes.get('_route') })) }}
                     </div>
                 </div>
             </div>
             <div class="row-fluid" id="main">
                 <div class="container">
                     <div class="span2 nav-full-height">
-                        {% render "CMSAdminBundle:Module:generateBloc" with {'position': "admin_menu_left", 'url_courante': app.request.attributes.get('_route') } %}
+                        {{ render(controller("CMSAdminBundle:Module:generateBloc", {'position': "admin_menu_left", 'url_courante': app.request.attributes.get('_route') })) }}
                     </div>
                     <div class="span10">
-                        {% render "CMSAdminBundle:Module:generateBloc" with {'position': "admin_breadcrumb", 'url_courante': app.request.attributes.get('_route') } %}
+                        {{ render(controller("CMSAdminBundle:Module:generateBloc", {'position': "admin_breadcrumb", 'url_courante': app.request.attributes.get('_route') })) }}
                         
                         {% block body %}{% endblock %}
                     </div>

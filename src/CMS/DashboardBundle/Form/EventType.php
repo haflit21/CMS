@@ -3,6 +3,7 @@ namespace CMS\DashboardBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class EventType extends AbstractType
 {
@@ -14,10 +15,13 @@ class EventType extends AbstractType
         ;
     }
 
-    public function getDefaultOptions(array $options)
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        return array('data_class' => 'CMS\DashboardBundle\Entity\Event');
+        $resolver->setDefaults(array(
+            'data_class' => 'CMS\DashboardBundle\Entity\Event'
+        ));
     }
+
 
     public function getName()
     {

@@ -16,13 +16,13 @@ class CMFieldValue
 
     /**
      * @ORM\Id
-     * @ORM\ManyToOne(targetEntity="CMContent", inversedBy="fieldsvalues", cascade={"remove", "persist"})
+     * @ORM\ManyToOne(targetEntity="CMContent", inversedBy="fieldvalues", cascade={"remove", "persist"})
      */
     private $content;
 
     /**
      * @ORM\Id
-     * @ORM\ManyToOne(targetEntity="CMField", inversedBy="fieldsvalues", cascade={"remove"})
+     * @ORM\ManyToOne(targetEntity="CMField", inversedBy="fieldvalues", cascade={"remove"})
      */
     private $field;
 

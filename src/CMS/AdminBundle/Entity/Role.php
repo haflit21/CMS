@@ -34,6 +34,11 @@ class Role implements RoleInterface
     protected $createdAt;
 
     /**
+     * @ORM\ManyToMany(targetEntity="User", inversedBy="groups")
+     */
+    private $users;
+
+    /**
      * Gets the id.
      *
      * @return integer The id.
@@ -105,4 +110,5 @@ class Role implements RoleInterface
     {
         return (string) $this->getName();
     }
+
 }

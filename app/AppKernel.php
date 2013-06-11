@@ -19,24 +19,23 @@ class AppKernel extends Kernel
             new JMS\AopBundle\JMSAopBundle(),
             new JMS\DiExtraBundle\JMSDiExtraBundle($this),
             new JMS\SecurityExtraBundle\JMSSecurityExtraBundle(),
+            new Liip\ImagineBundle\LiipImagineBundle(),
+            new Trsteel\CkeditorBundle\TrsteelCkeditorBundle(),
+            new Acme\DemoBundle\AcmeDemoBundle(),
+            new Mopa\Bundle\BootstrapBundle\MopaBootstrapBundle(),
+            new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
+            new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
             new CMS\DashboardBundle\CMSDashboardBundle(),
             new CMS\MediaBundle\CMSMediaBundle(),
             new CMS\AdminBundle\CMSAdminBundle(),
             new CMS\FrontBundle\CMSFrontBundle(),
-            new Liip\ImagineBundle\LiipImagineBundle(),
-            new Trsteel\CkeditorBundle\TrsteelCkeditorBundle(),
             new CMS\ContentBundle\CMSContentBundle(),
             new CMS\MenuBundle\CMSMenuBundle(),
-            new Acme\DemoBundle\AcmeDemoBundle(),
             new CMS\BlocBundle\CMSBlocBundle(),
-            new Mopa\Bundle\BootstrapBundle\MopaBootstrapBundle(),
             new CMS\ContactBundle\CMSContactBundle(),
-            new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
-            new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
-            //$bundles[] = new Acme\DemoBundle\AcmeDemoBundle();
             $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
             $bundles[] = new Sensio\Bundle\DistributionBundle\SensioDistributionBundle();
             $bundles[] = new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();

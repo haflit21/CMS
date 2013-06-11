@@ -22,7 +22,7 @@ class CMMetaValueContent
 
     /**
      * @ORM\Id
-     * @ORM\ManyToOne(targetEntity="CMMeta", inversedBy="metavalues")
+     * @ORM\ManyToOne(targetEntity="CMMeta", inversedBy="metavaluescontent")
      */
     private $meta;
 

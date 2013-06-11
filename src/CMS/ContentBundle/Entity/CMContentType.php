@@ -34,7 +34,7 @@ class CMContentType
     private $fields;
 
     /**
-     * @ORM\OneToMany(targetEntity="CMContent", mappedBy="fieldvalues")
+     * @ORM\OneToMany(targetEntity="CMContent", mappedBy="contenttype")
      */
     private $content;
 

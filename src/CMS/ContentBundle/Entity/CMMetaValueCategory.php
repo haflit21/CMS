@@ -22,7 +22,7 @@ class CMMetaValueCategory
 
     /**
      * @ORM\Id
-     * @ORM\ManyToOne(targetEntity="CMMeta", inversedBy="metavalues")
+     * @ORM\ManyToOne(targetEntity="CMMeta", inversedBy="metavaluescategory")
      */
     private $meta;
 

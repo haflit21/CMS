@@ -2,9 +2,9 @@ parameters:
     database_driver: pdo_mysql
     database_host: localhost
     database_port: null
-    database_name: chrisSymfony
+    database_name: cms
     database_user: root
-    database_password: root
+    database_password: 
     mailer_transport: smtp
     mailer_host: localhost
     mailer_user: null

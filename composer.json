@@ -27,7 +27,8 @@
         "doctrine/data-fixtures": "dev-master",
         "doctrine/doctrine-fixtures-bundle": "@dev",
         "mopa/bootstrap-bundle": "2.1.x-dev",
-        "kriswallsmith/assetic": "dev-master"
+        "kriswallsmith/assetic": "dev-master",
+        
     },
     "scripts": {
         "post-install-cmd": [

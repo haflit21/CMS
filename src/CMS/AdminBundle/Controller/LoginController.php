@@ -42,7 +42,7 @@ class LoginController extends Controller
      */
     public function loginCheckAction()
     {
-        return array('test' => null);
+        return $this->redirect($this->generateUrl('dashboard'));
     }
 
     /**

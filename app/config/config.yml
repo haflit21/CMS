@@ -132,6 +132,11 @@ trsteel_ckeditor:
     width: 500 #Integer or %
     height: 250 #Integer or %
 
+    filebrowser_browse_url: /bundles/trsteelckeditor/filemanager/browser/default/browser.html?Connector=%site_url%bundles/trsteelckeditor/filemanager/connectors/php/connector.php
+    filebrowser_upload_url: /bundles/trsteelckeditor/filemanager/browser/default/browser.html?Connector=%site_url%bundles/trsteelckeditor/filemanager/connectors/php/connector.php
+    filebrowser_image_browse_url: /bundles/trsteelckeditor/filemanager/browser/default/browser.html?Connector=%site_url%bundles/trsteelckeditor/filemanager/connectors/php/connector.php
+    filebrowser_image_upload_url: /bundles/trsteelckeditor/filemanager/browser/default/browser.html?Connector=h%site_url%bundles/trsteelckeditor/filemanager/connectors/php/connector.php
+
 mopa_bootstrap:
     form:
         templating: false # default is true

@@ -126,4 +126,8 @@ class CMFieldValue
     {
         return $this->field;
     }
+
+    public function __toString() {
+        return $this->field->getField()->display($this->value);
+    }
 }

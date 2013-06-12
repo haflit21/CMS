@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "4835c3cec6ec1c811ce460f23a397125",
+    "hash": "9b7cfad1046a355cffd6f3b4086da825",
     "packages": [
         {
             "name": "avalanche123/imagine-bundle",
@@ -443,12 +443,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/l3pp4rd/DoctrineExtensions.git",
-                "reference": "v2.3.6"
+                "reference": "845e69090a1ff293c906db986b86bd48b2e6b494"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/l3pp4rd/DoctrineExtensions/zipball/v2.3.6",
-                "reference": "v2.3.6",
+                "url": "https://api.github.com/repos/l3pp4rd/DoctrineExtensions/zipball/845e69090a1ff293c906db986b86bd48b2e6b494",
+                "reference": "845e69090a1ff293c906db986b86bd48b2e6b494",
                 "shasum": ""
             },
             "require": {
@@ -515,7 +515,7 @@
                 "tree",
                 "uploadable"
             ],
-            "time": "2013-05-21 12:09:55"
+            "time": "2013-05-22 21:24:21"
         },
         {
             "name": "imagine/Imagine",
@@ -938,21 +938,21 @@
         },
         {
             "name": "kriswallsmith/assetic",
-            "version": "dev-master",
+            "version": "v1.1.0-alpha4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/kriswallsmith/assetic.git",
-                "reference": "00e037b8341d64848cf01ffb718fd52aa1d773b0"
+                "reference": "v1.1.0-alpha4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/kriswallsmith/assetic/zipball/00e037b8341d64848cf01ffb718fd52aa1d773b0",
-                "reference": "00e037b8341d64848cf01ffb718fd52aa1d773b0",
+                "url": "https://api.github.com/repos/kriswallsmith/assetic/zipball/v1.1.0-alpha4",
+                "reference": "v1.1.0-alpha4",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.1",
-                "symfony/process": ">=2.1,<3.0"
+                "symfony/process": ">=2.1.0,<2.3-dev"
             },
             "require-dev": {
                 "cssmin/cssmin": "*",
@@ -962,9 +962,9 @@
                 "leafo/scssphp": "*",
                 "leafo/scssphp-compass": "*",
                 "mrclay/minify": "*",
-                "phpunit/phpunit": ">=3.7,<4.0",
+                "phpunit/phpunit": "3.7.*",
                 "ptachoire/cssembed": "*",
-                "twig/twig": ">=1.6,<2.0"
+                "twig/twig": ">=1.6.0,<2.0"
             },
             "suggest": {
                 "leafo/lessphp": "Assetic provides the integration with the lessphp LESS compiler",
@@ -976,7 +976,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.2-dev"
+                    "dev-master": "1.1-dev"
                 }
             },
             "autoload": {
@@ -1005,7 +1005,7 @@
                 "compression",
                 "minification"
             ],
-            "time": "2013-05-20 15:24:26"
+            "time": "2013-02-24 17:22:20"
         },
         {
             "name": "liip/imagine-bundle",
@@ -1014,12 +1014,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/liip/LiipImagineBundle.git",
-                "reference": "v0.10.0"
+                "reference": "ec523f6b7bf4ca6427ce1cbc95a427d432f4b24c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/liip/LiipImagineBundle/zipball/v0.10.0",
-                "reference": "v0.10.0",
+                "url": "https://api.github.com/repos/liip/LiipImagineBundle/zipball/ec523f6b7bf4ca6427ce1cbc95a427d432f4b24c",
+                "reference": "ec523f6b7bf4ca6427ce1cbc95a427d432f4b24c",
                 "shasum": ""
             },
             "require": {
@@ -1059,7 +1059,7 @@
                 "image",
                 "imagine"
             ],
-            "time": "2013-05-17 08:18:26"
+            "time": "2013-05-23 09:09:30"
         },
         {
             "name": "monolog/monolog",
@@ -1115,6 +1115,68 @@
                 "logging"
             ],
             "time": "2012-08-29 11:53:20"
+        },
+        {
+            "name": "mopa/bootstrap-bundle",
+            "version": "2.1.x-dev",
+            "target-dir": "Mopa/Bundle/BootstrapBundle",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/phiamo/MopaBootstrapBundle.git",
+                "reference": "eb0d81b91a988e2dc3ca529efd85d8b3c11cc2a5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/phiamo/MopaBootstrapBundle/zipball/eb0d81b91a988e2dc3ca529efd85d8b3c11cc2a5",
+                "reference": "eb0d81b91a988e2dc3ca529efd85d8b3c11cc2a5",
+                "shasum": ""
+            },
+            "require": {
+                "mopa/composer-bridge": "1.*",
+                "symfony/symfony": ">=2.1,<2.2-dev"
+            },
+            "suggest": {
+                "craue/formflow-bundle": "dev-master",
+                "jlong/sass-twitter-bootstrap": "dev-master",
+                "knplabs/knp-menu-bundle": "2.0.*",
+                "knplabs/knp-paginator-bundle": "dev-master",
+                "twitter/bootstrap": "2.*"
+            },
+            "type": "symfony-bundle",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Mopa\\Bundle\\BootstrapBundle": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Philipp A. Mohrenweiser",
+                    "email": "phiamo@googlemail.com",
+                    "homepage": "http://bootstrap.mohrenweiserpartner.de"
+                },
+                {
+                    "name": "Community contributions",
+                    "homepage": "https://github.com/phiamo/MopaBootstrapBundle/contributors"
+                }
+            ],
+            "description": "Easy integration of twitters bootstrap into symfony2",
+            "keywords": [
+                "bootstrap",
+                "bootstrap form",
+                "extra form",
+                "form",
+                "template"
+            ],
+            "time": "2013-04-30 09:05:27"
         },
         {
             "name": "mopa/composer-bridge",
@@ -1826,7 +1888,6 @@
     "stability-flags": {
         "avalanche123/imagine-bundle": 20,
         "liip/imagine-bundle": 20,
-        "kriswallsmith/assetic": 20,
         "gedmo/doctrine-extensions": 20,
         "trsteel/ckeditor-bundle": 20,
         "ornicar/gravatar-bundle": 20,
@@ -1834,7 +1895,8 @@
         "knplabs/knp-paginator-bundle": 20,
         "doctrine/data-fixtures": 20,
         "doctrine/doctrine-fixtures-bundle": 20,
-        "mopa/bootstrap-bundle": 20
+        "mopa/bootstrap-bundle": 20,
+        "kriswallsmith/assetic": 15
     },
     "platform": {
         "php": ">=5.3.3"

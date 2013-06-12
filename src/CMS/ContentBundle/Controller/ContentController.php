@@ -24,9 +24,12 @@ use CMS\ContentBundle\Entity\CMContentTaxonomy;
 use CMS\ContentBundle\Entity\CMFieldValue;
 use CMS\ContentBundle\Entity\CMTag;
 use CMS\ContentBundle\Type\ContentType;
+use CMS\ContentBundle\Type\ImportType;
 
 use CMS\ContentBundle\Classes\ExtraFields;
 use CMS\ContentBundle\Classes\ExtraMetas;
+
+use CMS\ContentBundle\Classes\ImportJSONZotero;
 
 /**
  * Controller de contenu : gère toutes les actions qui peuvent être faites sur les contenus
@@ -55,6 +58,8 @@ class ContentController extends Controller
     {
         $defaultLanguage = $this->_getLanguageDefault();
 
+        $form = $this->createForm(new ImportType(), null, array('lang_id' => $defaultLanguage->getId()));
+
         if (empty($defaultLanguage)) {
             $this->get('session')->getFlashBag()->add('error', 'No default language exist. Please create one.');
 
@@ -80,7 +85,8 @@ class ContentController extends Controller
             'defaultLanguage' => $defaultLanguage, 
             'languages'       => $languages, 
             'display'         => true, 
-            'contentType'     => $contentType
+            'contentType'     => $contentType,
+            'form'            => $form->createView()
             );
     }
 
@@ -182,34 +188,43 @@ class ContentController extends Controller
         $content = new CMContent;
         $language = $this->getDoctrine()->getRepository('CMSContentBundle:CMLanguage')->find($lang);
         $content->setLanguage($language);
+        
+        $contenttypeid = $request->query->get('contentType');
         $form = $this->createForm(new ContentType(), $content, array('lang_id' => $lang));
-        $contenttype = $request->query->get('contentType');
-        $html = ExtraFields::loadFields($this, $contenttype);
+        $html = ExtraFields::loadFields($this, $contenttypeid);
 
         $metas = ExtraMetas::loadMetas($this);
 
-        $tags = implode(', ',$this->getDoctrine()->getRepository('CMSContentBundle:CMTag')->getAllTagsTitle());
+        $tags = $this->getDoctrine()->getRepository('CMSContentBundle:CMTag')->getAllTagsTitle();
 
         if ($request->isMethod('POST')) {
+
             $form->bind($request);
+            $category = current($content->getCategories());
+            $content->setUrl($category->getUrl().'/'.$content->getTitle());
+            
             if ($form->isValid()) {
                 $em = $this->getDoctrine()->getManager();
-
-                $created = $this->_getDateTimeObject($content->getCreated());
-                $content->setCreated($created);
 
                 $contentTaxonomy = new CMContentTaxonomy;
                 $contentTaxonomy->addContent($content);
                 $em->persist($contentTaxonomy);
                 $em->flush();
 
+                $contenttypeid = $request->request->get('contenttype');
+                $contenttype = $this->getDoctrine()->getRepository('CMSContentBundle:CMContentType')->find($contenttypeid);
+                $content->setContenttype($contenttype);
+
+
                 $content->setTaxonomy($contentTaxonomy);
+
                 $em->persist($content);
                 $em->flush();
 
-                $contenttype = $request->get('contenttype');
-                ExtraFields::saveFields($this, $em, $request, $content, $contenttype);
+
+                ExtraFields::saveFields($this, $em, $request, $content, $contenttypeid);
                 ExtraMetas::saveMetas($this, $em, $request, $content);
+
                 $em->persist($content);
                 $em->flush();
                 $this->get('session')->setFlash('success', 'Le contenu a bien été sauvegardé');
@@ -223,7 +238,7 @@ class ContentController extends Controller
             'lang'        => $lang, 
             'html'        => $html,
             'metas'       => $metas,  
-            'contenttype' => $contenttype,
+            'contenttype' => $contenttypeid,
             'tags'        => $tags
         );
     }
@@ -266,9 +281,6 @@ class ContentController extends Controller
                 $taxonomy->addContent($content);
 
                 $content->setTaxonomy($taxonomy);
-
-                $created = $this->getDateTimeObject($content->getCreated());
-                $content->setCreated($created);
 
                 $content = $this->getMetas($content);
                 $content->setReferenceContent($referenceArticle);
@@ -314,7 +326,6 @@ class ContentController extends Controller
     public function editItemAction(Request $request, $id)
     {
         $content = $this->getDoctrine()->getRepository('CMSContentBundle:CMContent')->find($id);
-        $content = $this->_getStringDate($content);
         
         $html  = ExtraFields::loadEditFields($content);
         $metas = ExtraMetas::loadEditMetas($content, $this);
@@ -328,16 +339,14 @@ class ContentController extends Controller
             if ($form->isValid()) {
                 
 
-                $created = $this->_getDateTimeObject($content->getCreated());
-                $content->setCreated($created);
-
                 $type = $content->getContentType();
                 
                 $content_form = $request->request->get('contentmanager_content');
-                $tags = $content_form['tags'];
+                /*$tags = $content_form['tags'];
                 $tags = $this->_setTags($tags);
 
-                $content->setTags($tags);
+                $content->setTags($tags);*/
+
 
                 ExtraFields::updateFields($this, $em, $request, $content, $type);
 
@@ -384,23 +393,6 @@ class ContentController extends Controller
         }
 
         return $date;
-    }
-
-    /**
-     * Met à jour la date de création d'un contenu
-     * 
-     * @param CMContent $content Contenu à mettre à jour
-     * 
-     * @return CMContent 
-     */
-    private function _getStringDate($content)
-    {
-        $datetime = $content->getCreated();
-        $datetime = $datetime->format('m/d/Y');
-
-        $content->setCreated($datetime);
-
-        return $content;
     }
 
     /**
@@ -465,9 +457,6 @@ class ContentController extends Controller
 
         $em = $this->getDoctrine()->getManager();
 
-        $created = $this->getDateTimeObject($copy->getCreated());
-        $copy->setCreated($created);
-
         $copy = $this->getMetas($copy);
 
         $em->persist($copy);
@@ -480,28 +469,27 @@ class ContentController extends Controller
      * Change le statut d'un contenu
      * 
      * @param Request $request Objet request
-     * @param int     $id      id du contenu
      * 
-     * @return [type]           [description]
+     * @return null
      *
-     * @Route("/contents/published/{id}", name="contents_published")
+     * @Route("/contents/published/", name="contents_published")
      * @Template()
      */
-    public function publishedItemAction(Request $request, $id)
+    public function publishedItemAction(Request $request)
     {
+
+        $id = $request->request->get('id');
         $content = $this->getDoctrine()->getRepository('CMSContentBundle:CMContent')->find($id);
 
-        if($content->getPublished())
-            $content->setPublished(0);
-        else
-            $content->setPublished(1);
+        $state = !$content->getPublished();
+        $content->setPublished($state);
 
         $em = $this->getDoctrine()->getManager();
 
-           $em->persist($content);
-           $em->flush();
+        $em->persist($content);
+        $em->flush();
 
-        return $this->redirect($this->generateUrl('contents'));
+        echo $state; exit();
     }
 
     /**
@@ -526,13 +514,50 @@ class ContentController extends Controller
         return $this->redirect($this->generateUrl('contents'));
     }
 
+
+    /**
+     * Import fichier JSON Zotero
+     *
+     * @param Request    $request Objet Request pour récupérer les éléments postés
+     * @param CMLanguage $lang    Langue par défaut
+     *
+     * @return  array null
+     *
+     * @Route("/content/import/{$lang}", name="contents_import", defaults={"lang": 1})
+     * @Template("CMSContentBundle:ContentManager:contents-list.html.twig")
+     */
+    public function importJSONFile(Request $request, $lang)
+    {
+
+        $data = $request->request->get('contentmanager_import');
+        $files = $request->files->get('contentmanager_import');
+        $category = $data['category'];
+        $contentType = $data['contentType'];
+        $file = $files['fichier'];
+
+        $category = $this->getDoctrine()->getRepository('CMSContentBundle:CMCategory')->find($category);
+        $contentType = $this->getDoctrine()->getRepository('CMSContentBundle:CMContentType')->find($contentType);
+        $language = $this->getDoctrine()->getRepository('CMSContentBundle:CMLanguage')->find($lang);
+
+        $import = new ImportJSONZotero($file, $this, $category, $contentType, $language);
+        $import->insertAll();
+
+        $this->get('session')->setFlash('success', 'Les contenus ont bien été importés');
+        return $this->redirect($this->generateUrl('contents'));
+    }
+
     private function _setTags($tags)
     {
+        //var_dump($tags); die;
 
         if(is_array($tags))
             $tags = explode(', ', $tags['tag']);
-        else
-            $tags = explode(", ", $tags);
+        else {
+            if(substr($tags, strlen($tags)-1, 1) == ',')
+                $tags = substr($tags, 0, strlen($tags)-1);
+            $tags = explode(',', $tags);
+        }
+            
 
         $tags_result = new \Doctrine\Common\Collections\ArrayCollection();
 

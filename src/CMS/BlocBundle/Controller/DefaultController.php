@@ -247,4 +247,20 @@ class DefaultController extends Controller
         $em->flush();
     }
 
+    /**
+     * @Route("/blocs/published/", name="publish_block")
+     * @Template()
+     */
+    public function publishAction(Request $request)
+    {
+        $id = $request->request->get('id');
+        $bloc = $this->getDoctrine()->getRepository('CMSBlocBundle:Bloc')->find($id);
+        $em = $this->getDoctrine()->getManager();
+        $state = !$bloc->getPublished();
+        $bloc->setPublished($state);
+        $em->persist($bloc);
+        $em->flush();
+        echo $state; 
+        exit();
+    }
 }

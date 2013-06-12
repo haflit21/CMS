@@ -7,7 +7,7 @@
 			<h1 class="pull-left">{% trans %}Content Manager{% endtrans %}</h1>
 			<a href="#myModal" role="button" class="btn-new btn-small pull-right" data-toggle="modal"><i class="admin-icon-plus-circled"></i> {% trans %}New{% endtrans %}</a>
 				<div class="modal hide fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-					<form action="{{ path('contents_new', {'lang' : defaultLanguage.id }) }}" mathod="post">
+					<form action="{{ path('contents_new', {'lang' : defaultLanguage.id }) }}" method="post">
 						<div class="modal-header">
 							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
 							<h3 id="myModalLabel">{% trans %}Choose your content type{% endtrans %}</h3>
@@ -21,6 +21,25 @@
 						</div>
 					</form>
 				</div>
+
+
+			<a href="#modalImport" role="button" class="btn-new btn-small pull-right marge-right" data-toggle="modal"><i class="admin-icon-upload"></i> {% trans %}Import{% endtrans %}</a>
+				<div class="modal hide fade" id="modalImport" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+					<form action="{{ path('contents_import', {'lang' : defaultLanguage.id }) }}" method="post" {{ form_enctype(form) }}>
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+							<h3 id="myModalLabel">{% trans %}Import all publications{% endtrans %}</h3>
+						</div>
+						<div class="modal-body">
+							{{ form_widget(form) }}
+						</div>
+						<div class="modal-footer">
+							<button class="button btn-cancel" data-dismiss="modal" aria-hidden="true">{% trans %}Cancel{% endtrans %} <i class="admin-icon-cancel"></i></button>
+							<button class="button btn-main" type="submit">{% trans %}Import{% endtrans %} <i class="admin-icon-ok"></i></button>
+						</div>
+					</form>
+				</div>
+					
 			{% if app.session.hasFlash('error') %}
 				<div class="clear h20"></div>
 			    <div class="alert alert-error">
@@ -48,7 +67,7 @@
 		                  	<th>{% trans %}Language{% endtrans %}</th>
 		                  	<th>{% trans %}Translations{% endtrans %}</th>
 		                  	<th class="published">{% trans %}Published{% endtrans %}</th>
-		                  	<th>{% trans %}Created{% endtrans %}</th>
+		                  	<th>{% trans %}Modified{% endtrans %}</th>
 		                  	<th>{% trans %}Actions{% endtrans %}</th>
 		                </tr>
 		            </thead>
@@ -60,7 +79,7 @@
 			                {% if loop.index %2 == 0 or loop.index == 0 %}
 			                	{% set class = ' class=odd' %}
 			                {% endif %}
-			              	<tr{{ class }}>
+			              	<tr{{ class }} id="content-{{ content.id }}">
 			                  	<td class="title first">
 			                  		<a href="{{ path('contents_edit', {'id' : content.id }) }}">
 			                  			{{ content.title }}
@@ -72,7 +91,7 @@
 			                  		{% endif %}
 			                  	</td>
 			                  	<td>
-			                  		{{ content.categories|join(',') }}
+			                  		{{ content.displayCategories }}
 			                  	</td>
 			                  	<td class="center-text"><img src="{{ asset('bundles/cmscontent/img/flags/'~content.language.iso~'.png') }}" height="16px" style="height:16px;" alt="{{ content.language.iso }}">
 			                  	</td>
@@ -97,25 +116,21 @@
 			                			{% set found = false %}
 			                  		{% endfor %}
 			                  	</td>
-			                  	<td class="center-text">
-			                  		<a href="{{ path('contents_published', {'id' : content.id }) }}">
+			                  	<td class="center-text publish">
+			                  		<a href="javascript:publishContent({{ content.id }});">
 					                  	{% if content.published %}
 					                  		<i class="icon-ok"></i>
 					                  	{% else %}
-					                  		<i class="icon-remove"></i>
+					                  		<i class="icon-ban-circle"></i>
 					                  	{% endif %}
 				                  	</a>
 				                </td>
 			                  	<td class="center-text">
-			                  		{{ content.created|date('d/m/Y') }}
+			                  		{{ content.modified|date('d/m/Y') }}
 			                  	</td>
 			                  	<td class="center-text last">
 			                  		<a href="{{ path('contents_edit', {'id' : content.id }) }}"><i class="icon-edit"></i></a>
 			                  		<a href="{{ path('contents_delete', {'id' : content.id }) }}"><i class="icon-trash"></i></a>
-			                  		{# if content.translations|length > 0 %}
-			                  		<a href="#manageTranslation" role="button" data-toggle="modal"><i class="icon-globe"></i></a>
-
-									{% endif #}
 			                  	</td>
 			                </tr>
 						{% endfor %}
@@ -145,73 +160,6 @@
 			</div>
 	    </div>
 	</div>
-
-<div class="modal hide fade" id="manageTranslation" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-	<div class="modal-header">
-		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-		<h3 id="myModalLabel">Manage Translations</h3>
-	</div>
-	<div class="modal-body">
-		<table class="table table-striped table-bordered tableborder">
-				<thead>
-                <tr>
-                  	<th>#</th>
-                  	<th>Title</th>
-                  	<th>Type</th>
-                  	<th>Published</th>
-                  	<th>Created</th>
-                  	<th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-            	{# for language in languages %}
-          			{% for translation in content.taxonomy.contents %}
-          				{% if language.id == translation.language.id %}
-          					{% set found = loop.index %}
-          				{% endif %}
-          			{% endfor %}
-              		{% if found != false %}
-              			{% set found = found - 1 %}
-		      				<tr>
-			                	<td class="center-text">
-			                  		{{ loop.index }}
-			                	</td>
-		                  		<td>
-		                  			<a href="{{ path('contents_edit', {'id' : content.taxonomy.contents[found].id }) }}">
-		                  				{{ content.taxonomy.contents[found].title }}
-		                  			</a>
-		                  		</td>
-		                  		<td class="center-text">
-		                  			{% if content.taxonomy.contents[found].taxonomy is defined %}
-		                  				{% for taxonomy in content.taxonomy.contents[found].taxonomy %}
-		                  					{{ taxonomy.title }}
-		                  				{% endfor %}
-		                  			{% endif %}
-		                  		</td>
-		                  		<td class="center-text">
-			                  		<a href="{{ path('contents_published', {'id' : content.taxonomy.contents[found].id }) }}">
-					                  	{% if content.taxonomy.contents[found].published %}
-					                  		<i class="icon-ok"></i>
-					                  	{% else %}
-					                  		<i class="icon-ban-circle"></i>
-					                  	{% endif %}
-				                  	</a>
-				                </td>
-			                  	<td class="center-text">
-			                  		{{ content.taxonomy.contents[found].created|date('d/m/Y') }}
-			                  	</td>
-			                  	<td class="center-text">
-			                  		<a href="{{ path('contents_edit', {'id' : content.taxonomy.contents[found].id }) }}"><i class="icon-pencil"></i></a>
-			                  		<a href="{{ path('contents_delete', {'id' : content.taxonomy.contents[found].id }) }}"><i class="icon-trash"></i></a>
-			                  	</td>
-			                </tr>
-	      			{% endif %}
-					{% set found = false %}
-  				{% endfor #}
-	  		</tbody>
-	    </table>
-	</div>
-</div>
 {% endblock body %}
 {% block javascripts %}
 <script type="text/javascript">
@@ -230,5 +178,22 @@
 	$(function() {
 		$('select').selectBoxIt();
 	});
+
+	function publishContent(id) {
+		$.ajax({
+			url: "{{ path('contents_published') }}",
+			data: 'id='+id,
+			type: "POST",
+			success: function(state) {
+				var html = '';
+				if(state)
+					html = '<i class="icon-ok"></i>';
+				else
+					html = '<i class="icon-ban-circle"></i>';
+				$('tr#content-'+id+' td.publish a').html(html);
+			}
+
+		});
+	}
 </script>
 {% endblock %}

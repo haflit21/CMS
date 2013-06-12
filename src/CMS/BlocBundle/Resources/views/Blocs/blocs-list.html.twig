@@ -52,7 +52,7 @@
 				    <tbody>
 				    	{% for bloc in pagination %}
 				    	{% set found = false %}
-				    	<tr>
+				    	<tr id="menu-{{ bloc.id }}">
 				    		<td>{{ bloc.id }}</td>
 				    		<td><a href="{{ path('blocs_edit', {'id' : bloc.id }) }}">{{ bloc.title }}</a></td>
 				    		<td>{{ bloc.position }}</td>
@@ -77,8 +77,8 @@
 			                  		{% endif %}
 			                  	{% endfor %}	
 			                </td>
-			                <td class="center-text">
-			                	<a href="#">
+			                <td class="center-text publish" >
+			                	<a href="javascript:publishBlock({{ bloc.id }});">
 				                  	{% if bloc.published %}
 				                  		<i class="icon-ok"></i>
 				                  	{% else %}
@@ -123,5 +123,22 @@
 	$(function() {
 		$('table select').selectBoxIt();
 	});
+
+	function publishBlock(id, state) {
+		$.ajax({
+			url: "{{ path('publish_block') }}",
+			data: 'id='+id,
+			type: "POST",
+			success: function(state) {
+				var html = '';
+				if(state)
+					html = '<i class="icon-ok"></i>';
+				else
+					html = '<i class="icon-ban-circle"></i>';
+				$('tr#menu-'+id+' td.publish a').html(html);
+			}
+
+		})
+	}
 </script>
 {% endblock %}

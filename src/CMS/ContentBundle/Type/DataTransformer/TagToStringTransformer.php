@@ -53,18 +53,25 @@ class TagToStringTransformer implements DataTransformerInterface
             return null;
         }
 
-        $tag = $this->om
-            ->getRepository('CMSContentBundle:CMTag')
-            ->findOneBy(array('title' => $title))
-        ;
+        $tags = explode(',',$title);
 
-        //var_dump($title); die;
+        $tags_result = new \Doctrine\Common\Collections\ArrayCollection();
 
-        if (null === $tag) {
-            $tag = new CMTag();
-            $tag->setTitle($title);
+        $tags_source = $this->om->getRepository('CMSContentBundle:CMTag')->getAllTagsTitle();
+        $tags_objects = $this->om->getRepository('CMSContentBundle:CMTag')->getAllTagsTitleObject();
+
+        foreach ($tags as $tag) {
+        	$tag = trim($tag);
+            if (in_array($tag, $tags_source)) {
+                $tag_current = $tags_objects[$tag];
+                $tags_result[] = $tag_current;
+            } else if($tag != '') {
+                $tag_current = new CMTag;
+                $tag_current->setTitle($tag);
+                $tags_result[] = $tag_current;
+                $this->om->persist($tag_current);
+            }
         }
-
-        return $tag;
+        return $tags_result;
     }
 }

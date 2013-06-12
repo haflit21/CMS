@@ -80,12 +80,18 @@ class BlocMenu
                                             $html .= '</li>';
                                         }
                                         $html .= '<li class="dropdown">';
-                                        $html .= '<a id="drop-'.$entry->getId().'" class="dropdown-toggle" data-toggle="dropdown" href="/'.substr($entry->getLanguage()->getIso(), 0, 2).'/'.$entry->getUrl().'">'.$entry->getTitle().'</a>';
+                                        if (count($entry->getChildren()) > 0)
+                                            $html .= '<li class="dropdown"><a id="drop-'.$entry->getId().'" class="dropdown-toggle" data-toggle="dropdown"  href="/'.substr($entry->getLanguage()->getIso(), 0, 2).'/'.$entry->getUrl().'">'.$entry->getTitle().'</a>';
+                                        else
+                                            $html .= '<li><a id="drop-'.$entry->getId().'" href="/'.substr($entry->getLanguage()->getIso(), 0, 2).'/'.$entry->getUrl().'">'.$entry->getTitle().'</a>';
                                         $first = false;
                                         break;
                                     case 2:
                                         $html .= '</li></ul></li>';
-                                        $html .= '<li class="dropdown"><a id="drop-'.$entry->getId().'" class="dropdown-toggle" data-toggle="dropdown"  href="/'.substr($entry->getLanguage()->getIso(), 0, 2).'/'.$entry->getUrl().'">'.$entry->getTitle().'</a>';
+                                        if (count($entry->getChildren()) > 0)
+                                            $html .= '<li class="dropdown"><a id="drop-'.$entry->getId().'" class="dropdown-toggle" data-toggle="dropdown"  href="/'.substr($entry->getLanguage()->getIso(), 0, 2).'/'.$entry->getUrl().'">'.$entry->getTitle().'</a>';
+                                        else
+                                            $html .= '<li><a id="drop-'.$entry->getId().'" href="/'.substr($entry->getLanguage()->getIso(), 0, 2).'/'.$entry->getUrl().'">'.$entry->getTitle().'</a>';
                                         break;
                                 }
                                 $id_old = $entry->getId();

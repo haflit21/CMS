@@ -12,6 +12,9 @@ class CategoryType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $lang_id = $options['lang_id'];
+        $fields = $options['fields'];
+        //var_dump($fields); die;
+
         $builder
             ->add('title', 'text', array('label'=>'Title'))
             ->add('published', 'choice', array(
@@ -41,6 +44,8 @@ class CategoryType extends AbstractType
                     'empty_value' => 'Après l\'élément',
                     'required' => false,
                 ))
+            ->add('ordre_classement', 'choice', array('label' => 'Champ pour classer la catégorie', 'choices' => $fields))
+            ->add('direction_classement', 'choice', array('label' => 'Direction du classement', 'choices' => array('ASC' => 'croissant', 'DESC' => 'décroissant')))
             ->add('url', 'text', array('label'=>'Url', 'required' => true))
         ;
     }
@@ -48,7 +53,7 @@ class CategoryType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'CMS\ContentBundle\Entity\CMCategory', 'lang_id' => ''
+            'data_class' => 'CMS\ContentBundle\Entity\CMCategory', 'lang_id' => '', 'fields' => array()
         ));
     }
 

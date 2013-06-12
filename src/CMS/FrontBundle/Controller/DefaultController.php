@@ -39,7 +39,10 @@ class DefaultController extends Controller
 
         $tag = $this->getDoctrine()->getRepository('CMSContentBundle:CMTag')->findOneBy(array('slug' => $tag));
         $contents = $tag->getContents();
-        $template = 'default/category';
+        $content = $contents[0];
+        $categories = $content->getCategories();
+        $category = $categories[0];
+        $template = $content->getContenttype()->getTemplate().'/category';
         $default_url = $this->getDefaultUrl();
 
         return array(
@@ -51,8 +54,8 @@ class DefaultController extends Controller
             'url'         => $this->container->getParameter('site_url').'/tag/'.$tag.$this->container->getParameter('format_url'), 
             'contents'    => $contents, 
             'content'     => null, 
-            'category'    => null, 
-            'metas'       => null,
+            'category'    => $category, 
+            'metas'       => $this->getMetasCategory($category),
             'title'       => $tag->getTitle(), 
             'default_url' => '/'.$lang.'/'.$default_url['url'], 
             'languages'   => $languages
@@ -78,6 +81,9 @@ class DefaultController extends Controller
                           ->getRepository('CMSContentBundle:CMLanguage')
                           ->findAll(array('published'=>1));
 
+        $langObj = $this->getDoctrine()
+                        ->getRepository('CMSContentBundle:CMLanguage')
+                        ->findOneBy(array('iso' => $lang.'-'.strtoupper($lang)));                      
         
 
         $category = $this->getDoctrine()->getRepository('CMSContentBundle:CMCategory')->findBy(array('url' => $url));
@@ -95,13 +101,11 @@ class DefaultController extends Controller
                 //var_dump($category->getId()); die;
             }
         } else {
-            $contents = $category->getContents();
+            $categories = $this->getDoctrine()->getRepository('CMSContentBundle:CMCategory')->findCategoriesByParent($category->getId());
 
+            $contents = $this->getDoctrine()->getRepository('CMSContentBundle:CMContent')->findByCategories($categories, $langObj->getId(), $category);
             if (!empty($contents)) {
-                foreach ($category->getContents() as $content_cat) {
-                    $currentContent = $content_cat;
-                    break;
-                }
+                $currentContent = $contents[0];
                 $template = $currentContent->getContenttype()->getTemplate().'/category';
                 $title = $category->getTitle();
             } else {

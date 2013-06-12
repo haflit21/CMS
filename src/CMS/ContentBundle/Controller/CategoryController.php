@@ -138,6 +138,16 @@ class CategoryController extends Controller
         return $languages;
     }
 
+    private function _getFieldsClassement() {
+        $fields = array('id' => 'id', 'title' => 'title');
+        $fields_content_res = $this->getDoctrine()->getRepository('CMSContentBundle:CMField')->getAllFieldsArray();
+        $fields_content = array();
+        foreach ($fields_content_res as $fields_array)
+            $fields_content = array_merge($fields_content, array($fields_array['name'] => $fields_array['title']));
+        $fields = array_merge($fields,$fields_content);
+        return $fields;
+    }
+
     /**
      * Insère une nouvelle catégorie
      *
@@ -153,7 +163,10 @@ class CategoryController extends Controller
         $category = new CMCategory;
         $language = $this->getDoctrine()->getRepository('CMSContentBundle:CMLanguage')->find($lang);
         $category->setLanguage($language);
-        $form = $this->createForm(new CategoryType(), $category, array('lang_id' => $lang));
+
+        $fields = $this->_getFieldsClassement();
+
+        $form = $this->createForm(new CategoryType(), $category, array('lang_id' => $lang,'fields' => $fields));
         $metas = ExtraMetas::loadMetas($this);
 
         if ($request->isMethod('POST')) {
@@ -198,7 +211,10 @@ class CategoryController extends Controller
         $language = $this->getDoctrine()->getRepository('CMSContentBundle:CMLanguage')->find($lang);
         $category->setLanguage($language);
         $categoryReference = $this->getDoctrine()->getRepository('CMSContentBundle:CMCategory')->find($reference);
-        $form = $this->createForm(new CategoryType(), $category);
+
+        $fields = $this->_getFieldsClassement();
+
+        $form = $this->createForm(new CategoryType(), $category, array('lang_id' => $category->getLanguage()->getId(),'fields' => $fields));
         $metas = ExtraMetas::loadMetas($this);
 
         if ($request->isMethod('POST')) {
@@ -242,7 +258,10 @@ class CategoryController extends Controller
     public function editItemAction(Request $request, $id)
     {
         $category = $this->getDoctrine()->getRepository('CMSContentBundle:CMCategory')->find($id);
-        $form = $this->createForm(new CategoryType(), $category, array('lang_id' => $category->getLanguage()->getId()));
+
+        $fields = $this->_getFieldsClassement();
+
+        $form = $this->createForm(new CategoryType(), $category, array('lang_id' => $category->getLanguage()->getId(),'fields' => $fields));
         $metas = ExtraMetas::loadEditMetasCategory($category, $this);
 
         if ($request->isMethod('POST')) {
@@ -296,24 +315,26 @@ class CategoryController extends Controller
      * 
      * @return [type]           [description]
      *
-     * @Route("/contents/published/{id}", name="categories_published")
+     * @Route("/categories/published/", name="categories_published")
      * @Template()
      */
-    public function publishedItemAction(Request $request, $id)
+    public function publishedItemAction(Request $request)
     {
+
+        $id = $request->request->get('id');
         $category = $this->getDoctrine()->getRepository('CMSContentBundle:CMCategory')->find($id);
 
-        if($category->getPublished())
-            $category->setPublished(0);
-        else
-            $category->setPublished(1);
+        $state = !$category->getPublished();
+           
+        $category->setPublished($state);
 
         $em = $this->getDoctrine()->getManager();
 
         $em->persist($category);
         $em->flush();
-
-        return $this->redirect($this->generateUrl('categories'));
+        echo $state;
+        exit();
+        
     }
 
 
@@ -348,5 +369,28 @@ class CategoryController extends Controller
         }
 
         return $category;
+    }
+
+    /**
+     * Modifie l'ordre des catégories de niveau supérieur à 1
+     *
+     * @param  id        identitifant de la catégorie dont on veut modifier l'ordre
+     * @param  direction direction de la modification
+     * 
+     * @Route("/categories/move/{id}/{direction}", name="categories_move")
+     */
+    public function moveOrder($id, $direction)
+    {
+        $em = $this->getDoctrine()->getRepository('CMSContentBundle:CMCategory');
+        $category = $em->find($id);
+        switch($direction) {
+            case 'UP':
+                $em->moveUp($category);
+                break;
+            case 'DOWN':
+                $em->moveDown($category);
+                break;    
+        }
+        return $this->redirect($this->generateUrl('categories'));
     }
 }

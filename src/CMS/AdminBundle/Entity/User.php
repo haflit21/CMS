@@ -97,7 +97,7 @@ class User implements UserInterface
      *
      * @param UploadedFile $file
      */
-    public function setFile(UploadedFile $file = null)
+    public function setFile(\Symfony\Component\HttpFoundation\File\UploadedFile $file = null)
     {
         $this->file = $file;
     }

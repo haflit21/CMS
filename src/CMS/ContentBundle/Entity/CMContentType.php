@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * ContentType
  *
  * @ORM\Table(name="cm_contenttypes")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="CMS\ContentBundle\Entity\Repository\ContentTypeRepository")
  */
 class CMContentType
 {
@@ -36,7 +36,7 @@ class CMContentType
     /**
      * @ORM\OneToMany(targetEntity="CMContent", mappedBy="fieldvalues")
      */
-    private $content;
+    private $contents;
 
     /**
      * @var string
@@ -156,7 +156,7 @@ class CMContentType
      * @param  \CMS\ContentBundle\Entity\CMContent $content
      * @return CMContentType
      */
-    public function addContent(\CMS\ContentBundle\Entity\CMContent $content)
+    public function addContents(\CMS\ContentBundle\Entity\CMContent $content)
     {
         $this->content[] = $content;
 
@@ -168,7 +168,7 @@ class CMContentType
      *
      * @param \CMS\ContentBundle\Entity\CMContent $content
      */
-    public function removeContent(\CMS\ContentBundle\Entity\CMContent $content)
+    public function removeContents(\CMS\ContentBundle\Entity\CMContent $content)
     {
         $this->content->removeElement($content);
     }
@@ -178,8 +178,31 @@ class CMContentType
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getContent()
+    public function getContents()
     {
-        return $this->content;
+        return $this->contents;
+    }
+
+    /**
+     * Add contents
+     *
+     * @param \CMS\ContentBundle\Entity\CMContent $contents
+     * @return CMContentType
+     */
+    public function addContent(\CMS\ContentBundle\Entity\CMContent $contents)
+    {
+        $this->contents[] = $contents;
+    
+        return $this;
+    }
+
+    /**
+     * Remove contents
+     *
+     * @param \CMS\ContentBundle\Entity\CMContent $contents
+     */
+    public function removeContent(\CMS\ContentBundle\Entity\CMContent $contents)
+    {
+        $this->contents->removeElement($contents);
     }
 }

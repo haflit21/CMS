@@ -35,6 +35,12 @@ h3 {
 	border:none;
 }
 
+h4 {
+	font-size:@sizeSubtitle;
+	font-family: @fontTitle;
+	font-weight: 300;
+}
+
 
 
 a {
@@ -198,6 +204,16 @@ ul.horizontal li.dropdown:hover ul.dropdown-menu{
 	h3 {
 		font-size:@sizeTitleBlocSidebar;
 		color:@vert;
+	}
+
+	h3::-moz-selection {
+		color:@blanc;
+		background-color: @vert;
+	}
+
+	h3::selection {
+		color:@blanc;
+		background-color: @vert;
 	}
 
 	h4 {
@@ -397,6 +413,16 @@ ul.horizontal li.dropdown:hover ul.dropdown-menu{
 .map img{max-width: inherit;}
 .map { height:500px; }
 
+
+/*********************************
+ * PUBLICATIONS
+ *********************************/
+.table-publications {
+	
+	tr:nth-child(odd) td {
+		background-color: #efefef;
+	}
+}
 
 /*********************************
  * FOOTER

@@ -55,10 +55,11 @@ class BlocCategory
         $i=0;
         foreach ($articles as $article) {
             if ($i < $this->getNbArticles()) {
-                $str .= '<h4><a href="'.$article->getUrl().'">'.$article->getTitle().'</a></h4>';
+                $str .= '<h4><a href="'.$this->getCategory()->getParent()->getUrl().'">'.$article->getTitle().'</a></h4>';
                 $str .= '<p>'.substr($article->getDescription(),0,50).'...</p>';
                 $str .= '<div class="clearfix"></div>';
             }
+            $i++;
         }
 
         return $str;

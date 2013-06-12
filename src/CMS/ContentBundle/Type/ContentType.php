@@ -30,13 +30,12 @@ class ContentType extends AbstractType
                     return $er->getCategoryByLangIdQuery($lang_id);
                 },
                 'label'=>'Categories',
-                'property'=>'title',
                 'expanded'=>false,
                 'multiple'=>true,
                 'required'=>true,
                 'attr' => array('class' => 'categories')
             ))
-            ->add('url', 'text', array('label'=>'Url', 'required' => false))
+            ->add('url', 'text', array('label'=>'Url', 'required' => false))    
         ;
     }
 

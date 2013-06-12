@@ -2,12 +2,12 @@
 
 namespace CMS\ContentBundle\Entity\Repository;
 
-use Doctrine\ORM\EntityRepository;
+use Gedmo\Tree\Entity\Repository\NestedTreeRepository;
 
 /**
  * ContentRepository
  */
-class CategoryRepository extends EntityRepository
+class CategoryRepository extends NestedTreeRepository
 {
     public function getCategoryByLangId($lang)
     {
@@ -52,9 +52,28 @@ class CategoryRepository extends EntityRepository
                     ->leftjoin('co.contenttype', 'ct')
                     ->where('c.url=:url')
                     ->setParameter('url',$url)
+                    ->andWhere('c.published=:published')
+                    ->setParameter('published',1)
                     ->getQuery()
                     ->getOneOrNullResult()
                     ;
+    }
+
+    public function findCategoriesByParent($idCat) {
+        $categories = $this->_em
+                           ->createQueryBuilder()
+                           ->select('c.id')
+                           ->from('CMSContentBundle:CMCategory','c')
+                           ->where('c.parent=:id')
+                           ->setParameter('id', $idCat)
+                           ->getQuery()
+                           ->getScalarResult();
+        $cats = array(); 
+        foreach ($categories as $cat) {
+            $cats[] = $cat['id'];
+        }
+        $cats[] = $idCat;
+        return $cats;
     }
 
 }

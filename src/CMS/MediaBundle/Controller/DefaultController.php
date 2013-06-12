@@ -11,6 +11,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
+use CMS\MediaBundle\Model\MediaBundleModel;
+
 /**
  * @Route("/admin")
  */
@@ -52,8 +54,13 @@ class DefaultController extends Controller
             $directories[] = substr($dir, strrpos($dir, $directory_separator)+1);
         }
 
+        $i=0;
         foreach ($uploads_file as $fichier) {
-            $fichiers[] = substr($fichier, strrpos($fichier, $directory_separator)+1);
+            //var_dump($directory_new); die;
+            $fichiers[$i]['media'] = substr($fichier, strrpos($fichier, $directory_separator)+1);
+            $model = new MediaBundleModel();
+            $fichiers[$i]['display'] = $model->display($directory_new.$directory_separator.substr($fichier, strrpos($fichier, $directory_separator)+1), $this->container->get('liip_imagine.cache.manager'));
+            $i++;
         }
 
         $session = $this->get('session');
@@ -61,6 +68,7 @@ class DefaultController extends Controller
 
         return array('directories' => $directories, 'fichiers' => $fichiers, 'url' => $directory.'_', 'url_asset' => $request->getBasePath().'/'.$directory_new, 'prec' => $prec, 'isRoot' => $isRoot, 'path' => $path, 'current' => $current_path, 'active'=>'Medias');
     }
+
 
     /**
      * @Route("/newdirectory", name="new_directory")

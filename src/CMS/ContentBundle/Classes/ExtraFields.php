@@ -55,6 +55,7 @@ class ExtraFields
                     case 'file':
                         $file = $request->files->get($field->getName());
                         $value = ExtraFields::upload($file);
+                        break;
                     default:
                         $value = $request->request->get($field->getName());
                         
@@ -124,14 +125,16 @@ class ExtraFields
 
     public static function upload($file, $oldvalue='')
     {
+
+        //var_dump($file); die;
         if (is_object($file)) {
             
             $root_dir = __DIR__.'/../../../../web';
             $web_dir = '/uploads/'.date('Y').'/'.date('F');
             $dest = $root_dir.$web_dir;
 
-            $extension = $file->guessExtension();
             $path = $file->getClientOriginalName();
+            //$extension = $file->guessExtension();
             $file->move($dest, $path);
             return $web_dir.'/'.$path;
         } else {

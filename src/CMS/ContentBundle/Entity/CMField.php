@@ -7,8 +7,8 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * CMS\ContentBundle\Entity\Field
  *
-* @ORM\Table(name="cm_fields")
- * @ORM\Entity
+ * @ORM\Table(name="cm_fields")
+ * @ORM\Entity(repositoryClass="CMS\ContentBundle\Entity\Repository\FieldRepository")
  */
 class CMField
 {

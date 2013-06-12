@@ -29,6 +29,7 @@
 		            <th>{% trans %}Description{% endtrans %}</th>
 		            <th class="center-text">{% trans %}Language{% endtrans %}</th>
 		            <th class="center-text">{% trans %}Translations{% endtrans %}</th>
+		            <th class="center-text">{% trans %}Order{% endtrans %}</th>
 		            <th class="center-text">{% trans %}Published{% endtrans %}</th>
 		            <th class="center-text">{% trans %}Actions{% endtrans %}</th>
 		        </tr>
@@ -36,7 +37,7 @@
 		    <tbody>
 		    {% for category in pagination %}
 		    	{% set found = false %}
-		        <tr>
+		        <tr id="category-{{ category.id }}">
 		            <td><a href="{{ path('categories_edit', { 'id': category.id }) }}">{{ category }}</a></td>
 		            <td>{{ category.description|truncate(50)|raw }}</td>
 		            <td class="center-text"><img src="{{ asset('bundles/cmscontent/img/flags/'~category.language.iso~'.png') }}" height="16px" style="height:16px;" alt="{{ category.language.iso }}"></td>
@@ -62,11 +63,17 @@
                   		{% endfor %}
                   	</td>
                   	<td class="center-text">
-	                  		<a href="{{ path('categories_published', {'id' : category.id }) }}">
+                  		{% if category.id != category.root %}
+	                  		<a href="{{ path('categories_move', {'id': category.id, 'direction': 'UP'}) }}"><i class="admin-icon-up-open"></i></a>
+	                  		<a href="{{ path('categories_move', {'id': category.id, 'direction': 'DOWN'}) }}"><i class="admin-icon-down-open"></i></a>
+                  		{% endif %}
+                  	</td>
+                  	<td class="center-text publish">
+	                  		<a href="javascript:publishCategory({{ category.id }});">
 			                  	{% if category.published %}
 			                  		<i class="icon-ok"></i>
 			                  	{% else %}
-			                  		<i class="icon-remove"></i>
+			                  		<i class="icon-ban-circle"></i>
 			                  	{% endif %}
 		                  	</a>
 		                </td>
@@ -110,5 +117,22 @@
 	$(function() {
 		$('select').selectBoxIt();
 	});
+
+	function publishCategory(id) {
+		$.ajax({
+			url: "{{ path('categories_published') }}",
+			data: 'id='+id,
+			type: "POST",
+			success: function(state) {
+				var html = '';
+				if(state)
+					html = '<i class="icon-ok"></i>';
+				else
+					html = '<i class="icon-ban-circle"></i>';
+				$('tr#category-'+id+' td.publish a').html(html);
+			}
+
+		});
+	}
 </script>
 {% endblock %}

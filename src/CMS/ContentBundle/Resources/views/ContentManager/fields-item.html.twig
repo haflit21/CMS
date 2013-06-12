@@ -45,17 +45,6 @@
 							{{ form_errors(form.published) }}
 						</div>
 					</div>
-					{#
-					<div class="control-group">
-						<div class="control-label">
-							{{ form_label(form.created) }}
-						</div>
-						<div class="controls inline_elements">
-							{{ form_widget(form.created, {'attr' : {'class' : 'datepicker'}}) }}
-							{{ form_errors(form.created) }}
-						</div>
-					</div>
-					#}
 					<div class="control-group">
 						<div class="control-label">
 							{{ form_label(form.contentType) }}
@@ -76,10 +65,9 @@
 				</div>
 				<div class="clearfix"></div>
 				<div class="form-actions">
-					    <a href="{{ path('fields') }}" class="btn btn-small">{% trans %}Cancel{% endtrans %}</a>
-                        <button type="submit" class="btn btn-primary btn-small">{% trans %}Validate{% endtrans %}</button>
-				    </div>
-
+					<a href="{{ path('fields') }}" class="button btn-cancel">{% trans %}Cancel{% endtrans %} <i class="admin-icon-cancel"></i></a>
+                    <button type="submit" class="button btn-main">{% trans %}Validate{% endtrans %} <i class="admin-icon-ok"></i></button>
+				</div>
 				{{ form_rest(form) }}
 			</form>
 		</div>

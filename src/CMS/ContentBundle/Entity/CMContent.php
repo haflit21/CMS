@@ -3,10 +3,12 @@
 namespace CMS\ContentBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * CMS\ContentBundle\Entity\Content
- *
+ * 
+ * @ORM\HasLifecycleCallbacks
  * @ORM\Table(name="cm_contents")
  * @ORM\Entity(repositoryClass="CMS\ContentBundle\Entity\Repository\ContentRepository")
  */
@@ -55,10 +57,19 @@ class CMContent
 
     /**
      * @var \DateTime $created
-     *
+     * 
+     * @Gedmo\Timestampable(on="create")
      * @ORM\Column(name="created", type="datetime")
      */
     private $created;
+
+    /**
+     * @var \DateTime $modified
+     *
+     * @Gedmo\Timestampable(on="update")
+     * @ORM\Column(name="modified", type="datetime")
+     */
+    private $modified;
 
     /**
      * @var boolean $published
@@ -170,19 +181,6 @@ class CMContent
     public function getDescription()
     {
         return $this->description;
-    }
-
-    /**
-     * Set created
-     *
-     * @param  \DateTime $created
-     * @return CMContent
-     */
-    public function setCreated($created)
-    {
-        $this->created = $created;
-
-        return $this;
     }
 
     /**
@@ -417,6 +415,7 @@ class CMContent
      */
     public function setUrl($url)
     {
+
         $this->url = $url;
 
         return $this;
@@ -510,5 +509,55 @@ class CMContent
     public function setTags($tags)
     {
        $this->tags = $tags;
+    }
+
+
+    /**
+     * Get modified
+     * 
+     * @return \DateTime 
+     */
+    public function getModified()
+    {
+        return $this->modified;
+    }
+
+    public function displayCategories()
+    {
+        $str = '';
+        $i=0;
+        $nb_cats = count($this->categories);
+        foreach ($this->categories as $cat) {
+            $str .= $cat->getTitle();
+            if($i < $nb_cats-1)
+                $str .= ', ';   
+        }
+        return $str;
+    }
+
+    /**
+     * Set created
+     *
+     * @param \DateTime $created
+     * @return CMContent
+     */
+    public function setCreated($created)
+    {
+        $this->created = $created;
+    
+        return $this;
+    }
+
+    /**
+     * Set modified
+     *
+     * @param \DateTime $modified
+     * @return CMContent
+     */
+    public function setModified($modified)
+    {
+        $this->modified = $modified;
+    
+        return $this;
     }
 }

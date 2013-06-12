@@ -314,4 +314,27 @@ class CMLanguage
     {
         return $this->title;
     }
+
+    /**
+     * Add categories
+     *
+     * @param \CMS\ContentBundle\Entity\CMCategory $categories
+     * @return CMLanguage
+     */
+    public function addCategory(\CMS\ContentBundle\Entity\CMCategory $categories)
+    {
+        $this->categories[] = $categories;
+
+        return $this;
+    }
+
+    /**
+     * Remove categories
+     *
+     * @param \CMS\ContentBundle\Entity\CMCategory $categories
+     */
+    public function removeCategory(\CMS\ContentBundle\Entity\CMCategory $categories)
+    {
+        $this->categories->removeElement($categories);
+    }
 }

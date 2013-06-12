@@ -511,4 +511,27 @@ class CMContent
     {
        $this->tags = $tags;
     }
+
+    /**
+     * Add categories
+     *
+     * @param \CMS\ContentBundle\Entity\CMCategory $categories
+     * @return CMContent
+     */
+    public function addCategory(\CMS\ContentBundle\Entity\CMCategory $categories)
+    {
+        $this->categories[] = $categories;
+
+        return $this;
+    }
+
+    /**
+     * Remove categories
+     *
+     * @param \CMS\ContentBundle\Entity\CMCategory $categories
+     */
+    public function removeCategory(\CMS\ContentBundle\Entity\CMCategory $categories)
+    {
+        $this->categories->removeElement($categories);
+    }
 }

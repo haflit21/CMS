@@ -548,4 +548,27 @@ class CMCategory
     {
         return $this->metavalues;
     }
+
+    /**
+     * Add children
+     *
+     * @param \CMS\ContentBundle\Entity\CMCategory $children
+     * @return CMCategory
+     */
+    public function addChild(\CMS\ContentBundle\Entity\CMCategory $children)
+    {
+        $this->children[] = $children;
+
+        return $this;
+    }
+
+    /**
+     * Remove children
+     *
+     * @param \CMS\ContentBundle\Entity\CMCategory $children
+     */
+    public function removeChild(\CMS\ContentBundle\Entity\CMCategory $children)
+    {
+        $this->children->removeElement($children);
+    }
 }

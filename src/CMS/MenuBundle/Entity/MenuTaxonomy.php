@@ -5,6 +5,8 @@ namespace CMS\MenuBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
+use CMS\SitemapBundle\Entity\Sitemap;
+
 /**
  * CAF\MenuBundle\Entity\MenuTaxonomy
  *
@@ -37,7 +39,7 @@ class MenuTaxonomy
     private $alias;
 
     /**
-     * @ORM\OneToMany(targetEntity="Menu", mappedBy="id_menu_taxonomy")
+     * @ORM\OneToMany(targetEntity="Menu", mappedBy="id_menu_taxonomy", cascade="remove")
      * @ORM\OrderBy({"root"="ASC", "lft"="ASC"})
      */
     protected $menus;
@@ -46,6 +48,11 @@ class MenuTaxonomy
      * @ORM\Column(name="is_menu_admin", type="boolean")
      */
     private $is_menu_admin;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="\CMS\SitemapBundle\Entity\Sitemap", mappedBy="menus_taxonomy")
+     */
+    private $sitemaps;
 
     /**
      * Get id

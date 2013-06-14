@@ -24,6 +24,13 @@ class Settings
      */
     private $id;
 
+    /**
+     * @var string $label_field
+     *
+     * @ORM\Column(name="label_field", type="string", length=100)
+     */
+    private $label_field;
+
 
 	/**
 	 * @var string $option_name
@@ -124,5 +131,28 @@ class Settings
     public function getTypeField()
     {
         return $this->type_field;
+    }
+
+    /**
+     * Set label_field
+     *
+     * @param string $labelField
+     * @return Settings
+     */
+    public function setLabelField($labelField)
+    {
+        $this->label_field = $labelField;
+    
+        return $this;
+    }
+
+    /**
+     * Get label_field
+     *
+     * @return string 
+     */
+    public function getLabelField()
+    {
+        return $this->label_field;
     }
 }

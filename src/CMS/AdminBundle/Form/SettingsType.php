@@ -4,6 +4,7 @@ namespace CMS\AdminBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Doctrine\ORM\EntityRepository;
 use CMS\AdminBundle\Form\EventListener\SettingsSubscriber;
 
@@ -22,10 +23,12 @@ class SettingsType extends AbstractType
 
 	}
 
-	public function getDefaultOptions(array $options)
-	{
-		return array('data_class' => null, 'options_fields' => '');
-	}
+	public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        $resolver->setDefaults(array(
+            'data_class' => null, 'options_fields' => ''
+        ));
+    }
 
 	public function getName()
 	{

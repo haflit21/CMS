@@ -34,7 +34,7 @@ class BlocImages
      */
     private $images;
 
-    public function displayBloc()
+    public function displayBloc($options = null)
     {
         $html = '<div class="col4"><ul class="unstyled">';
         foreach ($this->getImages() as $image) {

@@ -6,19 +6,29 @@
 		<div class="span12">
 			<h1 class="pull-left">{% trans %}Meta Manager{% endtrans %}</h1>
 			<a href="{{ path('metas_new') }}" class="btn-new btn-small pull-right"><i class="admin-icon-plus-circled"></i> {% trans %}New{% endtrans %}</a>
-			{% if app.session.hasFlash('error') %}
+
+			{% if app.session.flashbag.has('error') %}
 				<div class="clear h20"></div>
 			    <div class="alert alert-error">
 			  		<a class="close" data-dismiss="alert" href="#">×</a>
-			        {{ app.session.flash('error') }}
+			  		<ul class="unstyled">
+			  		{% for message in app.session.flashbag.get('error') %}
+			        	<li>{{ message }}</li>
+			        {% endfor %}
+			    	</ul>
 			    </div>
-			{% elseif app.session.hasFlash('success') %}
+			{% elseif app.session.flashbag.has('success') %}
 				<div class="clear h20"></div>
 			    <div class="alert alert-success">
 			  		<a class="close" data-dismiss="alert" href="#">×</a>
-			        {{ app.session.flash('success') }}
+			        <ul class="unstyled">
+			  		{% for message in app.session.flashbag.get('success') %}
+			        	<li>{{ message }}</li>
+			        {% endfor %}
+			    	</ul>
 			    </div>
 			{% endif %}
+
 			{% if display %}
 
 

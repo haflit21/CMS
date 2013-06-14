@@ -11,6 +11,8 @@ class MenuTaxonomyType extends AbstractType
     {
         $builder
             ->add('name')
+            ->add('alias')
+            ->add('is_menu_admin','choice',array('choices' => array(1 => 'Oui', 0 => 'Non'), 'expanded' => true))
         ;
     }
 

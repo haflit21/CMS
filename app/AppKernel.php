@@ -30,6 +30,7 @@ class AppKernel extends Kernel
             new CMS\MenuBundle\CMSMenuBundle(),
             new CMS\BlocBundle\CMSBlocBundle(),
             new CMS\ContactBundle\CMSContactBundle(),
+            new CMS\SitemapBundle\CMSSitemapBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

@@ -1,0 +1,21 @@
+{% extends('::admin.html.twig') %}
+{% block title %}{% trans %}Sitemap Manager - New{% endtrans %}{% endblock %}
+{% block body %}
+
+    <div class="row-fluid">
+        <div class="span12">
+            <h1 class="pull-left">{% trans %}Sitemap Manager - New{% endtrans %}</h1>
+            <a href="{{ path('contents') }}" class="button btn-cancel pull-right"><i class="admin-icon-left-open-1"></i> {% trans %}Back{% endtrans %}</a>
+            <div class="clear h30"></div>
+            <div class="span8">
+                <form action="{{ path('sitemap_new') }}" method="post" {{ form_enctype(form) }}>
+                    {{ form_widget(form) }}
+                    <div class="form-actions">
+                        <a href="{{ path('sitemap') }}" class="button btn-cancel">{% trans %}Cancel{% endtrans %} <i class="admin-icon-cancel"></i></a>
+                        <button type="submit" class="button btn-main">{% trans %}Validate{% endtrans %} <i class="admin-icon-ok"></i></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

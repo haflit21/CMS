@@ -34,7 +34,7 @@ class BlocHtml
      */
     private $code_html;
 
-    public function displayBloc()
+    public function displayBloc($options = null)
     {
         return $this->code_html;
     }

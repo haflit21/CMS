@@ -64,11 +64,11 @@ class MenuType extends AbstractType
                         'label' => ' '
                     )
                 )
-            ->add('file', 'file', array(
+            /*->add('file', 'file', array(
                     'label' => 'Icône du menu',
                     'required' => false    
                     )
-                )
+                )*/
             ->add('classIcon', 'text', array(
                     'label' => 'Classe de l\'icône',
                     'required' => false

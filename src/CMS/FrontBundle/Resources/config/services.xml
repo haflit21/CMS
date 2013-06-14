@@ -28,5 +28,8 @@
         <service id="cms.twig.googleMap_exension" class="CMS\FrontBundle\Twig\GoogleMapExtension">
             <tag name="twig.extension" />
         </service>
+        <service id="cms.twig.bloc_exension" class="CMS\FrontBundle\Twig\BlocExtension">
+            <tag name="twig.extension" />
+        </service>
     </services>
 </container>

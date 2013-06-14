@@ -4,16 +4,9 @@
 
     <div class="row-fluid">
         <div class="span12">
-            {% for flashMessage in app.session.flashbag.get('info') %}
-                <div class="alert alert-info">
-                    <button class="close" data-dismiss="alert" type="button">×</button>
-                    <strong>Notice</strong>
-                    {{ flashMessage }}
-                </div>
-            {% endfor %}
             <h1 class="pull-left">Menu</h1>
 
-             <a href="{{ path('menus') }}" class="btn btn-new btn-small pull-right"><i class="icon icon-chevron-left"></i> Retour</a>
+             <a href="{{ path('menus') }}" class="button btn-cancel pull-right"><i class="admin-icon-left-open-1"></i> {% trans %}Back{% endtrans %}</a>
              <div class="clearfix sep3"></div>
             {% if id is defined %}
                 <form class="form-horizontal" action="{{path('menus_edit', {'id' : id })}}" method="post" {{ form_enctype(form) }}>
@@ -21,20 +14,10 @@
                 <form class="form-horizontal" action="{{path('menus_new')}}" method="post" {{ form_enctype(form) }}>
             {% endif %}
                 <div class="span8">
-                    {{ form_errors(form) }}
-
-                    <div class="control-group">
-                        <div class="control-label">
-                            {{ form_label(form.name) }}
-                        </div>
-                        <div class="controls">
-                            {{ form_widget(form.name) }}
-                            {{ form_errors(form.name) }}
-                        </div>
-                    </div>
+                    {{ form_widget(form) }}
                     <div class="form-actions">
-                        <a href="{{ path('menus') }}" class="btn btn-small">{% trans %}Cancel{% endtrans %}</a>
-                        <button type="submit" class="btn btn-primary btn-small">{% trans %}Validate{% endtrans %}</button>
+                        <a href="{{ path('menus') }}" class="button btn-cancel">{% trans %}Cancel{% endtrans %} <i class="admin-icon-cancel"></i></a>
+                        <button type="submit" class="button btn-main">{% trans %}Validate{% endtrans %} <i class="admin-icon-ok"></i></button>
                     </div>
                 </div>
                 {{ form_rest(form) }}

@@ -48,7 +48,7 @@ class BlocCategory
      **/
      private $fieldOrder;
 
-    public function displayBloc()
+    public function displayBloc($options = null)
     {
         $str = '<h3>'.$this->bloc->getTitle().'</h3>';
         $articles = $this->getCategory()->getContents();

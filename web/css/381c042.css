@@ -23,7 +23,7 @@ body.login {
 }
 
 div#filter {
-	background:url(../bundles/cmsadmin/images/teaser_texture.png);
+	background:url(../../bundles/cmsadmin/images/teaser_texture.png);
 	position: absolute;
 	height:2000px;
 	width:100%;

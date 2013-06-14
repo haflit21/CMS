@@ -1,5 +1,5 @@
 {% extends('::admin.html.twig') %}
-
+{% block title %}{% trans %}Menus{% endtrans %}{% endblock %}
 {% block body %}
 
 	<div class="row-fluid">
@@ -7,9 +7,9 @@
 		<div class="span12">
 			<h1 class="pull-left">{% trans %}Menus{% endtrans %}</h1>
 			<a href="{{ path('menus_new') }}" class="btn-new btn-small pull-right"><i class="admin-icon-plus-circled"></i> {% trans %}New{% endtrans %}</a>
-			{% for flashMessage in app.session.flashbag.get('info') %}
+			{% for flashMessage in app.session.flashbag.get('success') %}
 				<div class="clear h20"></div>
-			    <div class="alert alert-info">
+			    <div class="alert alert-success">
 			    	<button class="close" data-dismiss="alert" type="button">×</button>
 			        <strong>Notice</strong>
 			        {{ flashMessage }}
@@ -29,7 +29,7 @@
 			<table class="table table-striped table-hover">
 				<thead>
 					<tr>
-						<th>#</th>
+						<th>{% trans %}Id{% endtrans %}</th>
 						<th>{% trans %}Title{% endtrans %}</th>
 						<th>{% trans %}Alias{% endtrans %}</th>
 						<th>{% trans %}Actions{% endtrans %}</th>
@@ -38,12 +38,25 @@
 				<tbody>
 					{% for menu in menus %}
 					<tr>
-						<td>{{ loop.index }}</td>
+						<td>{{ menu.id }}</td>
 						<td><a href="{{ path('entries_list', {'id': menu.id }) }}">{{ menu.name }}</a></td>
 						<td>{{ menu.alias }}</td>
 						<td>
 							<a href="{{ path('menus_edit', {'id': menu.id }) }}" class="icon-edit">&nbsp;</a>
-							<a href="#delete" class="icon-trash">&nbsp;</a>
+							<a href="#myModal-{{ menu.id }}" data-toggle="modal" class="icon-trash">&nbsp;</a>
+							<div class="modal hide" id="myModal-{{ menu.id }}">
+								<div class="modal-header">
+							    	<button type="button" class="close" data-dismiss="modal">×</button>
+							    	<h3>Suppression du menu ?</h3>
+							    </div>
+							    <div class="modal-body">
+							    	<p>Voulez-vous supprimer ce menu ?</p>
+							    </div>
+							    <div class="modal-footer">
+							    	<a href="#" class="button btn-cancel" data-dismiss="modal">Non</a>
+							    	<a href="{{ path('menus_delete', {'id': menu.id }) }}" class="button btn-main">Oui</a>
+							    </div>
+							</div>
 						</td>
 					</tr>
 					{% endfor %}

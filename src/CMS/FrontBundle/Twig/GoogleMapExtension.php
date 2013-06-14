@@ -13,7 +13,8 @@ class GoogleMapExtension extends Twig_Extension
         return array('googleMap' => new Twig_Filter_Method($this, 'googleMapFilter'));
     }
 
-    public function googleMapFilter($value) {
+    public function googleMapFilter($value)
+    {
     	
     	preg_match_all('/\[%%map id:(.*), lat:([0-9\.]*), long:(.*)%%\]/', $value, $values, PREG_PATTERN_ORDER);
     	

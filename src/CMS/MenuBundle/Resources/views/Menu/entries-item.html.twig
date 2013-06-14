@@ -8,8 +8,8 @@
            <h1 class="pull-left">{% trans %}Menus{% endtrans %} - {{ menu_taxonomy.name }}</h1>
 
 
-             <a href="{{ path('entries_list', {'id' : menu_taxonomy.id }) }}" class="btn btn-small pull-right"><i class="icon icon-chevron-left"></i> Retour</a>
-              <div class="clearfix sep3"></div>
+             <a href="{{ path('entries_list', {'id' : menu_taxonomy.id }) }}" class="button btn-cancel pull-right"><i class="admin-icon-left-open-1"></i> {% trans %}Back{% endtrans %}</a>
+             <div class="clear h30"></div>
             {% if id is defined %}
                 <form class="form-horizontal" action="{{path('entries_edit', {'id' : id, 'menu_taxonomy' :  menu_taxonomy.id} )}}" method="post" {{ form_enctype(form) }}>
             {% else %}

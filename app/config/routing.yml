@@ -38,6 +38,11 @@ cms_content:
     type:     annotation
     prefix:   /
 
+cms_sitemap:
+    resource: "@CMSSitemapBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
 _imagine:
     resource: .
     type:     imagine

@@ -21,17 +21,25 @@
 						</div>
 					</form>
 				</div>
-			{% if app.session.hasFlash('error') %}
+			{% if app.session.flashbag.has('error') %}
 				<div class="clear h20"></div>
 			    <div class="alert alert-error">
 			  		<a class="close" data-dismiss="alert" href="#">×</a>
-			        {{ app.session.flash('error') }}
+			  		<ul class="unstyled">
+			  		{% for message in app.session.flashbag.get('error') %}
+			        	<li>{{ message }}</li>
+			        {% endfor %}
+			    	</ul>
 			    </div>
-			{% elseif app.session.hasFlash('success') %}
+			{% else if app.session.flashbag.has('success') %}
 				<div class="clear h20"></div>
 			    <div class="alert alert-success">
 			  		<a class="close" data-dismiss="alert" href="#">×</a>
-			        {{ app.session.flash('success') }}
+			        <ul class="unstyled">
+			  		{% for message in app.session.flashbag.get('success') %}
+			        	<li>{{ message }}</li>
+			        {% endfor %}
+			    	</ul>
 			    </div>
 			{% endif %}
 		    <div class="clear h20"></div>

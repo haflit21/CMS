@@ -111,4 +111,37 @@ class Role implements RoleInterface
         return (string) $this->getName();
     }
 
+
+    /**
+     * Add users
+     *
+     * @param \CMS\AdminBundle\Entity\User $users
+     * @return Role
+     */
+    public function addUser(\CMS\AdminBundle\Entity\User $users)
+    {
+        $this->users[] = $users;
+    
+        return $this;
+    }
+
+    /**
+     * Remove users
+     *
+     * @param \CMS\AdminBundle\Entity\User $users
+     */
+    public function removeUser(\CMS\AdminBundle\Entity\User $users)
+    {
+        $this->users->removeElement($users);
+    }
+
+    /**
+     * Get users
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getUsers()
+    {
+        return $this->users;
+    }
 }

@@ -113,6 +113,8 @@ class MenuRepository extends NestedTreeRepository
                     ->setParameter('menu_taxonomy',$menu_taxonomy)
                     ->andWhere('l.id=:id')
                     ->setParameter('id',$lang)
+                    ->andWhere('node.isRoot=:isroot')
+                    ->setParameter('isroot',0)
                     ->getQuery()
                     ;
     }
@@ -129,6 +131,8 @@ class MenuRepository extends NestedTreeRepository
                     ->setParameter('menu_taxonomy',$menu_taxonomy)
                     ->andWhere('l.id=:id')
                     ->setParameter('id',$lang)
+                    ->andWhere('node.isRoot=:isroot')
+                    ->setParameter('isroot',0)
                     ->getQuery()
                     ->getSingleScalarResult();  
     }

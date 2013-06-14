@@ -24,7 +24,7 @@ class SettingsSubscriber implements EventSubscriberInterface
         return array(FormEvents::PRE_SET_DATA => 'preSetData');
     }
 
-    public function preSetData(DataEvent $event)
+    public function preSetData($event)
     {
 
         $data = $event->getData();
@@ -39,18 +39,39 @@ class SettingsSubscriber implements EventSubscriberInterface
         }
 
         foreach($this->fields as $field) {
+            switch($field->getTypeField()) {
+                case 'textarea':
+                    $form->add(
+                        $this->factory->createNamed(
+                            $field->getOptionName(),
+                            $field->getTypeField(), 
+                            $field->getOptionValue(), 
+                            array(
+                                'required' => false, 
+                                'label' => $field->getLabelField(),
+                                'auto_initialize' => false,
+                                'attr' => array('rows' => 5)
+                            )
+                        )
+                    );
+                    break;
+                default:
+                    $form->add(
+                        $this->factory->createNamed(
+                            $field->getOptionName(),
+                            $field->getTypeField(), 
+                            $field->getOptionValue(), 
+                            array(
+                                'required' => false, 
+                                'label' => $field->getLabelField(),
+                                'auto_initialize' => false
+                            )
+                        )
+                    );    
+                    break;
+            }
 
-            $form->add(
-                $this->factory->createNamed(
-                    $field->getOptionName(),
-                    $field->getTypeField(), 
-                    $field->getOptionValue(), 
-                    array(
-                        'required' => false, 
-                        'label' => $field->getOptionName()
-                    )
-                )
-            );  
+              
         }
     }
 }

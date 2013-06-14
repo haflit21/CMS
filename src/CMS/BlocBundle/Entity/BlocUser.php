@@ -34,7 +34,7 @@ class BlocUser
         $this->setBloc($bloc);
     }
 
-    public function displayBloc()
+    public function displayBloc($options = null)
     {
         return '';
     }

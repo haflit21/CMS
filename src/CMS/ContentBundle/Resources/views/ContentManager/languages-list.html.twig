@@ -4,23 +4,32 @@
 
 	<div class="row-fluid">
 		<div class="span12">
-			{% for flashMessage in app.session.flashbag.get('info') %}
-			    <div class="alert alert-info">
-			    	<button class="close" data-dismiss="alert" type="button">×</button>
-			        <strong>Notice</strong>
-			        {{ flashMessage }}
-			    </div>
-			{% endfor %}
-			{% for flashMessage in app.session.flashbag.get('error') %}
-			    <div class="alert alert-error">
-			    	<button class="close" data-dismiss="alert" type="button">×</button>
-			        <strong>Error</strong>
-			        {{ flashMessage }}
-			    </div>
-			{% endfor %}
 			<h1 class="pull-left">{% trans %}Language Manager{% endtrans %}</h1>
 	                  	
 			<a href="{{ path('languages_new') }}" class="btn-new btn-small pull-right"><i class="admin-icon-plus-circled"></i> {% trans %}New{% endtrans %}</a>
+
+			{% if app.session.flashbag.has('error') %}
+				<div class="clear h20"></div>
+			    <div class="alert alert-error">
+			  		<a class="close" data-dismiss="alert" href="#">×</a>
+			  		<ul class="unstyled">
+			  		{% for message in app.session.flashbag.get('error') %}
+			        	<li>{{ message }}</li>
+			        {% endfor %}
+			    	</ul>
+			    </div>
+			{% elseif app.session.flashbag.has('success') %}
+				<div class="clear h20"></div>
+			    <div class="alert alert-success">
+			  		<a class="close" data-dismiss="alert" href="#">×</a>
+			        <ul class="unstyled">
+			  		{% for message in app.session.flashbag.get('success') %}
+			        	<li>{{ message }}</li>
+			        {% endfor %}
+			    	</ul>
+			    </div>
+			{% endif %}
+			
 
 		    <div class="clearfix sep3"></div>
 

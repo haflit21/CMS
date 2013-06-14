@@ -41,7 +41,7 @@ class BlocBanner
      **/
     private $slogans;
 
-    public function displayBloc()
+    public function displayBloc($options = null)
     {
         $str = '<div class="row-responsive bg-slider visible-tablet  visible-desktop">';
         $str .= '<div class="container">';

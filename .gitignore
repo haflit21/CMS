@@ -12,3 +12,6 @@ app/SymfonyRequirements.php
 webuploads/*
 web/uploads/*
 README.md
+src/CMS/AdminBundle/Resources/js/iCheck
+src/ContentBundle/Resources/bootstrap-tag
+vendor/*

@@ -55,7 +55,7 @@
 		                  	<th>{% trans %}Categories{% endtrans %}</th>
 		                  	<th>{% trans %}Language{% endtrans %}</th>
 		                  	<th>{% trans %}Translations{% endtrans %}</th>
-		                  	<th class="published">{% trans %}Published{% endtrans %}</th>
+		                  	<th class="published">{% trans %}State{% endtrans %}</th>
 		                  	<th>{% trans %}Created{% endtrans %}</th>
 		                  	<th>{% trans %}Actions{% endtrans %}</th>
 		                </tr>
@@ -107,7 +107,7 @@
 			                  	</td>
 			                  	<td class="center-text">
 			                  		<a href="{{ path('contents_published', {'id' : content.id }) }}">
-					                  	{% if content.published %}
+					                  	{% if content.state %}
 					                  		<i class="icon-ok"></i>
 					                  	{% else %}
 					                  		<i class="icon-remove"></i>

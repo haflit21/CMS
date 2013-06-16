@@ -71,11 +71,12 @@ class CMContent
     private $modified;
 
     /**
-     * @var boolean $published
+     * @var int $state
+     * (0 = non publié, 1 = publié, 2 = brouillon, 3 = poubelle )
      *
-     * @ORM\Column(name="published", type="boolean")
+     * @ORM\Column(name="state", type="integer")
      */
-    private $published;
+    private $state;
 
     /**
      * @var string url
@@ -193,26 +194,26 @@ class CMContent
     }
 
     /**
-     * Set published
+     * Set state
      *
-     * @param  boolean   $published
+     * @param  int   $state
      * @return CMContent
      */
-    public function setPublished($published)
+    public function setState($state)
     {
-        $this->published = $published;
+        $this->state = $state;
 
         return $this;
     }
 
     /**
-     * Get published
+     * Get state
      *
      * @return boolean
      */
-    public function getPublished()
+    public function getState()
     {
-        return $this->published;
+        return $this->state;
     }
 
     /**

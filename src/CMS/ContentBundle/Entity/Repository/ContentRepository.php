@@ -56,6 +56,8 @@ class ContentRepository extends EntityRepository
                     ->from('CMSContentBundle:CMContent','c')
                     ->where('c.url=:url')
                     ->setParameter('url',$url)
+                    ->andWhere('c.state=:state')
+                    ->setParameter('state', 1)
                     ->getQuery()
                     ->getOneOrNullResult()
                     ;
@@ -69,12 +71,11 @@ class ContentRepository extends EntityRepository
                                ->from('CMSContentBundle:CMContent','co')
                                ->join('co.categories', 'c')
                                ->join('co.contenttype', 'ct')
-                               
                                ->where('c.id IN (:idcats)')
                                ->setParameter('idcats', $idCats)
                                ->andWhere('c.published=:published')
                                ->setParameter('published', 1)
-                               ->andWhere('co.published=:pub_content')
+                               ->andWhere('co.state=:pub_content')
                                ->setParameter('pub_content', 1);
         if($categoryParent->getOrdreClassement() != 'id' && $categoryParent->getOrdreClassement() != 'title') {
             $query_builder = $query_builder->join('co.fieldvalues', 'fv')

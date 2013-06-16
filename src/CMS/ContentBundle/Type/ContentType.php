@@ -17,11 +17,10 @@ class ContentType extends AbstractType
         $builder
             ->add('title', 'text', array('label'=>'Title'))
             ->add('tags', 'tag_selector')
-            ->add('published', 'choice', array(
-                'choices'=> array('1'=>'Oui', '0'=>'Non'),
-                'expanded'=>true,
+            ->add('state', 'choice', array(
+                'choices'=> array(0 => 'Non publié', 2 => 'Brouillon', 1 => 'Publié'),
                 'multiple'=>false,
-                'label'=>'Published'
+                'label'=>'Etat'
             ))
             ->add('description', 'ckeditor', array('label'=>'Description', 'required'=>false))
             ->add('categories', 'entity', array(

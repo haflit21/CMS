@@ -61,7 +61,7 @@ class LanguageController extends Controller
 
     public function getAll()
     {
-        return $this->getDoctrine()->getRepository('CMSContentBundle:CMLanguage')->findAll();
+        return $this->getDoctrine()->getRepository('CMSContentBundle:CMLanguage')->findBy(array('default_lan'=>'0', 'published'=>'1'));
     }
 
    private function manageDefault($language)

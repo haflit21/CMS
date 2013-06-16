@@ -62,10 +62,10 @@ class BlocBreadcrumb
             foreach ($entries as $entry) {
                 if($i == $nbLeaves-1)
                     $str .= '<li class="'.$this->class_active.'">'.$entry->getTitle();
-                else
+                else if(!$entry->getIsRoot())
                     $str .= '<li><a href="'.$entry->getUrl().'">'.$entry->getTitle().'</a>';
 
-                if($i < $nbLeaves-1)
+                if($i < $nbLeaves-1 && !$entry->getIsRoot())
                     $str .= $this->separator;
                 $str .= '</li>';
                 $i++;

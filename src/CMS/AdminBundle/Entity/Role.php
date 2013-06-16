@@ -35,6 +35,7 @@ class Role implements RoleInterface
 
     /**
      * @ORM\ManyToMany(targetEntity="User", inversedBy="groups")
+     * @ORM\JoinTable(name="user_role")
      */
     private $users;
 

@@ -59,6 +59,7 @@ class BlocCategory
                 $str .= '<p>'.substr($article->getDescription(),0,50).'...</p>';
                 $str .= '<div class="clearfix"></div>';
             }
+            $i++;
         }
 
         return $str;

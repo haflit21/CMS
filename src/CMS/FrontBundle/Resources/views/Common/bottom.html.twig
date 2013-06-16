@@ -1,1 +1,1 @@
-{% render "CMSFrontBundle:Module:generateBloc" with {'position': "bottom", 'item_id': item_id, 'cat_id': cat_id } %}
+{% render(controller("CMSFrontBundle:Module:generateBloc", {'position': "bottom", 'item_id': item_id, 'cat_id': cat_id })) %}

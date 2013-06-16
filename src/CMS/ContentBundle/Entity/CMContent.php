@@ -1,12 +1,13 @@
 <?php
-
 namespace CMS\ContentBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * CMS\ContentBundle\Entity\Content
- *
+ * 
+ * @ORM\HasLifecycleCallbacks
  * @ORM\Table(name="cm_contents")
  * @ORM\Entity(repositoryClass="CMS\ContentBundle\Entity\Repository\ContentRepository")
  */
@@ -55,10 +56,19 @@ class CMContent
 
     /**
      * @var \DateTime $created
-     *
+     * 
+     * @Gedmo\Timestampable(on="create")
      * @ORM\Column(name="created", type="datetime")
      */
     private $created;
+
+    /**
+     * @var \DateTime $modified
+     *
+     * @Gedmo\Timestampable(on="update")
+     * @ORM\Column(name="modified", type="datetime")
+     */
+    private $modified;
 
     /**
      * @var boolean $published
@@ -90,7 +100,7 @@ class CMContent
     private $fieldvalues;
 
     /**
-     * @ORM\ManyToOne(targetEntity="CMContentType", inversedBy="content")
+     * @ORM\ManyToOne(targetEntity="CMContentType", inversedBy="contents")
      */
     private $contenttype;
 
@@ -170,19 +180,6 @@ class CMContent
     public function getDescription()
     {
         return $this->description;
-    }
-
-    /**
-     * Set created
-     *
-     * @param  \DateTime $created
-     * @return CMContent
-     */
-    public function setCreated($created)
-    {
-        $this->created = $created;
-
-        return $this;
     }
 
     /**
@@ -417,6 +414,7 @@ class CMContent
      */
     public function setUrl($url)
     {
+
         $this->url = $url;
 
         return $this;
@@ -512,26 +510,53 @@ class CMContent
        $this->tags = $tags;
     }
 
+
     /**
-     * Add categories
+     * Get modified
+     * 
+     * @return \DateTime 
+     */
+    public function getModified()
+    {
+        return $this->modified;
+    }
+
+    public function displayCategories()
+    {
+        $str = '';
+        $i=0;
+        $nb_cats = count($this->categories);
+        foreach ($this->categories as $cat) {
+            $str .= $cat->getTitle();
+            if($i < $nb_cats-1)
+                $str .= ', ';   
+        }
+        return $str;
+    }
+
+    /**
+     * Set created
      *
-     * @param \CMS\ContentBundle\Entity\CMCategory $categories
+     * @param \DateTime $created
      * @return CMContent
      */
-    public function addCategory(\CMS\ContentBundle\Entity\CMCategory $categories)
+    public function setCreated($created)
     {
-        $this->categories[] = $categories;
-
+        $this->created = $created;
+    
         return $this;
     }
 
     /**
-     * Remove categories
+     * Set modified
      *
-     * @param \CMS\ContentBundle\Entity\CMCategory $categories
+     * @param \DateTime $modified
+     * @return CMContent
      */
-    public function removeCategory(\CMS\ContentBundle\Entity\CMCategory $categories)
+    public function setModified($modified)
     {
-        $this->categories->removeElement($categories);
+        $this->modified = $modified;
+    
+        return $this;
     }
 }

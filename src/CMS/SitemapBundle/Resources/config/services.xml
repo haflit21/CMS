@@ -8,13 +8,19 @@
     <parameters>
         <parameter key="cms_sitemap.example.class">CMS\SitemapBundle\Example</parameter>
     </parameters>
-
+    -->
     <services>
-        <service id="cms_sitemap.example" class="%cms_sitemap.example.class%">
-            <argument type="service" id="service_id" />
-            <argument>plain_value</argument>
-            <argument>%parameter_name%</argument>
+        <service id="cms_menu.repository.menutaxonomy" class="Doctrine\ORM\EntityRepository" factory-service="Doctrine" factory-method="getRepository">
+            <argument>CMSMenuBundle:MenuTaxonomy</argument>
+        </service>
+        <service id="cms_sitemap.repository.sitemap" class="Doctrine\ORM\EntityRepository" factory-service="Doctrine" factory-method="getRepository">
+            <argument>CMSSitemapBundle:Sitemap</argument>
+        </service>
+        <service id="cms.twig.sitemap_exension" class="CMS\SitemapBundle\Twig\SitemapExtension">
+            <argument type="service" id="cms_menu.repository.menutaxonomy" />
+            <argument type="service" id="cms_sitemap.repository.sitemap" />
+            <tag name="twig.extension" />
         </service>
     </services>
-    -->
+
 </container>

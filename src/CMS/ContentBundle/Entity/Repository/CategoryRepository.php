@@ -57,4 +57,21 @@ class CategoryRepository extends EntityRepository
                     ;
     }
 
+    public function findCategoriesByParent($idCat) {
+        $categories = $this->_em
+                           ->createQueryBuilder()
+                           ->select('c.id')
+                           ->from('CMSContentBundle:CMCategory','c')
+                           ->where('c.parent=:id')
+                           ->setParameter('id', $idCat)
+                           ->getQuery()
+                           ->getScalarResult();
+        $cats = array(); 
+        foreach ($categories as $cat) {
+            $cats[] = $cat['id'];
+        }
+        $cats[] = $idCat;
+        return $cats;
+    }
+
 }

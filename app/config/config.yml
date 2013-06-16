@@ -24,7 +24,7 @@ parameters:
         1: Publié
     options_image:
         images: ~
-    site_url: 'http://damien.dev/' 
+    site_url: 'http://chris-local.com/' 
     format_url: '.html'
 
 # Twig Configuration
@@ -48,12 +48,12 @@ assetic:
     debug:          %kernel.debug%
     use_controller: false
     bundles:        ['CMSDashboardBundle', 'CMSMediaBundle', 'CMSAdminBundle', 'CMSFrontBundle', 'CMSContentBundle' ]
-    java: C:\Program Files (x86)\Java\jre7\bin\java.exe
+    #java: C:\Program Files (x86)\Java\jre7\bin\java.exe
     filters:
         cssrewrite: ~
         less:
-            node:       C:\Program Files\nodejs\node.exe
-            node_paths: [C:\Program Files\nodejs, C:\Program Files\nodejs\node_modules]
+            nnode:       /usr/local/bin/node
+            node_paths: [/usr/local/lib/node, /usr/local/lib/node_modules]
         yui_css:
             jar: %kernel.root_dir%/Resources/java/yuicompressor-2.4.7.jar
         yui_js:

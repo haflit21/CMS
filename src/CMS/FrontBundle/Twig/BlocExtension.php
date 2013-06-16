@@ -21,12 +21,13 @@ class BlocExtension extends Twig_Extension
     }
 
     public function blocFilter($value) 
-    {
+    {           
  		//TAG : [%%module position:right, attributs:[cat_id:5, item_id:5]%%]
  		preg_match_all('/\[%%module position:(.*), attributs:\[(.*)\]%%\]/', $value, $values, PREG_PATTERN_ORDER);
- 		$values    		 = current($values);
- 		$position  		 = $values[1];
- 		$attributs_regex = preg_split('/[\s]*[,][\s]*', $values[2], -1, PREG_SPLIT_DELIM_CAPTURE);
+
+ 		//$values    		 = current($values);
+ 		$position  		 = $values[1][0];
+ 		$attributs_regex = preg_split('/[\s]*[,][\s]*/', $values[2][0], -1, PREG_SPLIT_DELIM_CAPTURE);
  		$attributs 		 = array();
  		$i=0;		
  		foreach ($attributs_regex as $attr) {
@@ -34,7 +35,7 @@ class BlocExtension extends Twig_Extension
  			$attributs[$attribut[0]] = $attribut[1];
  		}
 
- 		return $this->environment->forward('CMSFrontBundle:Module:generateBloc', $attributs);
+ 		return $this->environment->render('CMSFrontBundle:Common:'.$position.'.html.twig', $attributs);
  	}
 
     public function getName()

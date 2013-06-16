@@ -119,6 +119,20 @@ class CMCategory
     private $metavalues;
 
     /**
+      * @var string $ordre_classement
+      *
+      * @ORM\Column(name="ordre_classement", type="string")
+      */
+     private $ordre_classement;
+
+     /**
+      * @var string $direction_classement
+      *
+      * @ORM\Column(name="direction_classement", type="string")
+      */
+     private $direction_classement;
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -570,5 +584,51 @@ class CMCategory
     public function removeChild(\CMS\ContentBundle\Entity\CMCategory $children)
     {
         $this->children->removeElement($children);
+    }
+
+    /**
+     * Set ordre_classement
+     *
+     * @param string $ordreClassement
+     * @return CMCategory
+     */
+    public function setOrdreClassement($ordreClassement)
+    {
+        $this->ordre_classement = $ordreClassement;
+    
+        return $this;
+    }
+
+    /**
+     * Get ordre_classement
+     *
+     * @return string 
+     */
+    public function getOrdreClassement()
+    {
+        return $this->ordre_classement;
+    }
+
+    /**
+     * Set direction_classement
+     *
+     * @param string $directionClassement
+     * @return CMCategory
+     */
+    public function setDirectionClassement($directionClassement)
+    {
+        $this->direction_classement = $directionClassement;
+    
+        return $this;
+    }
+
+    /**
+     * Get direction_classement
+     *
+     * @return string 
+     */
+    public function getDirectionClassement()
+    {
+        return $this->direction_classement;
     }
 }

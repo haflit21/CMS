@@ -173,8 +173,16 @@ class MenuTaxonomyController extends Controller
         $em = $this->getDoctrine()->getManager();
         $session = $this->getRequest()->getSession();
         if($menu->getId()) {
+            
+            $entryMenuAdmin = $this->getDoctrine()->getRepository('CMSMenuBundle:Menu')->findBy(array('slug' => $menu->getAlias().'-alias'));
+            $entryMenuAdmin = current($entryMenuAdmin);
+
+            $this->getDoctrine()->getRepository('CMSMenuBundle:Menu')->removeFromTree($entryMenuAdmin);
+
             $em->remove($menu);
             $em->flush();
+
+
             $session->getFlashBag()->add('success', 'menu_successfully_removed');
         } else {
             $session->getFlashBag()->add('error', 'menu_does_not_exist');

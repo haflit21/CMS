@@ -8,7 +8,11 @@
             <a href="{{ path('contents') }}" class="button btn-cancel pull-right"><i class="admin-icon-left-open-1"></i> {% trans %}Back{% endtrans %}</a>
             <div class="clear h30"></div>
             <div class="span8">
-                <form action="{{ path('sitemap_new') }}" method="post" {{ form_enctype(form) }}>
+                {% if not id is defined %}
+                    <form action="{{ path('sitemap_new') }}" method="post" {{ form_enctype(form) }} class="form-horizontal">
+                {% else %}  
+                    <form action="{{ path('sitemap_edit', {'id': id }) }}" method="post" {{ form_enctype(form) }} class="form-horizontal">
+                {% endif %}        
                     {{ form_widget(form) }}
                     <div class="form-actions">
                         <a href="{{ path('sitemap') }}" class="button btn-cancel">{% trans %}Cancel{% endtrans %} <i class="admin-icon-cancel"></i></a>

@@ -12,9 +12,12 @@ class SitemapType extends AbstractType
     {
         $builder
             ->add('name')
+            ->add('display_title_menu', 'choice', array('choices' => array(0 => 'Non', 1 => 'Oui'), 'expanded' => true))
+            ->add('class_columns', 'text', array('label' => 'Classe css appliquée au plan du site'))
             ->add('menus_taxonomy','entity', array(
                 'class' => 'CMSMenuBundle:MenuTaxonomy',
-                'property' => 'name'
+                'property' => 'name',
+                'multiple' => 'multiple'
                 ))
         ;
     }

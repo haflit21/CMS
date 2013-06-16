@@ -2,9 +2,28 @@
 <h1 class="pull-left">{{ category.title }}</h1>
 <div class="pull-right social-icons-div">{{ category.description|socialButtons()|raw }}</div>
 <div class="clearfix"></div>
+{% set old_category = category.title %}
+
 {% for content in contents %}
-	<h2>{{ content.title }}</h2>
-	{{ content.description|raw }}
-	{{ content.tags|join(', ')|raw }}
+	{% if old_category != content.categories[0].title %}
+		{% set old_category = content.categories[0].title %}
+		<h4>{{ old_category }}</h4>
+		<table class="table table-publications">
+	{% endif %}
+	<tr>
+		<td>
+			{{ content.getFieldValue('auteurs')|raw }}.
+			{{ content.title }}. <strong>{{ content.getFieldValue('container_title') }}</strong>, 
+			{{ content.getFieldValue('date_publi') }}. {{ content.getFieldValue('doi') }}
+		</td>
+		<td>
+			{{ content.getFieldValue('resume_link')|raw }}
+			{{ content.getFieldValue('resume_pdf')|raw }}
+		</td>	
+	</tr>
+	{% if loop.index < contents|length and contents[loop.index].categories[0].title != old_category %}
+		</table>
+	{% endif %}	
 {% endfor %}
+</table>
 </div>

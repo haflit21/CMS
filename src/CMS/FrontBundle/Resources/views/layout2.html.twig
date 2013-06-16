@@ -64,39 +64,20 @@
 	                    </ul>
 	                </div>
 					<div id="menu">
-		               {% if category.id is defined %}
-		                	{{ "[%%module position:header, attributs:[cat_id:" ~ category.id ~ ",item_id: %%]"|bloc|raw }}
-		               {% elseif content.id is defined %}
-		                	{{ "[%%module position:header, attributs:[cat_id:,item_id:" ~ content.id ~ "%%]"|bloc|raw }}
-		               {% else %}
-		                	{{ "[%%module position:header, attributs:[cat_id:,item_id:%%]"|bloc|raw }}
-		               {% endif %}
+		               {% set module = "[%%module position:header, attributs:[cat_id:" ~ category_id ~ ",item_id:" ~ content_id ~ "]%%]" %}
+		               {{ module|bloc|raw }}
 					</div>
 				</div>
 			</div>
 		</div>
-		{% if category.id is defined and content.id is defined %}
-	    	{{ "[%%module position:banner, attributs:[cat_id:" ~ category.id ~ ",item_id:" ~ content.id ~ "%%]"|bloc|raw }}
-	    {% elseif category.id is defined %}
-	     	{{ "[%%module position:banner, attributs:[cat_id:" ~ category.id ~ ",item_id: %%]"|bloc|raw }}
-	   {% elseif content.id is defined %}
-	    	{{ "[%%module position:banner, attributs:[cat_id:,item_id:" ~ content.id ~ "%%]"|bloc|raw }}
-	   {% else %}
-	    	{{ "[%%module position:banner, attributs:[cat_id:,item_id:%%]"|bloc|raw }}
-	   {% endif %}
+		{% set module = "[%%module position:banner, attributs:[cat_id:" ~ category_id ~ ",item_id:" ~ content_id ~ "]%%]" %}
+		{{ module|bloc|raw }}
 		<div class="row-fluid" id="main">
 			<div class="container">
 				{% block body %}
 				{% endblock body %}
-				<div class="span3 offset1" id="sidebar">
-					{% if category.id is defined %}
-	                    {{ "[%%module position:right, attributs:[cat_id:" ~ category.id ~ ",item_id: %%]"|bloc|raw }}
-                   {% elseif content.id is defined %}
-                    	{{ "[%%module position:right, attributs:[cat_id:,item_id:" ~ content.id ~ "%%]"|bloc|raw }}
-                   {% else %}
-                    	{{ "[%%module position:right, attributs:[cat_id:,item_id:%%]"|bloc|raw }}
-                {% endif %}
-				</div>
+                {% set module = "[%%module position:right, attributs:[cat_id:" ~ category_id ~ ",item_id:" ~ content_id ~ "]%%]" %}
+		       	{{ module|bloc|raw }}
 			</div>
 		</div>
 		<div class="clearfix"></div>
@@ -105,13 +86,8 @@
 			
 				<div class="span6 pull-left">Copyright &copy; Christophe Corona {{ "2009 - " ~ "now"|date("Y") }}</div>
 				<div class="span6 pull-right visible-tablet visible-desktop">
-					{% if category.id is defined %}
-                    	{{ "[%%module position:bottom, attributs:[cat_id:" ~ category.id ~ ",item_id: %%]"|bloc|raw }}
-                	{% elseif content.id is defined %}
-                    	{{ "[%%module position:bottom, attributs:[cat_id:,item_id:" ~ content.id ~ "%%]"|bloc|raw }}
-                	{% else %}
-                    	{{ "[%%module position:bottom, attributs:[cat_id:,item_id:%%]"|bloc|raw }}
-                	{% endif %}
+					{% set module = "[%%module position:bottom, attributs:[cat_id:" ~ category_id ~ ",item_id:" ~ content_id ~ "]%%]" %}
+		            {{ module|bloc|raw }}
 				</div>
 			</div>
 		</div>

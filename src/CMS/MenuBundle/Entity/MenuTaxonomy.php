@@ -192,4 +192,9 @@ class MenuTaxonomy
     {
         return $this->is_menu_admin;
     }
+
+    public function __toString()
+    {
+        return $this->name;
+    }
 }

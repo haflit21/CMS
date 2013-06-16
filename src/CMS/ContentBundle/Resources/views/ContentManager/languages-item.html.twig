@@ -25,48 +25,13 @@
 
 					{{ form_errors(form) }}
 
-					<div class="control-group">
-						<div class="control-label">
-							{{ form_label(form.title) }}
-						</div>
-						<div class="controls">
-							{{ form_widget(form.title) }}
-							{{ form_errors(form.title) }}
-						</div>
-					</div>
-					<div class="control-group">
-						<div class="control-label">
-							{{ form_label(form.iso) }}
-						</div>
-						<div class="controls">
-							{{ form_widget(form.iso) }}
-							{{ form_errors(form.iso) }}
-						</div>
-					</div>
-					<div class="control-group">
-						<div class="control-label">
-							{{ form_label(form.published) }}
-						</div>
-						<div class="controls inline_elements">
-							{{ form_widget(form.published) }}
-							{{ form_errors(form.published) }}
-						</div>
-					</div>
-					<div class="control-group">
-						<div class="control-label">
-							{{ form_label(form.default_lan) }}
-						</div>
-						<div class="controls inline_elements">
-							{{ form_widget(form.default_lan) }}
-							{{ form_errors(form.default_lan) }}
-						</div>
-					</div>
+					{{ form_widget(form) }}
 
-					{{ form_rest(form) }}
+
 
 					<div class="form-actions">
-					    <a href="{{ path('languages') }}" class="btn btn-small">{% trans %}Cancel{% endtrans %}</a>
-                        <button type="submit" class="btn btn-primary btn-small">{% trans %}Validate{% endtrans %}</button>
+					    <a href="{{ path('languages') }}" class="button btn-cancel">{% trans %}Cancel{% endtrans %} <i class="admin-icon-cancel"></i></a>
+                        <button type="submit" class="button btn-main">{% trans %}Validate{% endtrans %} <i class="admin-icon-ok"></i></button>
 				    </div>
 
 				</form>

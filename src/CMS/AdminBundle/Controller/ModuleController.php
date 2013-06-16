@@ -54,12 +54,14 @@ class ModuleController extends Controller
                     $options = array('dir' => $bloc->getDisplayType());
                     break;
                 case 'BlocBreadcrumb':
+                    $bloc_spec->setRepositoryMenu($this->getDoctrine()->getRepository('CMSMenuBundle:Menu'));
                     $bloc_spec->setUrlIntern($context->getBaseUrl());
                     $bloc_spec->getOptionsBreadcrumb();
                     break; 
                 case 'BlocUser':
                     $options['site_url'] = $this->_getSiteUrl();
-                    $options['user'] = $this->get('security.context')->getToken()->getUser()->getFirstname().' '.$this->get('security.context')->getToken()->getUser()->getLastname();
+                    $user = $this->get('security.context')->getToken()->getUser();
+                    $options['user'] = $user->getFirstname().' '.$user->getLastname();
                     break;         
             }
             $html .= $bloc_spec->displayBloc($options);
@@ -80,7 +82,9 @@ class ModuleController extends Controller
     private function _getSiteUrl() {
         $url_base = $this->container->getParameter("site_url");
         $default = $this->getDoctrine()->getRepository('CMSMenuBundle:Menu')->getDefaultUrl();
+        $default = current($default);
         $ds = $this->container->getParameter("directory_separator");
-        return $url_base.$ds.$default;
+        $language = $this->container->get('cmsontent_bundle.language_controller')->getDefault();
+        return $url_base.$language->getCode().$ds.$default;
     }
 }

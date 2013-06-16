@@ -58,11 +58,69 @@ class SitemapController extends Controller
                 $em->persist($sitemap);
                 $em->flush();
                 $session = $this->getRequest()->getSession();
-                $session->getFlashBag()->add('success', 'Sitemap saved');
+                $session->getFlashBag()->add('success', 'sitemap_successfully_added');
                 return $this->redirect($this->generateUrl('sitemap'));
             }
         }
 
         return array('form' => $form->createView());           
+    }
+
+
+    /**
+     * Edit a Sitemap
+     * @param  Request $request request object
+     * @param  int     $id      sitemap id to edit
+     * @return array            array of objects
+     *
+     * @Route("/edit/{id}", name="sitemap_edit")
+     * @Template("CMSSitemapBundle:Sitemap:new.html.twig")
+     */
+    public function editAction(Request $request, $id)
+    {
+        $sitemap = $this->getDoctrine()
+                        ->getRepository('CMSSitemapBundle:Sitemap')
+                        ->find($id);
+        $form = $this->createForm(new SitemapType(), $sitemap);
+
+        if ($request->getMethod() == 'POST') {
+            $form->bind($request);
+            if ($form->isValid()) {
+                $em = $this->getDoctrine()
+                           ->getManager();
+                $em->persist($sitemap);
+                $em->flush();
+                $session = $this->getRequest()->getSession();
+                $session->getFlashBag()->add('success', 'sitemap_successfully_updated');
+                return $this->redirect($this->generateUrl('sitemap'));
+            }
+        }
+
+        return array(
+            'form' => $form->createView(),
+            'id' => $id
+        );           
+    }
+
+    /**
+     * Delete a Sitemap
+     * @param  int     $id      sitemap id to edit
+     * @return array            array of objects
+     *
+     * @Route("/delete/{id}", name="sitemap_delete")
+     * @Template()
+     */
+    public function deleteAction($id)
+    {
+        $sitemap = $this->getDoctrine()
+                        ->getRepository('CMSMenuBundle:Sitemap')
+                        ->find($id);
+
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($sitemap);
+        $em->flush();
+        $session = $this->getRequest()->getSession();
+        $session->getFlashBag()->add('success', 'sitemap_successfully_removed');
+        return $this->redirect($this->generateUrl('sitemap'));
     }
 }

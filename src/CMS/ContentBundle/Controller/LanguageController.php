@@ -11,7 +11,7 @@ use CMS\ContentBundle\Entity\CMLanguage;
 use CMS\ContentBundle\Type\LanguageType;
 
 /**
- * @Route("/admin")
+ * @Route("/admin", service="cmsontent_bundle.language_controller")
  */
 class LanguageController extends Controller
 {
@@ -30,7 +30,7 @@ class LanguageController extends Controller
 
     private function isDefault($language)
     {
-        $default = $this->loadDefault();
+        $default = $this->getDefault();
         if (!empty($default)) {
             if ($language->getId() == $default->getId()) {
                 return true;
@@ -52,33 +52,38 @@ class LanguageController extends Controller
         }
     }
 
-    private function loadDefault()
+    public function getDefault()
     {
         $language = $this->getDoctrine()->getRepository('CMSContentBundle:CMLanguage')->findBy(array('default_lan'=>1));
 
         return current($language);
     }
 
-       private function manageDefault($language)
-       {
-           if (!$this->isDefault($language)) {
-               if ($default = $this->loadDefault()) {
-                   $default->setDefaultLan(0);
+    public function getAll()
+    {
+        return $this->getDoctrine()->getRepository('CMSContentBundle:CMLanguage')->findAll();
+    }
 
-                   $em = $this->getDoctrine()->getManager();
-                   $em->persist($default);
-                   $em->flush();
+   private function manageDefault($language)
+   {
+       if (!$this->isDefault($language)) {
+           if ($default = $this->getDefault()) {
+               $default->setDefaultLan(0);
 
-                   $language->setDefaultLan(1);
-                   $language->setPublished(1);
-               } else {
-                   $language->setDefaultLan(1);
-                   $language->setPublished(1);
-               }
+               $em = $this->getDoctrine()->getManager();
+               $em->persist($default);
+               $em->flush();
+
+               $language->setDefaultLan(1);
+               $language->setPublished(1);
+           } else {
+               $language->setDefaultLan(1);
+               $language->setPublished(1);
            }
-
-           return $language;
        }
+
+       return $language;
+   }
 
     /**
      * @Route("/languages/new", name="languages_new")
@@ -180,7 +185,7 @@ class LanguageController extends Controller
     public function defaultItemAction(Request $request, $id)
     {
         $language = $this->getDoctrine()->getRepository('CMSContentBundle:CMLanguage')->find($id);
-        $default = $this->loadDefault();
+        $default = $this->getDefault();
 
         if (!$language->getDefaultLan()) {
             if (!empty($default)) {

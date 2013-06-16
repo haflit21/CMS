@@ -40,7 +40,10 @@ class TextField extends Fields
     public function displayfield($field, $value=null)
     {
         $html = '<div class="control-group"><div class="control-label">'.$field->getTitle().'</div>';
-        $html .= '<div class="controls"><input type="text" name="'.$field->getName().'" value="'.htmlentities($value).'" size="'.$this->getParamsValue($this->params, 'size').'" /></div></div>';
+        if(!is_array($value))
+            $html .= '<div class="controls"><input type="text" name="'.$field->getName().'" value="'.htmlentities($value).'" size="'.$this->getParamsValue($this->params, 'size').'" /></div></div>';
+        else
+            $html .= '<div class="controls"><input type="text" name="'.$field->getName().'" value="'.implode(' ',$value).'" size="'.$this->getParamsValue($this->params, 'size').'" /></div></div>';
 
         return $html;
     }

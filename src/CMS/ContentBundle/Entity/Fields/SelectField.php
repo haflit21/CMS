@@ -40,12 +40,12 @@ class SelectField extends Fields
     public function displayfield($field, $value=null)
     {
         $values = $this->getOptionsSelect($value);
-        $options = $this->params['options'];
+        $options = $field->getField()->getParams();
         $html = '<div class="control-group"><div class="control-label">'.$field->getTitle().'</div>';
         if ($options['multiple']) {
             $html .= '<div class="controls"><select name="'.$field->getName().'[]" multiple>'.$values.'</select></div></div>';
         } else {
-            $html .= '<div class="controls"><select name="'.$field->getName().'" '.$multiple.'>'.$values.'</select></div></div>';
+            $html .= '<div class="controls"><select name="'.$field->getName().'">'.$values.'</select></div></div>';
         }
 
         return $html;
@@ -57,6 +57,7 @@ class SelectField extends Fields
         $multiple = is_array($value);
         $options = explode('%%', $options);
         $html = '';
+        //var_dump($options); die;
         foreach ($options as $key => $option) {
             $option = explode('::', trim($option));
             if ($multiple) {
@@ -64,9 +65,9 @@ class SelectField extends Fields
             } else {
                 $isselected = ($option[0]==$value)?'selected="selected"':'';
             }
-            $html .= '<option value="'.$option[0].'" '.$isselected.'>'.$option[1].'</option>';
+            $html .= '<option value="'.$option[0].'" '.$isselected.'>'.html_entity_decode($option[1]).'</option>';
         }
-
+        
         return $html;
     }
 
@@ -100,6 +101,10 @@ class SelectField extends Fields
         $this->params = $params;
 
         return $this;
+    }
+
+    public function getParams() {
+        return $this->params;
     }
 
     // faire une classe avec les display des differents types: checkbox, select, input etc.

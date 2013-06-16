@@ -931,12 +931,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/phiamo/MopaBootstrapBundle.git",
-                "reference": "cfc167f094a5a4b1316476344063e4d452c2898c"
+                "reference": "c17935dba558e4e90bdfbb282703197efce1b377"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phiamo/MopaBootstrapBundle/zipball/cfc167f094a5a4b1316476344063e4d452c2898c",
-                "reference": "cfc167f094a5a4b1316476344063e4d452c2898c",
+                "url": "https://api.github.com/repos/phiamo/MopaBootstrapBundle/zipball/c17935dba558e4e90bdfbb282703197efce1b377",
+                "reference": "c17935dba558e4e90bdfbb282703197efce1b377",
                 "shasum": ""
             },
             "require": {
@@ -985,7 +985,7 @@
                 "form",
                 "template"
             ],
-            "time": "2013-06-11 21:34:12"
+            "time": "2013-06-14 16:34:29"
         },
         {
             "name": "mopa/composer-bridge",
@@ -1326,20 +1326,21 @@
         },
         {
             "name": "symfony/icu",
-            "version": "v1.0.0",
+            "version": "v1.2.0",
             "target-dir": "Symfony/Component/Icu",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Icu.git",
-                "reference": "v1.0.0"
+                "reference": "v1.2.0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Icu/zipball/v1.0.0",
-                "reference": "v1.0.0",
+                "url": "https://api.github.com/repos/symfony/Icu/zipball/v1.2.0",
+                "reference": "v1.2.0",
                 "shasum": ""
             },
             "require": {
+                "lib-icu": ">=4.4",
                 "php": ">=5.3.3",
                 "symfony/intl": ">=2.3,<3.0"
             },
@@ -1369,7 +1370,7 @@
                 "icu",
                 "intl"
             ],
-            "time": "2013-06-03 18:32:07"
+            "time": "2013-06-03 18:32:58"
         },
         {
             "name": "symfony/monolog-bundle",
@@ -1744,12 +1745,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/twitter/bootstrap.git",
-                "reference": "60b202de3220fa95d4df5d4fa1b93361165ec3a6"
+                "reference": "de683e9003b5ec6860a1fcb768416356dd685ef5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twitter/bootstrap/zipball/60b202de3220fa95d4df5d4fa1b93361165ec3a6",
-                "reference": "60b202de3220fa95d4df5d4fa1b93361165ec3a6",
+                "url": "https://api.github.com/repos/twitter/bootstrap/zipball/de683e9003b5ec6860a1fcb768416356dd685ef5",
+                "reference": "de683e9003b5ec6860a1fcb768416356dd685ef5",
                 "shasum": ""
             },
             "type": "library",
@@ -1763,7 +1764,7 @@
                 "bootstrap",
                 "css"
             ],
-            "time": "2013-06-06 16:14:52"
+            "time": "2013-06-14 05:57:05"
         }
     ],
     "packages-dev": [

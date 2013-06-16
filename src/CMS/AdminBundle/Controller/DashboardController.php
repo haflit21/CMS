@@ -15,6 +15,10 @@ class DashboardController extends Controller
      */
     public function indexAction()
     {
+
+    	if (false === $this->get('security.context')->isGranted('ROLE_ADMIN')) {
+        	throw new AccessDeniedException();
+    	}
         return array();
     }
 }

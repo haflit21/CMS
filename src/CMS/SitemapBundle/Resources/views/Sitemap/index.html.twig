@@ -6,7 +6,7 @@
         <div class="span12">
             <h1 class="pull-left">{% trans %}Sitemap Manager{% endtrans %}</h1>
                         
-            <a href="{{ path('sitemap_create') }}" class="btn-new btn-small pull-right"><i class="admin-icon-plus-circled"></i> {% trans %}New{% endtrans %}</a>
+            <a href="{{ path('sitemap_new') }}" class="btn-new btn-small pull-right"><i class="admin-icon-plus-circled"></i> {% trans %}New{% endtrans %}</a>
 
             {% if app.session.flashbag.has('error') %}
                 <div class="clear h20"></div>
@@ -38,23 +38,19 @@
             <tr>
                 <th>Id</th>
                 <th>Name</th>
+                <th>Menus</th>
                 <th>Actions</th>
             </tr>
         </thead>
         <tbody>
         {% for entity in entities %}
             <tr>
-                <td><a href="{{ path('admin_sitemap_edit', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+                <td><a href="{{ path('sitemap_edit', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
                 <td>{{ entity.name }}</td>
+                <td>{{ entity.menusTaxonomy|join(', ') }}</td>
                 <td>
-                <ul>
-                    <li>
-                        <a href="{{ path('admin_sitemap_edit', { 'id': entity.id }) }}"><i class="icon-edit"></i></a>
-                    </li>
-                    <li>
-                        <a href="{{ path('admin_sitemap_delete', { 'id': entity.id }) }}"><i class="icon-trash"></i></a>
-                    </li>
-                </ul>
+                    <a href="{{ path('sitemap_edit', { 'id': entity.id }) }}"><i class="icon-edit"></i></a>
+                    <a href="{{ path('sitemap_delete', { 'id': entity.id }) }}"><i class="icon-trash"></i></a>
                 </td>
             </tr>
         {% endfor %}

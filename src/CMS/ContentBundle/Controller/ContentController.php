@@ -53,7 +53,7 @@ class ContentController extends Controller
       */
     public function listAction($page)
     {
-        $defaultLanguage = $this->_getLanguageDefault();
+        $defaultLanguage = $this->container->get('cmsontent_bundle.language_controller')->getDefault();
 
         if (empty($defaultLanguage)) {
             $this->get('session')->getFlashBag()->add('error', 'No default language exist. Please create one.');
@@ -61,7 +61,7 @@ class ContentController extends Controller
             return array('display'=>false);
         }
 
-        $languages = $this->_getLanguages();
+        $languages = $this->container->get('cmsontent_bundle.language_controller')->getAll();
         $contentType = $this->_generateListTypeField();
 
         $request = $this->getRequest();
@@ -121,31 +121,6 @@ class ContentController extends Controller
             $nb_elem
         );
         return array('pagination' => $pagination, 'nb' => $nb);
-    }
-
-    /**
-     * récupère la langue par défaut
-     * 
-     * @return CMLanguage
-     */
-    private function _getLanguageDefault()
-    {
-        $language = $this->getDoctrine()->getRepository('CMSContentBundle:CMLanguage')->findBy(array('default_lan'=>'1'));
-        $language = current($language);
-
-        return $language;
-    }
-
-    /**
-     * Récupère toutes les langues
-     * 
-     * @return array of CMLanguage
-     */
-    private function _getLanguages()
-    {
-        $languages = $this->getDoctrine()->getRepository('CMSContentBundle:CMLanguage')->findBy(array('default_lan'=>'0', 'published'=>'1'));
-
-        return $languages;
     }
 
     /**
@@ -212,7 +187,8 @@ class ContentController extends Controller
                 ExtraMetas::saveMetas($this, $em, $request, $content);
                 $em->persist($content);
                 $em->flush();
-                $this->get('session')->setFlash('success', 'Le contenu a bien été sauvegardé');
+                $session = $this->getRequest()->getSession();
+                $session->getFlashBag()->add('success', $this->get('translator')->trans('content_successfully_added'));
                 return $this->redirect($this->generateUrl('contents'));
             }
         }
@@ -282,7 +258,8 @@ class ContentController extends Controller
                 $em->persist($content);
                 $em->flush();
 
-                $this->get('session')->setFlash('success', 'La traduction a bien été sauvegardée');
+                $session = $this->getRequest()->getSession();
+                $session->getFlashBag()->add('success', $this->get('translator')->trans('content_translation_successfully_added'));
 
                 return $this->redirect($this->generateUrl('contents'));
             }
@@ -346,7 +323,8 @@ class ContentController extends Controller
                 $em->flush();
                 ExtraMetas::updateMetas($this, $em, $request, $content); 
                 $em->flush();
-                $this->get('session')->setFlash('success', 'Le contenu a bien été sauvegardé');
+                $session = $this->getRequest()->getSession();
+                $session->getFlashBag()->add('success', $this->get('translator')->trans('content_successfully_updated'));
                 
                 return $this->redirect($this->generateUrl('contents'));
             }
@@ -522,6 +500,9 @@ class ContentController extends Controller
 
         $em->remove($content);
         $em->flush();
+
+        $session = $this->getRequest()->getSession();
+        $session->getFlashBag()->add('success', $this->get('translator')->trans('content_successfully_removed'));
 
         return $this->redirect($this->generateUrl('contents'));
     }

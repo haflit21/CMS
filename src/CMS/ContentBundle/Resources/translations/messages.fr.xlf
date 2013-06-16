@@ -94,6 +94,38 @@
                 <source>Choose your content type</source>
                 <target>Choisissez votre type de contenu</target>
             </trans-unit>
+            <trans-unit id="24">
+                <source>category_successfully_added</source>
+                <target>La catégorie a été ajoutée</target>
+            </trans-unit>
+            <trans-unit id="25">
+                <source>category_successfully_updated</source>
+                <target>La catégorie a été mise à jour</target>
+            </trans-unit>
+            <trans-unit id="26">
+                <source>category_successfully_removed</source>
+                <target>La catégorie a été supprimée</target>
+            </trans-unit>
+            <trans-unit id="27">
+                <source>category_translation_successfully_updated</source>
+                <target>La traduction de la catégorie a été mise à jour</target>
+            </trans-unit>
+            <trans-unit id="28">
+                <source>content_successfully_added</source>
+                <target>Le conteu a été ajouté</target>
+            </trans-unit>
+            <trans-unit id="29">
+                <source>content_successfully_updated</source>
+                <target>Le conteu a été mise à jour</target>
+            </trans-unit>
+            <trans-unit id="30">
+                <source>content_successfully_removed</source>
+                <target>Le conteu a été supprimé</target>
+            </trans-unit>
+            <trans-unit id="31">
+                <source>content_translation_successfully_updated</source>
+                <target>La traduction du conteu a été mise à jour</target>
+            </trans-unit>  
         </body>
     </file>
 </xliff>

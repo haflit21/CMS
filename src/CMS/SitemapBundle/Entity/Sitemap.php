@@ -2,7 +2,7 @@
 namespace CMS\SitemapBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use CMS\MenuBundle\MenuTaxonomy;
+use CMS\MenuBundle\Entity\MenuTaxonomy;
 
 /**
  * CMS\SitemapBundle\Entity\Sitemap
@@ -27,6 +27,20 @@ class Sitemap
      * @ORM\Column(name="name", type="string", length=255)
      */
     private $name;
+
+    /**
+     * @var boolean $display_title_menu
+     *
+     * @ORM\Column(name="display_title_menu", type="boolean")
+     */
+    private $display_title_menu;
+
+    /**
+     * @var string $class_columns
+     *
+     * @ORM\Column(name="class_columns", type="string", length=100)
+     */
+    private $class_columns;    
 
     /**
      * @ORM\ManyToMany(targetEntity="\CMS\MenuBundle\Entity\MenuTaxonomy", inversedBy="sitemaps")
@@ -81,7 +95,7 @@ class Sitemap
      * @param \CMS\MenuBundle\MenuTaxonomy $menusTaxonomy
      * @return Sitemap
      */
-    public function addMenusTaxonomy(\CMS\MenuBundle\MenuTaxonomy $menusTaxonomy)
+    public function addMenusTaxonomy(\CMS\MenuBundle\Entity\MenuTaxonomy $menusTaxonomy)
     {
         $this->menus_taxonomy[] = $menusTaxonomy;
     
@@ -93,7 +107,7 @@ class Sitemap
      *
      * @param \CMS\MenuBundle\MenuTaxonomy $menusTaxonomy
      */
-    public function removeMenusTaxonomy(\CMS\MenuBundle\MenuTaxonomy $menusTaxonomy)
+    public function removeMenusTaxonomy(\CMS\MenuBundle\Entity\MenuTaxonomy $menusTaxonomy)
     {
         $this->menus_taxonomy->removeElement($menusTaxonomy);
     }
@@ -106,5 +120,51 @@ class Sitemap
     public function getMenusTaxonomy()
     {
         return $this->menus_taxonomy;
+    }
+
+    /**
+     * Set display_title_menu
+     *
+     * @param boolean $displayTitleMenu
+     * @return Sitemap
+     */
+    public function setDisplayTitleMenu($displayTitleMenu)
+    {
+        $this->display_title_menu = $displayTitleMenu;
+    
+        return $this;
+    }
+
+    /**
+     * Get display_title_menu
+     *
+     * @return boolean 
+     */
+    public function getDisplayTitleMenu()
+    {
+        return $this->display_title_menu;
+    }
+
+    /**
+     * Set class_columns
+     *
+     * @param string $classColumns
+     * @return Sitemap
+     */
+    public function setClassColumns($classColumns)
+    {
+        $this->class_columns = $classColumns;
+    
+        return $this;
+    }
+
+    /**
+     * Get class_columns
+     *
+     * @return string 
+     */
+    public function getClassColumns()
+    {
+        return $this->class_columns;
     }
 }

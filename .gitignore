@@ -13,3 +13,4 @@ webuploads/*
 web/uploads/*
 README.md
 vendor/*
+.DS_Store

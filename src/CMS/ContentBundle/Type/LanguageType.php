@@ -13,6 +13,7 @@ class LanguageType extends AbstractType
         $builder
             ->add('title', 'text', array('label'=>'Title'))
             ->add('iso', 'text', array('label'=>'ISO Code'))
+            ->add('code', 'text')
             ->add('published', 'choice', array(
                 'choices'=> array('1'=>'Oui', '0'=>'Non'),
                 'expanded'=>true,

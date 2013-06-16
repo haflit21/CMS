@@ -51,7 +51,7 @@ class CategoryController extends Controller
      */
     public function listCategoriesAction(Request $request, $page)
     {
-        $defaultLanguage = $this->_getLanguageDefault();
+        $defaultLanguage = $this->container->get('cmsontent_bundle.language_controller')->getDefault();
 
         if (empty($defaultLanguage)) {
             $this->get('session')->getFlashBag()->add('error', 'No default language exist. Please create one.');
@@ -64,7 +64,7 @@ class CategoryController extends Controller
         $em = $this->getDoctrine()->getManager();
         $total = $em->getRepository('CMSContentBundle:CMCategory')->getTotalElements($defaultLanguage->getId());
 
-        $languages = $this->_getLanguages();
+        $languages = $this->container->get('cmsontent_bundle.language_controller')->getAll();
 
         return array(
             'pagination' => $results['pagination'],
@@ -113,29 +113,14 @@ class CategoryController extends Controller
     }
 
 
-    /**
-     * Récupère la langue par défaut
-     *
-     * @return retourne la langue par défaut
-     */
-    private function _getLanguageDefault()
-    {
-        $language = $this->getDoctrine()->getRepository('CMSContentBundle:CMLanguage')->findBy(array('default_lan'=>'1'));
-        $language = current($language);
-
-        return $language;
-    }
-
-    /**
-     * Récupère toute les langues publiées
-     *
-     * @return Tableau contenant toutes les langues publiées
-     */
-    private function _getLanguages()
-    {
-        $languages = $this->getDoctrine()->getRepository('CMSContentBundle:CMLanguage')->findBy(array('default_lan'=>'0', 'published'=>'1'));
-
-        return $languages;
+    private function _getFieldsClassement() {
+        $fields = array('id' => 'id', 'title' => 'title');
+        $fields_content_res = $this->getDoctrine()->getRepository('CMSContentBundle:CMField')->getAllFieldsArray();
+        $fields_content = array();
+        foreach ($fields_content_res as $fields_array)
+            $fields_content = array_merge($fields_content, array($fields_array['name'] => $fields_array['title']));
+        $fields = array_merge($fields,$fields_content);
+        return $fields;
     }
 
     /**
@@ -153,7 +138,11 @@ class CategoryController extends Controller
         $category = new CMCategory;
         $language = $this->getDoctrine()->getRepository('CMSContentBundle:CMLanguage')->find($lang);
         $category->setLanguage($language);
-        $form = $this->createForm(new CategoryType(), $category, array('lang_id' => $lang));
+
+        $fields = $this->_getFieldsClassement();
+
+        $form = $this->createForm(new CategoryType(), $category, array('lang_id' => $lang,'fields' => $fields));
+        
         $metas = ExtraMetas::loadMetas($this);
 
         if ($request->isMethod('POST')) {
@@ -168,7 +157,8 @@ class CategoryController extends Controller
                 $em->flush();
 
                 ExtraMetas::saveMetasCategory($this, $em, $request, $category);
-                $this->get('session')->setFlash('success', 'La catégorie a bien été sauvegardée');
+                $session = $this->getRequest()->getSession();
+                $session->getFlashBag()->add('success', $this->get('translator')->trans('category_successfully_added'));
                 return $this->redirect($this->generateUrl('categories'));
             }
         }
@@ -195,10 +185,15 @@ class CategoryController extends Controller
     public function newItemTranslationAction(Request $request, $reference, $lang)
     {
         $category = new CMCategory;
+
         $language = $this->getDoctrine()->getRepository('CMSContentBundle:CMLanguage')->find($lang);
+
         $category->setLanguage($language);
         $categoryReference = $this->getDoctrine()->getRepository('CMSContentBundle:CMCategory')->find($reference);
-        $form = $this->createForm(new CategoryType(), $category);
+
+        $fields = $this->_getFieldsClassement();
+        $form = $this->createForm(new CategoryType(), $category, array('lang_id' => $lang,'fields' => $fields));
+        
         $metas = ExtraMetas::loadMetas($this);
 
         if ($request->isMethod('POST')) {
@@ -213,7 +208,8 @@ class CategoryController extends Controller
                 $em->persist($category);
                 $em->flush();
 
-                $this->get('session')->setFlash('success', 'La traduction a bien été sauvegardée');
+                $session = $this->getRequest()->getSession();
+                $session->getFlashBag()->add('success', $this->get('translator')->trans('category_translation_successfully_added'));
                 
                 return $this->redirect($this->generateUrl('categories'));
             }
@@ -242,7 +238,11 @@ class CategoryController extends Controller
     public function editItemAction(Request $request, $id)
     {
         $category = $this->getDoctrine()->getRepository('CMSContentBundle:CMCategory')->find($id);
-        $form = $this->createForm(new CategoryType(), $category, array('lang_id' => $category->getLanguage()->getId()));
+
+        $fields = $this->_getFieldsClassement();
+
+        $form = $this->createForm(new CategoryType(), $category, array('lang_id' => $category->getLanguage()->getId(),'fields' => $fields));
+        
         $metas = ExtraMetas::loadEditMetasCategory($category, $this);
 
         if ($request->isMethod('POST')) {
@@ -256,7 +256,8 @@ class CategoryController extends Controller
                 $em->persist($category);
                 $em->flush();
                 ExtraMetas::updateMetasCategory($this, $em, $request, $category);
-                $this->get('session')->setFlash('success', 'La catégorie a bien été sauvegardée');
+                $session = $this->getRequest()->getSession();
+                $session->getFlashBag()->add('success', $this->get('translator')->trans('category_successfully_updated'));
                 return $this->redirect($this->generateUrl('categories'));
             }
         }
@@ -284,7 +285,10 @@ class CategoryController extends Controller
         $em = $this->getDoctrine()->getManager();
         $em->remove($category);
         $em->flush();
-
+        
+        $session = $this->getRequest()->getSession();
+        $session->getFlashBag()->add('success', $this->get('translator')->trans('category_successfully_removed'));
+        
         return $this->redirect($this->generateUrl('categories'));
     }
 

@@ -74,8 +74,9 @@ class FileField extends Fields
                 $end = '';
             break;    
         }
-
-        $html = $start.' '.$value.' '.$end;
+        $html = '';
+        if($value != '')
+            $html = $start.'<a href="'.$value.'" target="_blank"><i class="li_note"></i></a>'.$end;
 
         return $html;
     }

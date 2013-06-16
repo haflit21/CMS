@@ -71,7 +71,6 @@ class User implements UserInterface, \Serializable
 
     /**
      * @ORM\ManyToMany(targetEntity="Role", mappedBy="users")
-     *
      */
     private $groups;
 

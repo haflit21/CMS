@@ -1,1 +1,3 @@
-{% render "CMSFrontBundle:Module:generateBloc" with {'position': "right", 'item_id': item_id, 'cat_id': cat_id } %}
+<div id="sidebar" class="span3">
+{% render(controller("CMSFrontBundle:Module:generateBloc", {'position': "right", 'item_id': item_id, 'cat_id': cat_id })) %}
+</div>

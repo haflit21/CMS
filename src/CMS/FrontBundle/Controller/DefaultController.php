@@ -72,12 +72,17 @@ class DefaultController extends Controller
         $currentContent = null;
         $metas = null;
         $title = null;
+        $category_id = '';
+        $content_id= '';
 
 
         $languages = $this->getDoctrine()
                           ->getRepository('CMSContentBundle:CMLanguage')
                           ->findAll(array('published'=>1));
 
+        $langObj = $this->getDoctrine()
+                        ->getRepository('CMSContentBundle:CMLanguage')
+                        ->findOneBy(array('iso' => $lang.'-'.strtoupper($lang)));
         
 
         $category = $this->getDoctrine()->getRepository('CMSContentBundle:CMCategory')->findBy(array('url' => $url));
@@ -92,16 +97,16 @@ class DefaultController extends Controller
                 $title = $content->getTitle();
                 $categories = $content->getCategories();
                 $category = $categories[0];
-                //var_dump($category->getId()); die;
+                $content_id = $content->getId();
             }
         } else {
-            $contents = $category->getContents();
+            $categories = $this->getDoctrine()->getRepository('CMSContentBundle:CMCategory')->findCategoriesByParent($category->getId());
+            $category_id = $category->getId();
+
+            $contents = $this->getDoctrine()->getRepository('CMSContentBundle:CMContent')->findByCategories($categories, $langObj->getId(), $category);
 
             if (!empty($contents)) {
-                foreach ($category->getContents() as $content_cat) {
-                    $currentContent = $content_cat;
-                    break;
-                }
+                $currentContent = $contents[0];
                 $template = $currentContent->getContenttype()->getTemplate().'/category';
                 $title = $category->getTitle();
             } else {
@@ -116,6 +121,7 @@ class DefaultController extends Controller
         }
 
 
+
         return array(
             'template'    => $template, 
             'format'      => $_format, 
@@ -124,8 +130,10 @@ class DefaultController extends Controller
             'lang'        => $lang,  
             'url'         => $this->container->getParameter('site_url').$lang.'/'.$url.$this->container->getParameter('format_url'), 
             'contents'    => $contents, 
-            'content'     => $content, 
+            'content'     => $content,
+            'content_id'  => $content_id,
             'category'    => $category, 
+            'category_id' => $category_id,
             'metas'       => $metas,
             'title'       => $title, 
             'default_url' => '/'.$lang.'/'.$default_url['url'], 

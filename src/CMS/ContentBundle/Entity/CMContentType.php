@@ -36,7 +36,7 @@ class CMContentType
     /**
      * @ORM\OneToMany(targetEntity="CMContent", mappedBy="contenttype")
      */
-    private $content;
+    private $contents;
 
     /**
      * @var string

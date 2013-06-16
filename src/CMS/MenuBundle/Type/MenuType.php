@@ -16,9 +16,9 @@ class MenuType extends AbstractType
         $menu_taxonomy = $options['menu_taxonomy'];
         $builder
             ->add('title')
-            ->add('isRoot', 'choice', array('choices' => array(1 => 'Oui', 0 => 'Non'), 'expanded' => true, 'label' => 'is root ?'))
-            ->add('published', 'choice', array('choices' => array(1 => 'Oui', 0 => 'Non'), 'expanded' => true, 'label' => 'Publié'))
-            ->add('default_page', 'choice', array('choices' => array(1 => 'Oui', 0 => 'Non'), 'expanded' => true, 'label' => 'Page par défaut'))
+            ->add('isRoot', 'choice', array('choices' => array(1 => 'Oui', 0 => 'Non'), 'expanded' => true, 'label' => 'is root ?', 'data' => 0))
+            ->add('published', 'choice', array('choices' => array(1 => 'Oui', 0 => 'Non'), 'expanded' => true, 'label' => 'Publié', 'data' => 1))
+            ->add('default_page', 'choice', array('choices' => array(1 => 'Oui', 0 => 'Non'), 'expanded' => true, 'label' => 'Page par défaut', 'data' => 0))
             ->add('intern', 'choice', array('choices' => array(1 => 'Oui', 0 => 'Non'), 'expanded' => true, 'label' => 'Lien interne'))
             ->add('name_route', 'text', array('label' => 'Nom de la route', 'required' => false))
             ->add('category', 'entity', array(
@@ -64,11 +64,6 @@ class MenuType extends AbstractType
                         'label' => ' '
                     )
                 )
-            /*->add('file', 'file', array(
-                    'label' => 'Icône du menu',
-                    'required' => false    
-                    )
-                )*/
             ->add('classIcon', 'text', array(
                     'label' => 'Classe de l\'icône',
                     'required' => false

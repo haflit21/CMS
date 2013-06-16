@@ -17,6 +17,11 @@
             <argument type="service" id="doctrine.orm.entity_manager"/>
             <tag name="form.type" alias="tag_selector" />
         </service>
+        <service id="cmsontent_bundle.language_controller" class="CMS\ContentBundle\Controller\LanguageController">
+            <call method="setContainer">
+                <argument type="service" id="service_container"/>
+            </call>
+        </service>
     </services>
     
 </container>

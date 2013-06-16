@@ -37,6 +37,13 @@ class CMLanguage
     private $iso;
 
     /**
+     * @var string $code
+     *
+     * @ORM\Column(name="code", type="string", length=3)
+     */
+    private $code;
+
+    /**
      * @var boolean $published
      *
      * @ORM\Column(name="published", type="boolean")
@@ -336,5 +343,28 @@ class CMLanguage
     public function removeCategory(\CMS\ContentBundle\Entity\CMCategory $categories)
     {
         $this->categories->removeElement($categories);
+    }
+
+    /**
+     * Set code
+     *
+     * @param string $code
+     * @return CMLanguage
+     */
+    public function setCode($code)
+    {
+        $this->code = $code;
+    
+        return $this;
+    }
+
+    /**
+     * Get code
+     *
+     * @return string 
+     */
+    public function getCode()
+    {
+        return $this->code;
     }
 }

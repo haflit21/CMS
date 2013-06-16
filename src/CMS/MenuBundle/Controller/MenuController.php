@@ -8,6 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 use CMS\MenuBundle\Entity\Menu;
+use CMS\MenuBundle\Entity\MenuTaxonomy;
 use CMS\MenuBundle\Type\MenuType;
 use CMS\ContentBundle\Entity\CMLanguage;
 
@@ -125,8 +126,14 @@ class MenuController extends Controller
                 $menu = $request->request->get('menu');
                 $category = $menu['category'];
                 $content = $menu['content'];
-                $categ_obj = $this->getDoctrine()->getRepository('CMSContentBundle:CMCategory')->find($category);
-                $content_obj = $this->getDoctrine()->getRepository('CMSContentBundle:CMContent')->find($content);
+
+                $categ_obj = null;
+                $content_obj = null;
+
+                if($category != '')
+                    $categ_obj = $this->getDoctrine()->getRepository('CMSContentBundle:CMCategory')->find($category);
+                if($content != '')
+                    $content_obj = $this->getDoctrine()->getRepository('CMSContentBundle:CMContent')->find($content);
 
                 if($content == '')
                     $content = 0;
@@ -150,7 +157,8 @@ class MenuController extends Controller
                 }
 
                 $em->flush();
-
+                $session = $this->getRequest()->getSession();
+                $session->getFlashBag()->add('success', 'entry_successfully_added');
                 return $this->redirect($this->generateUrl('entries_list', array('id' => $menu_taxonomy_obj->getId(), 'active' => 'Menus')));
             }
         }

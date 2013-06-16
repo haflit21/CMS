@@ -4,7 +4,7 @@
 	{% else %}
 	<h2>{{ content.title }}</h2>	
 	{% endif %}
-{{ content.description|formContact('fr')|googleMap|raw }}
+{{ content.description|formContact('fr')|googleMap|sitemap|raw }}
 </div>
 {% block javascript %}
 	{% if srcipt is defined %}

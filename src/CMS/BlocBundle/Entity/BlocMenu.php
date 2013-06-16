@@ -56,7 +56,7 @@ class BlocMenu
                     $html .= '<ul class="unstyled menu-footer">';
                     foreach ($menus as $entry) {
                         if ($entry->getLevel() == 1) {
-                            $html .= '<li><a href="'.$entry->getUrl().'">'.$entry->getTitle().'</a></li>';
+                            $html .= '<li><a href="/'.$entry->getLanguage()->getCode().'/'.$entry->getUrl().'">'.$entry->getTitle().'</a></li>';
                         }
                     }
                     $html .= '</ul>';
@@ -80,12 +80,12 @@ class BlocMenu
                                             $html .= '</li>';
                                         }
                                         $html .= '<li class="dropdown">';
-                                        $html .= '<a id="drop-'.$entry->getId().'" class="dropdown-toggle" data-toggle="dropdown" href="/'.substr($entry->getLanguage()->getIso(), 0, 2).'/'.$entry->getUrl().'">'.$entry->getTitle().'</a>';
+                                        $html .= '<a id="drop-'.$entry->getId().'" class="dropdown-toggle" data-toggle="dropdown" href="/'.$entry->getLanguage()->getCode().'/'.$entry->getUrl().'">'.$entry->getTitle().'</a>';
                                         $first = false;
                                         break;
                                     case 2:
                                         $html .= '</li></ul></li>';
-                                        $html .= '<li class="dropdown"><a id="drop-'.$entry->getId().'" class="dropdown-toggle" data-toggle="dropdown"  href="/'.substr($entry->getLanguage()->getIso(), 0, 2).'/'.$entry->getUrl().'">'.$entry->getTitle().'</a>';
+                                        $html .= '<li class="dropdown"><a id="drop-'.$entry->getId().'" class="dropdown-toggle" data-toggle="dropdown"  href="/'.$entry->getLanguage()->getCode().'/'.$entry->getUrl().'">'.$entry->getTitle().'</a>';
                                         break;
                                 }
                                 $id_old = $entry->getId();
@@ -93,10 +93,10 @@ class BlocMenu
                             case 2:
                                 switch ($old_level) {
                                     case 1:
-                                        $html .= '<ul class="dropdown-menu" aria-labelledby="drop-'.$id_old.'" role="menu"><li><a href="/'.substr($entry->getLanguage()->getIso(), 0, 2).'/'.$entry->getUrl().'">'.$entry->getTitle().'</a>';
+                                        $html .= '<ul class="dropdown-menu" aria-labelledby="drop-'.$id_old.'" role="menu"><li><a href="/'.$entry->getLanguage()->getCode().'/'.$entry->getUrl().'">'.$entry->getTitle().'</a>';
                                         break;
                                     case 2:
-                                        $html .= '</li><li><a href="/'.substr($entry->getLanguage()->getIso(), 0, 2).'/'.$entry->getUrl().'">'.$entry->getTitle().'</a>';
+                                        $html .= '</li><li><a href="/'.$entry->getLanguage()->getCode().'/'.$entry->getUrl().'">'.$entry->getTitle().'</a>';
                                         break;
                                 }
                                 break;

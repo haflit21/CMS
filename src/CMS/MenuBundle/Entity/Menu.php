@@ -121,7 +121,7 @@ class Menu
     private $referenceMenu;
 
     /**
-     * @ORM\ManyToOne(targetEntity="MenuTaxonomy", inversedBy="menus")
+     * @ORM\ManyToOne(targetEntity="\CMS\MenuBundle\Entity\MenuTaxonomy", inversedBy="menus")
      * @ORM\JoinColumn(name="id_menu_taxonomy", referencedColumnName="id")
      */
     private $id_menu_taxonomy;

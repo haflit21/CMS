@@ -18,7 +18,7 @@ class ModuleController extends Controller
     {
 
         $repository = $this->getDoctrine()
-                       ->getEntityManager()
+                       ->getManager()
                        ->getRepository('CMSBlocBundle:Bloc');
         if ($item_id != null) {
             $bloc_base = $repository->getBlocBaseItem($position, $cat_id, $item_id,1);
@@ -51,7 +51,7 @@ class ModuleController extends Controller
     {
         //var_dump($params->bloc_type); die;
         return $this->getDoctrine()
-                     ->getEntityManager()
+                     ->getManager()
                      ->getRepository('CMSBlocBundle:'.$params->bloc_type)
                       ->find($params->bloc_id);
     }

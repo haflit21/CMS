@@ -31,8 +31,7 @@ class BlocType extends AbstractType
                     ),
                 'label' => 'Position'
                 ))
-            ->add('published', 'publish', array('label' => 'Publié')
-                )
+            ->add('published', 'choice', array('label' => 'Publié', 'choices' => array(0 => 'Non', 1 => 'Oui'), 'data' => 1, 'expanded' => true))
             ->add('all_published', 'choice', array(
                 'choices' => array(
                     '1' => 'Oui',

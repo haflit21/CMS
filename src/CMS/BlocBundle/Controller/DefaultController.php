@@ -137,7 +137,7 @@ class DefaultController extends Controller
         $form = $this->createForm($bloctypeObj, $bloc, array('lang_id' => $lang));
 
         if ($request->isMethod('POST')) {
-            $form->bindRequest($request);
+            $form->bind($request);
             if ($form->isValid()) {
                 $data = $form->getData();
 
@@ -165,7 +165,8 @@ class DefaultController extends Controller
 
                 //var_dump($json);die();
 
-                $this->get('session')->setFlash('success', 'Le bloc a bien été sauvegardé');
+                $session = $this->getRequest()->getSession();
+                $session->getFlashBag()->add('success', $this->get('translator')->trans('bloc_successfully_added'));
 
                 return $this->redirect($this->generateUrl('blocs_list'));
             }
@@ -173,7 +174,7 @@ class DefaultController extends Controller
 
         return array(
             'form' => $form->createView(), 
-            'bloc_type' => $bloc_popup['type'], 
+            'bloc_type' => $bloc_popup, 
             'lang' => $lang, 
             'active' => 'Apparence'
         );
@@ -199,7 +200,7 @@ class DefaultController extends Controller
         $language = $this->getDoctrine()->getRepository('CMSContentBundle:CMLanguage')->find($bloc_base->getLanguage()->getId());
         $form = $this->createForm(new $bloctype, $bloc, array('lang_id' => $language->getId()));
         if ($request->getMethod() == 'POST') {
-            $form->bindRequest($request);
+            $form->bind($request);
             if ($form->isValid()) {
                 $data = $form->getData();
                 $bloc_base = $bloc->getBloc();
@@ -220,7 +221,8 @@ class DefaultController extends Controller
 
                 //var_dump($json);die();
 
-                $this->get('session')->setFlash('success', 'Le bloc a bien été édité');
+                $session = $this->getRequest()->getSession();
+                $session->getFlashBag()->add('success', $this->get('translator')->trans('bloc_successfully_updated'));
 
                 return $this->redirect($this->generateUrl('blocs_list'));
             }
@@ -245,6 +247,9 @@ class DefaultController extends Controller
         $em = $this->getDoctrine()->getManager();
         $em->remove($bloc);
         $em->flush();
+
+        $session = $this->getRequest()->getSession();
+        $session->getFlashBag()->add('success', $this->get('translator')->trans('bloc_successfully_removed'));
     }
 
 }

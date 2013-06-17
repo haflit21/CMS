@@ -82,7 +82,10 @@ class ModuleController extends Controller
     private function _getSiteUrl() {
         $url_base = $this->container->getParameter("site_url");
         $default = $this->getDoctrine()->getRepository('CMSMenuBundle:Menu')->getDefaultUrl();
-        $default = current($default);
+        if(is_array($default))
+            $default = current($default);
+        else
+            $default = '';
         $ds = $this->container->getParameter("directory_separator");
         $language = $this->container->get('cmsontent_bundle.language_controller')->getDefault();
         return $url_base.$language->getCode().$ds.$default;

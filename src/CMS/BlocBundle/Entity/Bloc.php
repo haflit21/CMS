@@ -101,6 +101,11 @@ class Bloc
     private $referenceBloc;
 
     /**
+     * @ORM\ManyToOne(targetEntity="BlocTaxonomy", inversedBy="blocs")
+     */
+    private $taxonomy;
+
+    /**
      * Constructor
      */
     public function __construct()

@@ -5,8 +5,10 @@
     <div class="row-fluid">
         <div class="span12">
             <h1 class="pull-left">{% trans %}Sitemap Manager{% endtrans %}</h1>
-                        
+            
+
             <a href="{{ path('sitemap_new') }}" class="btn-new btn-small pull-right"><i class="admin-icon-plus-circled"></i> {% trans %}New{% endtrans %}</a>
+            <a href="{{ path('sitemap_generate', {'id': 1}) }}" class="btn-new btn-small pull-right"><i class="admin-icon-upload"></i> {% trans %}Generate{% endtrans %}</a>
 
             {% if app.session.flashbag.has('error') %}
                 <div class="clear h20"></div>

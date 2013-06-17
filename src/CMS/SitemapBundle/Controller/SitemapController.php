@@ -123,4 +123,56 @@ class SitemapController extends Controller
         $session->getFlashBag()->add('success', 'sitemap_successfully_removed');
         return $this->redirect($this->generateUrl('sitemap'));
     }
+
+
+    /**
+     * Generate an xml sitemap
+     * @return array
+     *
+     * @Route("/generate/{id}", name="sitemap_generate")
+     * @Template()
+     */
+    public function generateAction($id)
+    {
+        $path_root = $this->get('kernel')->getRootDir();
+        $path_web = $path_root . '/../web' . $this->getRequest()->getBasePath();
+        $filename = 'sitemap.xml';
+        
+        $sitemap = $this->getDoctrine()->getRepository('CMSSitemapBundle:Sitemap')->find($id);
+
+        if (is_object($sitemap)) {
+            $handle = fopen($path_root.'/'.$filename, "w");
+            if(is_resource($handle)) {
+                fwrite($handle, '<?xml version="1.0" encoding="UTF-8"?>');
+                fwrite($handle, "\n");
+                fwrite($handle, '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">');
+                fwrite($handle, "\n");
+
+                $url_base = $this->container->getParameter("site_url");
+                $language = $this->container->get('cmsontent_bundle.language_controller')->getDefault();
+                
+                $menuTaxes = $sitemap->getMenusTaxonomy();
+                
+                foreach ($menuTaxes as $key => $menuTax) {
+                    $entries = $menuTax->getMenus();
+                    foreach ($entries as $entry) {
+                        $url = $url_base.$language->getCode().'/'.$entry->getUrl();
+                        fwrite($handle,"<url>\n");
+                        fwrite($handle, "<loc>".$url."</loc>\n");
+                        fwrite($handle, "</url>\n");
+                    }
+                    
+                }
+                fwrite($handle, "</urlset>");
+                fclose($handle);
+            } else {
+                $session = $this->getRequest()->getSession();
+                $session->getFlashBag()->add('error', 'sitemap_not_generated');
+            }   
+        }
+        
+        $session = $this->getRequest()->getSession();
+        $session->getFlashBag()->add('success', 'sitemap_successfully_generated');
+        return $this->redirect($this->generateUrl('sitemap'));
+    }
 }

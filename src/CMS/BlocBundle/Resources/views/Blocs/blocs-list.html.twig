@@ -16,8 +16,8 @@
 							{{ blocType|raw }}
 						</div>
 						<div class="modal-footer">
-							<button class="btn" data-dismiss="modal" aria-hidden="true">{% trans %}Close{% endtrans %}</button>
-							<input class="btn btn-primary" type="submit" value="{% trans %}New{% endtrans %}" />
+							<a class="button btn-cancel" data-dismiss="modal" aria-hidden="true">{% trans %}Close{% endtrans %} <i class="admin-icon-cancel"></i></a>
+							<button type="submit" class="button btn-main">{% trans %}Validate{% endtrans %} <i class="admin-icon-ok"></i></button>
 						</div>
 					</form>
 				</div>

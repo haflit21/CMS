@@ -14,15 +14,15 @@ security:
            entity: { class: CMSAdminBundle:User, property: username }
 
    firewalls:
-       dev:
+        dev:
            pattern:  ^/(_(profiler|wdt)|css|images|js)/
            security: false
 
-       login:
+        login:
            pattern:  ^/admin/login$
            security: false
 
-       secured_area:
+        secured_area:
           pattern:    ^/admin/
           form_login:
               check_path: /admin/login_check
@@ -31,6 +31,13 @@ security:
               default_target_path:            /admin/dashboard
               target_path_parameter:          _target_path
               use_referer:                    false
+              remember_me:                    true
+
+          remember_me:
+              key:      "%secret%"
+              lifetime: 900 # 365 days in seconds
+              path:     /
+              domain:   ~ # Defaults to the current domain from $_SERVER   
           logout:
               path:   /admin/logout
               target: /admin/login
